@@ -1,9 +1,10 @@
-import 'package:digital_store_flutter/logic/cubits/user_cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'logic/cubits/app_bar_cubit/app_bar_cubit.dart';
-import 'logic/cubits/home_page_cubit/home_page_cubit.dart';
+import 'logic/cubits/data_cubits/categories_cubit/categories_cubit.dart';
+import 'logic/cubits/data_cubits/products_cubit/products_cubit.dart';
+import 'logic/cubits/data_cubits/user_cubit/user_cubit.dart';
+import 'logic/cubits/widget_cubits/app_bar_cubit/app_bar_cubit.dart';
 import 'ui/screens/home_page.dart';
 
 void main() {
@@ -18,10 +19,13 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => AppBarCubit(),
+          create: (context) => ProductsCubit(),
         ),
         BlocProvider(
-          create: (context) => HomePageCubit(),
+          create: (context) => CategoriesCubit()..loadCategories(),
+        ),
+        BlocProvider(
+          create: (context) => AppBarCubit(),
         ),
         BlocProvider(
           create: (context) => UserCubit(),

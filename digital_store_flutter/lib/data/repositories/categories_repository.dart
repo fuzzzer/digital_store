@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 
 import '../../core/config.dart';
 import '../models/category.dart';
+import '../models/custom_exceptions.dart';
 
 class CategoriesRepository {
   final _dio = Dio();
@@ -20,7 +21,7 @@ class CategoriesRepository {
 
       return result;
     } else {
-      throw Exception('server error');
+      throw const MessageException('server error');
     }
   }
 
@@ -33,7 +34,7 @@ class CategoriesRepository {
     if (response.statusCode == 200) {
       return true;
     } else {
-      throw Exception(response.data);
+      throw MessageException(response.data);
     }
   }
 
@@ -49,7 +50,7 @@ class CategoriesRepository {
     if (response.statusCode == 200) {
       return true;
     } else {
-      throw Exception(response.data);
+      throw MessageException(response.data);
     }
   }
 
@@ -63,7 +64,7 @@ class CategoriesRepository {
     if (response.statusCode == 200) {
       return true;
     } else {
-      throw Exception(response.data);
+      throw MessageException(response.data);
     }
   }
 }

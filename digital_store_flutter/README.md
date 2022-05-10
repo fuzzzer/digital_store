@@ -1,3 +1,13 @@
+// application requests searched and filtered material from server, I decided to implemeny it this way for practice. 
+// even though maybe it is easier to just store data and update ui when searching or filtering.
+
+
+
+
+
+
+
+
 
 authentication directories:
 $ curl -X POST http://localhost:8086/authentication/refresh   {post}

@@ -4,11 +4,24 @@ import '../../../data/models/custom_exceptions.dart';
 import '../../utilities/generators.dart';
 import '../global_queries.dart';
 
-List<Map<String, dynamic>> getAllProducts(final Database database) {
-  final Map<String, Map<String, dynamic>> result = {};
+Map<String, dynamic> createProductFromRow(Row row) {
+  return {
+    'id': row['product_id'],
+    'title': row['title'],
+    'description': row['description'],
+    'quantity': row['quantity'],
+    'image': row['image'],
+    'size': row['size'],
+    'rating': row['rating'],
+    'categories': <String>[row['category_id']],
+    'color': row['color'],
+    'price': row['price'],
+    'createdAt': row['created_at'],
+    'modifiedAt': row['modified_at']
+  };
+}
 
-  final selectedTable = database.select('''
-      SELECT p.id as product_id,
+String toSelectWithCategories = '''SELECT p.id as product_id,
        p.title as title,
        p.description as description,
        p.quantity as quantity,
@@ -24,28 +37,73 @@ List<Map<String, dynamic>> getAllProducts(final Database database) {
        JOIN product_category pc
        ON pc.product_id = p.id
        JOIN category c
-       ON pc.category_id = c.id;
-      ''');
+       ON pc.category_id = c.id''';
+
+List<Map<String, dynamic>> getAllProducts(
+  final Database database,
+) {
+  final Map<String, Map<String, dynamic>> result = {};
+
+  final selectedTable = database.select(toSelectWithCategories);
 
   for (final row in selectedTable) {
     final String currentId = row['product_id'];
+
     if (result.containsKey(currentId)) {
       result[currentId]!['categories'].add(row['category_id']);
     } else {
-      result[currentId] = {
-        'id': row['product_id'],
-        'title': row['title'],
-        'description': row['description'],
-        'quantity': row['quantity'],
-        'image': row['image'],
-        'size': row['size'],
-        'rating': row['rating'],
-        'categories': <String>[row['category_id']],
-        'color': row['color'],
-        'price': row['price'],
-        'createdAt': row['created_at'],
-        'modifiedAt': row['modified_at']
-      };
+      result[currentId] = createProductFromRow(row);
+    }
+  }
+
+  return result.values.toList();
+}
+
+List<Map<String, dynamic>> getProductsFilteredByCategories(
+    Database database, List<String> filteredCategoryIds) {
+  final Map<String, Map<String, dynamic>> result = {};
+
+  for (final categoryId in filteredCategoryIds) {
+    final selectedTable = database.select('''
+      $toSelectWithCategories
+       WHERE category_id LIKE "$categoryId";
+      ''');
+
+    for (final row in selectedTable) {
+      final String currentId = row['product_id'];
+
+      if (result.containsKey(currentId)) {
+        List currentProductCategories = result[currentId]!['categories'];
+
+        if (!currentProductCategories.contains(row['category_id'])) {
+          result[currentId]!['categories'].add(row['category_id']);
+        }
+      } else {
+        result[currentId] = createProductFromRow(row);
+      }
+    }
+  }
+
+  return result.values.toList();
+}
+
+List<Map<String, dynamic>> getProductsFilteredBySearch(
+    final Database database, String toSearch) {
+  final Map<String, Map<String, dynamic>> result = {};
+
+  final selectedTable = database.select('''
+    $toSelectWithCategories
+    WHERE p.title LIKE "%$toSearch%"
+    OR p.description LIKE "%$toSearch%";
+    ''');
+
+  for (final row in selectedTable) {
+    final String currentId = row['product_id'];
+
+    if (result.containsKey(currentId)) {
+      result[currentId]!['categories'].add(row['category_id']);
+    } else {
+      result[currentId] = createProductFromRow(row);
     }
   }
 
@@ -319,10 +377,40 @@ void reviewProduct({
 
   final productReviewId = generateNewID();
 
+  late final int oldReviewsQuantity;
+
+  final selectedTable = database.select('''
+    SELECT COUNT(id) as count
+    FROM product_review
+    WHERE product_id LIKE "$productId";
+   ''');
+
+  for (final row in selectedTable) {
+    oldReviewsQuantity = row['count'];
+  }
+
   database.execute('''
    INSERT INTO product_review (id, user_id, product_id, rating, review, created_at, modified_at)
    VALUES ("$productReviewId", "$userId", "$productId", ${info['rating']}, "${info['review']}", date('now'), date('now'));
-''');
+   ''');
+
+  final double oldRating = double.parse(returnUniqueValueFromTheTable(
+      database: database,
+      table: "product",
+      inputValue: productId,
+      returnValue: "rating",
+      searchingColumn: "id"));
+
+  final double newRating = (oldRating * oldReviewsQuantity + info['rating']) /
+      (oldReviewsQuantity + 1);
+
+  database.execute('''
+   UPDATE product
+   SET rating = $newRating
+   WHERE id LIKE "$productId";
+   ''');
+  print(oldRating);
+  print(newRating);
 }
 
 List<Map<String, dynamic>> getAllProductReviews({

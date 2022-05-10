@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class TextInput extends StatefulWidget {
-  late final String hintText;
-  late bool hidden;
+  final String hintText;
   final bool passwordType;
+  late bool isHidden;
   final int maxLines;
   final TextEditingController inputController;
 
@@ -14,7 +14,7 @@ class TextInput extends StatefulWidget {
       final this.maxLines = 1,
       required final this.inputController})
       : super(key: key) {
-    hidden = passwordType;
+    isHidden = passwordType;
   }
 
   @override
@@ -42,16 +42,15 @@ class _TextInputState extends State<TextInput> {
               alignment: Alignment.center,
               child: TextField(
                 controller: widget.inputController,
-                obscureText: widget.hidden,
+                obscureText: widget.isHidden,
                 textAlign: TextAlign.start,
                 maxLines: widget.maxLines,
                 style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w400,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w300,
                     color: Color.fromARGB(255, 0, 0, 0)),
                 decoration: InputDecoration(
                   labelText: widget.hintText,
-                  hintText: widget.hintText,
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                     borderSide: const BorderSide(
@@ -67,14 +66,13 @@ class _TextInputState extends State<TextInput> {
                     child: widget.passwordType
                         ? IconButton(
                             icon: Icon(
-                              widget.hidden
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                              color: Theme.of(context).primaryColorLight,
-                            ),
+                                widget.isHidden
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: const Color.fromARGB(111, 0, 187, 212)),
                             onPressed: () {
                               setState(() {
-                                widget.hidden = !widget.hidden;
+                                widget.isHidden = !widget.isHidden;
                               });
                             },
                           )

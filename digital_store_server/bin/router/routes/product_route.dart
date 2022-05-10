@@ -16,8 +16,30 @@ class ProductRoute {
   Router get router {
     final router = Router();
 
-    Response _getAllProductsHandler(final Request request) {
+    Future<Response> _getAllProductsHandler(final Request request) async {
       List<Map<String, dynamic>> response = getAllProducts(database);
+
+      return Response.ok(json.encode(response),
+          headers: {'Content-Type': 'application/json'});
+    }
+
+    Future<Response> _getProductsByCategoryHandler(
+        final Request request, String categoryId) async {
+      late List<Map<String, dynamic>> response =
+          getProductsFilteredByCategories(database, [categoryId]);
+
+      return Response.ok(json.encode(response),
+          headers: {'Content-Type': 'application/json'});
+    }
+
+    Future<Response> _getProductsBySearchHandler(
+        final Request request, String toSearch) async {
+      print(toSearch);
+      print(toSearch == '');
+
+      late List<Map<String, dynamic>> response =
+          getProductsFilteredBySearch(database, toSearch);
+
       return Response.ok(json.encode(response),
           headers: {'Content-Type': 'application/json'});
     }
@@ -172,6 +194,8 @@ class ProductRoute {
 
     router.get('/', _getAllProductsHandler);
     router.post('/', _newProductHandler);
+    router.get('/by-category/<categoryId>', _getProductsByCategoryHandler);
+    router.get('/by-search/<toSearch>', _getProductsBySearchHandler);
     router.get('/<id>', _getProductHandler);
     router.patch('/<id>', _updateProductHandler);
     router.delete('/<id>', _deleteProductHandler);

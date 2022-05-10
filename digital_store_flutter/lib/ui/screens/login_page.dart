@@ -3,7 +3,9 @@ import 'package:digital_store_flutter/ui/widgets/command_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../logic/cubits/user_cubit/user_cubit.dart';
+import '../../core/constants.dart';
+
+import '../../logic/cubits/data_cubits/user_cubit/user_cubit.dart';
 import '../widgets/text_input.dart';
 
 class LoginPage extends StatelessWidget {
@@ -18,7 +20,7 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: defaultPagePadding,
         child: Column(
           children: [
             Align(

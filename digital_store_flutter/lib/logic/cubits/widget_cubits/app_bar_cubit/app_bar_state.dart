@@ -11,4 +11,4 @@ class AppBarInitial extends AppBarState {}
 
 class AppBarSearching extends AppBarState {}
 
-class AppBarSelectingCategory extends AppBarState {}
+class AppBarSelectingCategories extends AppBarState {}

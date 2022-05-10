@@ -30,60 +30,63 @@ class ProductTile extends StatelessWidget {
         splashFactory: InkSplash.splashFactory,
         radius: 10,
         highlightColor: const Color.fromARGB(142, 33, 29, 62),
-        child: Card(
-          elevation: 4,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-            side: const BorderSide(color: Colors.black, width: 1),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                SizedBox(
-                  height: height / 4 * 3,
-                  width: height / 4 * 3,
-                  child: Image.file(
-                    File(productInfo.imageLocation),
-                    errorBuilder: (context, error, stackTrace) =>
-                        const Placeholder(),
+        child: Padding(
+          padding: const EdgeInsets.all(4),
+          child: Card(
+            elevation: 4,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+              side: const BorderSide(color: Colors.black, width: 1),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  SizedBox(
+                    height: height / 4 * 3,
+                    width: height / 4 * 3,
+                    child: Image.file(
+                      File(productInfo.imageLocation),
+                      errorBuilder: (context, error, stackTrace) =>
+                          const Placeholder(),
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: Column(
-                    children: [
-                      Align(
-                        alignment: Alignment.topCenter,
-                        child: Text(
-                          productInfo.title,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: height / 10),
-                        ),
-                      ),
-                      Expanded(
-                        child: Align(
-                          alignment: Alignment.topLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(productInfo.description),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.topCenter,
+                          child: Text(
+                            productInfo.title,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: height / 10),
                           ),
                         ),
-                      ),
-                      Align(
-                        alignment: Alignment.bottomRight,
-                        child: Text(
-                          '\$ ${productInfo.price.toString()}',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: height / 9,
-                              color: const Color.fromARGB(223, 18, 74, 164)),
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.topLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(productInfo.description),
+                            ),
+                          ),
                         ),
-                      )
-                    ],
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: Text(
+                            '\$ ${productInfo.price.toString()}',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: height / 9,
+                                color: const Color.fromARGB(223, 18, 74, 164)),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

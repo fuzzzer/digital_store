@@ -23,7 +23,7 @@ class AuthenticationRepository {
             'token recieved was not sent from original server');
       }
     } else if (response.statusCode == 400) {
-      throw Exception(response.data);
+      throw MessageException(response.data);
     }
 
     return result;
@@ -35,7 +35,7 @@ class AuthenticationRepository {
     if (response.statusCode == 200) {
       return true;
     } else {
-      throw Exception(response.data);
+      throw MessageException(response.data);
     }
   }
 
@@ -54,7 +54,7 @@ class AuthenticationRepository {
       //       'token recieved was not sent from original server');
       // }
     } else {
-      throw Exception(response.data);
+      throw MessageException(response.data);
     }
   }
 }

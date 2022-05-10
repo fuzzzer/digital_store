@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 
 import '../../core/config.dart';
+import '../models/custom_exceptions.dart';
 
 class CartRepository {
   final _dio = Dio();
@@ -21,7 +22,7 @@ class CartRepository {
     if (response.statusCode == 200) {
       result.addAll(response.data);
     } else {
-      throw Exception('server error');
+      throw const MessageException('server error');
     }
 
     return result;
@@ -33,7 +34,7 @@ class CartRepository {
     if (response.statusCode == 200) {
       return true;
     } else {
-      throw Exception(response.data);
+      throw MessageException(response.data);
     }
   }
 
@@ -45,7 +46,7 @@ class CartRepository {
     if (response.statusCode == 200) {
       return true;
     } else {
-      throw Exception(response.data);
+      throw MessageException(response.data);
     }
   }
 
@@ -55,7 +56,7 @@ class CartRepository {
     if (response.statusCode == 200) {
       return true;
     } else {
-      throw Exception(response.data);
+      throw MessageException(response.data);
     }
   }
 
@@ -65,7 +66,7 @@ class CartRepository {
     if (response.statusCode == 200) {
       return true;
     } else {
-      throw Exception(response.data);
+      throw MessageException(response.data);
     }
   }
 
@@ -75,7 +76,7 @@ class CartRepository {
     if (response.statusCode == 200) {
       return true;
     } else {
-      throw Exception('server error');
+      throw const MessageException('server error');
     }
   }
 }

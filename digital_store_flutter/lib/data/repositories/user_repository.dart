@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 
 import '../../core/config.dart';
+import '../models/custom_exceptions.dart';
 import '../models/user.dart';
 
 class UserRepository {
@@ -14,7 +15,7 @@ class UserRepository {
     if (response.statusCode == 200) {
       return true;
     } else {
-      throw Exception(response.data);
+      throw MessageException(response.data);
     }
   }
 
@@ -28,7 +29,7 @@ class UserRepository {
     if (response.statusCode == 200) {
       result.addAll(response.data);
     } else {
-      throw Exception('server error');
+      throw const MessageException('server error');
     }
 
     return result;
@@ -44,7 +45,7 @@ class UserRepository {
     if (response.statusCode == 200) {
       result.addAll(response.data);
     } else {
-      throw Exception('server error');
+      throw const MessageException('server error');
     }
 
     return result;
@@ -59,7 +60,7 @@ class UserRepository {
     if (response.statusCode == 200) {
       result.addAll(response.data);
     } else {
-      throw Exception('server error');
+      throw const MessageException('server error');
     }
 
     return result;
@@ -74,7 +75,7 @@ class UserRepository {
     if (response.statusCode == 200) {
       return true;
     } else {
-      throw Exception('server error');
+      throw const MessageException('server error');
     }
   }
 
@@ -85,7 +86,7 @@ class UserRepository {
     if (response.statusCode == 200) {
       return User.fromJson(response.data);
     } else {
-      throw Exception('server error');
+      throw const MessageException('server error');
     }
   }
 
@@ -98,7 +99,7 @@ class UserRepository {
     if (response.statusCode == 200) {
       return true;
     } else {
-      throw Exception(response.data);
+      throw MessageException(response.data);
     }
   }
 }

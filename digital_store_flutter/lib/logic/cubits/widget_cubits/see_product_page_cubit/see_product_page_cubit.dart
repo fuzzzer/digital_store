@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:digital_store_flutter/data/repositories/products_repository.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../data/models/product.dart';
+import '../../../../data/models/product.dart';
 
 part 'see_product_page_state.dart';
 

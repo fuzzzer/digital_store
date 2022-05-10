@@ -1,8 +1,10 @@
 import 'dart:io';
 
-import 'package:digital_store_flutter/logic/cubits/see_product_page_cubit/see_product_page_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../core/constants.dart';
+import '../../logic/cubits/widget_cubits/see_product_page_cubit/see_product_page_cubit.dart';
 
 class SeeProductPage extends StatelessWidget {
   const SeeProductPage({Key? key}) : super(key: key);
@@ -12,7 +14,7 @@ class SeeProductPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: defaultPagePadding,
         child: BlocBuilder<SeeProductPageCubit, SeeProductPageState>(
           bloc: context.read<SeeProductPageCubit>()..loadProduct(),
           builder: (context, state) {

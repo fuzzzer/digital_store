@@ -3,7 +3,7 @@ import 'package:digital_store_flutter/data/repositories/authentication_repositor
 import 'package:digital_store_flutter/data/repositories/user_repository.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../data/models/user.dart';
+import '../../../../data/models/user.dart';
 
 part 'user_state.dart';
 

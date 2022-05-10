@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 
 import '../../core/config.dart';
+import '../models/custom_exceptions.dart';
 import '../models/product.dart';
 
 class ProductsRepository {
@@ -20,7 +21,39 @@ class ProductsRepository {
 
       return result;
     } else {
-      throw Exception('server error');
+      throw const MessageException('server error');
+    }
+  }
+
+  Future<List<Product>> getProductsFilteredByCategory(String categoryId) async {
+    final response = await _dio.get('${startingPath}by-category/$categoryId');
+
+    if (response.statusCode == 200) {
+      final List<Product> result = [];
+
+      for (final rawCategory in response.data) {
+        result.add(Product.fromJson(rawCategory as Map<String, dynamic>));
+      }
+
+      return result;
+    } else {
+      throw const MessageException('server error');
+    }
+  }
+
+  Future<List<Product>> getProductsFilteredBySearch(String toSearch) async {
+    final response = await _dio.get('${startingPath}by-search/$toSearch');
+
+    if (response.statusCode == 200) {
+      final List<Product> result = [];
+
+      for (final rawCategory in response.data) {
+        result.add(Product.fromJson(rawCategory as Map<String, dynamic>));
+      }
+
+      return result;
+    } else {
+      throw const MessageException('server error');
     }
   }
 
@@ -33,7 +66,7 @@ class ProductsRepository {
     if (response.statusCode == 200) {
       return true;
     } else {
-      throw Exception(response.data);
+      throw MessageException(response.data);
     }
   }
 
@@ -43,7 +76,7 @@ class ProductsRepository {
     if (response.statusCode == 200) {
       return Product.fromJson(response.data);
     } else {
-      throw Exception('server error');
+      throw const MessageException('server error');
     }
   }
 
@@ -56,7 +89,7 @@ class ProductsRepository {
     if (response.statusCode == 200) {
       return true;
     } else {
-      throw Exception(response.data);
+      throw MessageException(response.data);
     }
   }
 
@@ -68,7 +101,7 @@ class ProductsRepository {
     if (response.statusCode == 200) {
       return true;
     } else {
-      throw Exception(response.data);
+      throw MessageException(response.data);
     }
   }
 
@@ -81,7 +114,7 @@ class ProductsRepository {
     if (response.statusCode == 200) {
       return true;
     } else {
-      throw Exception(response.data);
+      throw MessageException(response.data);
     }
   }
 
@@ -94,7 +127,7 @@ class ProductsRepository {
     if (response.statusCode == 200) {
       return true;
     } else {
-      throw Exception(response.data);
+      throw MessageException(response.data);
     }
   }
 
@@ -106,7 +139,7 @@ class ProductsRepository {
     if (response.statusCode == 200) {
       return true;
     } else {
-      throw Exception(response.data);
+      throw MessageException(response.data);
     }
   }
 }
