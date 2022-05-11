@@ -63,7 +63,10 @@ class SeeProductPage extends StatelessWidget {
                               onPressed: () => null, child: const Text('BUY')),
                         ),
                         IconButton(
-                          onPressed: () => null,
+                          onPressed: () {
+
+                            // context.read<CartCubit>().loadCartItems(accessToken)
+                          },
                           icon: const Icon(
                             Icons.shopping_cart,
                             size: 50,

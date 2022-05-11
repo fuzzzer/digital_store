@@ -1,4 +1,5 @@
 import 'package:digital_store_flutter/core/constants.dart';
+import 'package:digital_store_flutter/ui/screens/cart_page.dart';
 import 'package:digital_store_flutter/ui/widgets/categories_chooser.dart';
 
 import 'package:digital_store_flutter/ui/widgets/home_page_appbar.dart';
@@ -26,7 +27,8 @@ class HomePage extends StatelessWidget {
           builder: (context, state) {
             if (state is UserConsumer) {
               return FloatingActionButton(
-                onPressed: () => null,
+                onPressed: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const CartPage())),
                 child: const Icon(Icons.shopping_cart),
               );
             } else {

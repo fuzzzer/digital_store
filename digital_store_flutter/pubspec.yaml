@@ -41,6 +41,8 @@ dependencies:
   bloc: ^8.0.3
   flutter_bloc: ^8.0.1
   equatable: ^2.0.3
+  http: ^0.13.4
+  syncfusion_flutter_datepicker: ^20.1.52
 
 dev_dependencies:
   flutter_test:

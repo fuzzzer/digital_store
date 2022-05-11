@@ -1,60 +1,74 @@
-import 'package:dio/dio.dart';
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
 
 import '../../core/config.dart';
 import '../../logic/checks.dart';
 import '../models/custom_exceptions.dart';
 
 class AuthenticationRepository {
-  final _dio = Dio();
-
   final String startingPath = 'http://$ipAdress:$port/authentication/';
 
   Future<Map<String, dynamic>> postRefresh(final String refreshToken) async {
-    final response = await _dio
-        .post('${startingPath}refresh', data: {'refreshToken': refreshToken});
+    final response = await http.post(Uri.parse('${startingPath}refresh'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({'refreshToken': refreshToken}));
 
     final Map<String, dynamic> result = {};
 
     if (response.statusCode == 200) {
-      if (checkTokens(response.data)) {
-        result.addAll(response.data);
+      final decodedJson = jsonDecode(response.body);
+
+      if (checkTokens(decodedJson)) {
+        result.addAll(decodedJson);
       } else {
         throw const InvalidTokenException(
             'token recieved was not sent from original server');
       }
-    } else if (response.statusCode == 400) {
-      throw MessageException(response.data);
+    } else
+    //  if (response.statusCode == 400)
+    {
+      throw MessageException(response.body);
     }
 
     return result;
   }
 
   Future<bool> postsignUp(final Map<String, dynamic> newUser) async {
-    final response = await _dio.post('${startingPath}sign-up', data: newUser);
+    final response = await http.post(Uri.parse('${startingPath}sign-up'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(newUser));
 
     if (response.statusCode == 200) {
       return true;
     } else {
-      throw MessageException(response.data);
+      throw MessageException(response.body);
     }
   }
 
   Future<Map<String, dynamic>> postSignIn(
       final Map<String, dynamic> userCredentials) async {
-    final response =
-        await _dio.post('${startingPath}sign-in', data: userCredentials);
+    final response = await http.post(Uri.parse('${startingPath}sign-in'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(userCredentials));
     if (response.statusCode == 200) {
       if (true
-          // checkTokens(response.data)
+          // checkTokens(response.body)
           ) {
-        return response.data as Map<String, dynamic>;
+        return jsonDecode(response.body) as Map<String, dynamic>;
       }
       // else {
       //   throw InvalidTokenException(
       //       'token recieved was not sent from original server');
       // }
     } else {
-      throw MessageException(response.data);
+      throw MessageException(response.body);
     }
   }
 }

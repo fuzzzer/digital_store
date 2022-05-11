@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 
 class Product {
@@ -13,20 +15,22 @@ class Product {
   final double price;
   final String createdAt;
   final String modifiedAt;
+  final int? quantityInTheCart;
 
   Product({
-    required final this.id,
-    required final this.title,
-    required final this.description,
-    required final this.quantity,
-    required final this.imageLocation,
-    required final this.size,
-    required final this.rating,
-    required final this.categories,
-    required final this.color,
-    required final this.price,
-    required final this.createdAt,
-    required final this.modifiedAt,
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.quantity,
+    required this.imageLocation,
+    required this.size,
+    required this.rating,
+    required this.categories,
+    required this.color,
+    required this.price,
+    required this.createdAt,
+    required this.modifiedAt,
+    this.quantityInTheCart,
   });
 
   Product copyWith({
@@ -42,6 +46,7 @@ class Product {
     double? price,
     String? createdAt,
     String? modifiedAt,
+    int? quantityInTheCart,
   }) {
     return Product(
       id: id ?? this.id,
@@ -56,6 +61,7 @@ class Product {
       price: price ?? this.price,
       createdAt: createdAt ?? this.createdAt,
       modifiedAt: modifiedAt ?? this.modifiedAt,
+      quantityInTheCart: quantityInTheCart ?? this.quantityInTheCart,
     );
   }
 
@@ -74,6 +80,9 @@ class Product {
     result.addAll({'price': price});
     result.addAll({'createdAt': createdAt});
     result.addAll({'modifiedAt': modifiedAt});
+    if (quantityInTheCart != null) {
+      result.addAll({'quantityInTheCart': quantityInTheCart});
+    }
 
     return result;
   }
@@ -92,12 +101,13 @@ class Product {
       price: map['price']?.toDouble() ?? 0.0,
       createdAt: map['createdAt'] ?? '',
       modifiedAt: map['modifiedAt'] ?? '',
+      quantityInTheCart: map['quantityInTheCart']?.toInt(),
     );
   }
 
   @override
   String toString() {
-    return 'Product(id: $id, title: $title, description: $description, quantity: $quantity, imageLocation: $imageLocation, size: $size, rating: $rating, categories: $categories, color: $color, price: $price, createdAt: $createdAt, modifiedAt: $modifiedAt)';
+    return 'Product(id: $id, title: $title, description: $description, quantity: $quantity, imageLocation: $imageLocation, size: $size, rating: $rating, categories: $categories, color: $color, price: $price, createdAt: $createdAt, modifiedAt: $modifiedAt, quantityInTheCart: $quantityInTheCart)';
   }
 
   @override
@@ -116,7 +126,8 @@ class Product {
         other.color == color &&
         other.price == price &&
         other.createdAt == createdAt &&
-        other.modifiedAt == modifiedAt;
+        other.modifiedAt == modifiedAt &&
+        other.quantityInTheCart == quantityInTheCart;
   }
 
   @override
@@ -132,6 +143,7 @@ class Product {
         color.hashCode ^
         price.hashCode ^
         createdAt.hashCode ^
-        modifiedAt.hashCode;
+        modifiedAt.hashCode ^
+        quantityInTheCart.hashCode;
   }
 }

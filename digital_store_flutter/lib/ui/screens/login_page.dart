@@ -1,17 +1,21 @@
+import 'package:digital_store_flutter/data/models/custom_exceptions.dart';
 import 'package:digital_store_flutter/ui/screens/home_page.dart';
+import 'package:digital_store_flutter/ui/screens/sign_up_page.dart';
 import 'package:digital_store_flutter/ui/widgets/command_button.dart';
+import 'package:digital_store_flutter/ui/widgets/remember_me.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/constants.dart';
 
 import '../../logic/cubits/data_cubits/user_cubit/user_cubit.dart';
-import '../widgets/text_input.dart';
+import '../widgets/credentials_input.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({Key? key, final this.loginTitle = ''}) : super(key: key);
 
   final String loginTitle;
+
   final TextEditingController usernameInputController = TextEditingController();
   final TextEditingController passwordInputController = TextEditingController();
 
@@ -31,25 +35,44 @@ class LoginPage extends StatelessWidget {
                       style: const TextStyle(
                           fontSize: 20, fontWeight: FontWeight.w400))),
             ),
-            TextInput(
+            CredentialsInput(
               hintText: 'username',
               inputController: usernameInputController,
             ),
-            TextInput(
+            CredentialsInput(
               hintText: 'password',
               passwordType: true,
               inputController: passwordInputController,
             ),
+            const RememberMe(),
             CommandButton(
-              onPressedFunction: () {
-                context.read<UserCubit>().userLogIn(
+              onPressedFunction: () async {
+                List loginInfo = await context.read<UserCubit>().userLogIn(
                     usernameInputController.text, passwordInputController.text);
 
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const HomePage()));
+                if (loginInfo[0] == true) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const HomePage()));
+                }
+
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text(loginInfo[1])));
               },
               backgroundColor: Colors.blueAccent,
-              cmd: 'Log In',
+              cmd: 'LOGIN',
+              width: double.infinity,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: SizedBox(
+                width: double.infinity,
+                child: TextButton(
+                    onPressed: () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => const SignUpPage())),
+                    child: const Text('SIGN UP')),
+              ),
             )
           ],
         ),

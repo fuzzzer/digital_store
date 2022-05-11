@@ -15,12 +15,15 @@ class CartRepository {
   final String startingPath = 'http://$ipAdress:$port/cart/';
 
   Future<Map<String, dynamic>> getAllCartItems() async {
-    final response = await _dio.get(startingPath);
+    final response = await _dio.get(startingPath,
+        options: Options(headers: {'authorization': 'Bearer $accessToken'}));
 
-    final Map<String, dynamic> result = {};
+    final Map<String, List<Map<String, dynamic>>> result = {'products': []};
 
     if (response.statusCode == 200) {
-      result.addAll(response.data);
+      (response.data['products'] as List).forEach((item) {
+        result['products']!.add((item as Map<String, dynamic>));
+      });
     } else {
       throw const MessageException('server error');
     }
