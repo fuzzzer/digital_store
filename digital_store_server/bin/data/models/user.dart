@@ -1,5 +1,7 @@
+import 'dart:convert';
+
 class User {
-  String userName;
+  String username;
   String password;
   double balance;
   String firstName;
@@ -11,9 +13,9 @@ class User {
   String sex;
 
   User({
-    required this.userName,
+    required this.username,
     required this.password,
-    this.balance = 0,
+    required this.balance,
     required this.firstName,
     required this.lastName,
     required this.email,
@@ -24,7 +26,7 @@ class User {
   });
 
   User copyWith({
-    String? userName,
+    String? username,
     String? password,
     double? balance,
     String? firstName,
@@ -36,7 +38,7 @@ class User {
     String? sex,
   }) {
     return User(
-      userName: userName ?? this.userName,
+      username: username ?? this.username,
       password: password ?? this.password,
       balance: balance ?? this.balance,
       firstName: firstName ?? this.firstName,
@@ -52,7 +54,7 @@ class User {
   Map<String, dynamic> toJson() {
     final result = <String, dynamic>{};
 
-    result.addAll({'userName': userName});
+    result.addAll({'username': username});
     result.addAll({'password': password});
     result.addAll({'balance': balance});
     result.addAll({'firstName': firstName});
@@ -68,7 +70,7 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> map) {
     return User(
-      userName: map['username'] ?? '',
+      username: map['username'] ?? '',
       password: map['password'] ?? '',
       balance: map['balance']?.toDouble() ?? 0.0,
       firstName: map['firstName'] ?? '',
@@ -83,7 +85,7 @@ class User {
 
   @override
   String toString() {
-    return 'User(userName: $userName, password: $password, balance: $balance, firstName: $firstName, lastName: $lastName, email: $email, birthDate: $birthDate, phoneNumber: $phoneNumber, adress: $adress, sex: $sex)';
+    return 'User(username: $username, password: $password, balance: $balance, firstName: $firstName, lastName: $lastName, email: $email, birthDate: $birthDate, phoneNumber: $phoneNumber, adress: $adress, sex: $sex)';
   }
 
   @override
@@ -91,7 +93,7 @@ class User {
     if (identical(this, other)) return true;
 
     return other is User &&
-        other.userName == userName &&
+        other.username == username &&
         other.password == password &&
         other.balance == balance &&
         other.firstName == firstName &&
@@ -105,7 +107,7 @@ class User {
 
   @override
   int get hashCode {
-    return userName.hashCode ^
+    return username.hashCode ^
         password.hashCode ^
         balance.hashCode ^
         firstName.hashCode ^

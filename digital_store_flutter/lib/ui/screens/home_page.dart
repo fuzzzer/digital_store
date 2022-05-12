@@ -1,4 +1,7 @@
 import 'package:digital_store_flutter/core/constants.dart';
+import 'package:digital_store_flutter/data/models/user.dart';
+import 'package:digital_store_flutter/data/repositories/cart_repository.dart';
+import 'package:digital_store_flutter/logic/cubits/data_cubits/cart_cubit/cart_cubit.dart';
 import 'package:digital_store_flutter/ui/screens/cart_page.dart';
 import 'package:digital_store_flutter/ui/widgets/categories_chooser.dart';
 
@@ -7,6 +10,7 @@ import 'package:digital_store_flutter/ui/widgets/search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../data/repositories/products_repository.dart';
 import '../../logic/cubits/data_cubits/products_cubit/products_cubit.dart';
 import '../../logic/cubits/data_cubits/user_cubit/user_cubit.dart';
 import '../../logic/cubits/widget_cubits/app_bar_cubit/app_bar_cubit.dart';
@@ -27,8 +31,16 @@ class HomePage extends StatelessWidget {
           builder: (context, state) {
             if (state is UserConsumer) {
               return FloatingActionButton(
-                onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const CartPage())),
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BlocProvider(
+                      create: (context) => CartCubit(
+                          cartRepository: CartRepository(state.accessToken)),
+                      child: const CartPage(),
+                    ),
+                  ),
+                ),
                 child: const Icon(Icons.shopping_cart),
               );
             } else {
@@ -73,18 +85,31 @@ class HomePage extends StatelessWidget {
                           productInfo: state.products[index],
                           onTapFunction: () {
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => BlocProvider(
-                                          create: (context) =>
-                                              SeeProductPageCubit(
-                                                  productId:
-                                                      state.products[index].id),
-                                          child: const SeeProductPage(),
-                                        )));
-                          },
-                          onLongPressFunction: () {
-                            //show product preview
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BlocProvider(
+                                  create: (context) {
+                                    String? userAccessToken;
+
+                                    if (context.read<UserCubit>().state
+                                        is UserConsumer) {
+                                      final userState =
+                                          context.read<UserCubit>().state;
+                                      userAccessToken =
+                                          (userState as UserConsumer)
+                                              .accessToken;
+                                    }
+
+                                    return SeeProductPageCubit(
+                                      productsRepository: ProductsRepository(),
+                                      productId: state.products[index].id,
+                                      userAccessToken: userAccessToken,
+                                    );
+                                  },
+                                  child: const SeeProductPage(),
+                                ),
+                              ),
+                            );
                           },
                         );
                       },

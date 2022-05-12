@@ -8,14 +8,12 @@ class ProductTile extends StatelessWidget {
   final Product productInfo;
   final double height;
   final Function onTapFunction;
-  final Function? onLongPressFunction;
 
   const ProductTile({
     Key? key,
     required final this.productInfo,
     final this.height = 150,
     required final this.onTapFunction,
-    final this.onLongPressFunction,
   }) : super(key: key);
 
   @override
@@ -24,12 +22,10 @@ class ProductTile extends StatelessWidget {
       height: height,
       child: InkWell(
         borderRadius: BorderRadius.circular(12.0),
-        onLongPress: () =>
-            onLongPressFunction != null ? onLongPressFunction!() : null,
         onTap: () => onTapFunction(),
         splashFactory: InkSplash.splashFactory,
         radius: 10,
-        highlightColor: const Color.fromARGB(142, 33, 29, 62),
+        // highlightColor: const Color.fromARGB(142, 33, 29, 62),
         child: Padding(
           padding: const EdgeInsets.all(4),
           child: Card(

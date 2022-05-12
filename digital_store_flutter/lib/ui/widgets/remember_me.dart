@@ -24,8 +24,7 @@ class _RememberMeState extends State<RememberMe> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Row(
+    return Row(
         children: [
           Checkbox(
               value: rememberMe,
@@ -35,7 +34,6 @@ class _RememberMeState extends State<RememberMe> {
               }),
           const Text('Remember Me')
         ],
-      ),
     );
   }
 }

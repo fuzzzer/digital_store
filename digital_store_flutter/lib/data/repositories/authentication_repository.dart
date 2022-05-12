@@ -58,15 +58,7 @@ class AuthenticationRepository {
         },
         body: jsonEncode(userCredentials));
     if (response.statusCode == 200) {
-      if (true
-          // checkTokens(response.body)
-          ) {
-        return jsonDecode(response.body) as Map<String, dynamic>;
-      }
-      // else {
-      //   throw InvalidTokenException(
-      //       'token recieved was not sent from original server');
-      // }
+      return jsonDecode(response.body) as Map<String, dynamic>;
     } else {
       throw MessageException(response.body);
     }

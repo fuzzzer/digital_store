@@ -75,7 +75,7 @@ class AuthenticationRoute {
       if (isUniqueValueInTable(
           database: database,
           table: "user",
-          value: newUser.userName,
+          value: newUser.username,
           searchingColumn: "username")) {
         return Response(409, body: "User Name you entered already exists");
       }

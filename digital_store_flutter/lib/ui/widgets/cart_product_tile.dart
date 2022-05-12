@@ -72,7 +72,6 @@ class CartProductTile extends StatelessWidget {
                             ),
                             IconButton(
                               onPressed: () {
-                                print('ki');
                                 onRemoveTapFunction();
                               },
                               icon: const Icon(

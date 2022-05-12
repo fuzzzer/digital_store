@@ -13,11 +13,13 @@ class SeeProductPageLoading extends SeeProductPageState {}
 
 class SeeProductPageLoaded extends SeeProductPageState {
   final Product product;
+  final bool isInTheCard;
 
-  const SeeProductPageLoaded({required final this.product});
+  const SeeProductPageLoaded(
+      {required final this.product, required this.isInTheCard});
 
   @override
-  List<Object> get props => [product];
+  List<Object> get props => [product, isInTheCard];
 }
 
 class SeeProductPageError extends SeeProductPageState {

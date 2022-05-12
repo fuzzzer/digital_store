@@ -188,7 +188,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
               ),
               CommandButton(
-                  cmd: 'SIGN UP',
+                  commandName: 'SIGN UP',
                   onPressedFunction: () async {
                     if (passwordInputController.text !=
                         repeatedPasswordInputController.text) {
@@ -226,19 +226,3 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 }
-
-//  "${newUser.userName}",
-//                 "$hashedPassword",
-//                 "$salt",
-//                 ${newUser.balance},
-//                 0,
-//                 "${newUser.firstName}",
-//                 "${newUser.lastName}",
-//                 "${newUser.email}",
-//                 "${newUser.birthDate}",
-//                 "${newUser.phoneNumber}",
-//                 "${newUser.adress}",
-//                 "${newUser.sex}",
-//                 date('now'),
-//                 date('now'),
-//                 "$cartId"

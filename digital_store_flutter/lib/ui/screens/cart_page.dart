@@ -1,5 +1,8 @@
 import 'package:digital_store_flutter/core/constants.dart';
 import 'package:digital_store_flutter/ui/widgets/cart_product_tile.dart';
+import 'package:digital_store_flutter/ui/widgets/command_button.dart';
+import 'package:digital_store_flutter/ui/widgets/check_dialog.dart';
+import 'package:digital_store_flutter/ui/widgets/payment_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,95 +20,166 @@ class CartPage extends StatelessWidget {
       body: Padding(
         padding: defaultPagePadding,
         child: BlocBuilder<CartCubit, CartState>(
-          bloc: context.read<CartCubit>()
-            ..loadCartItems((userCubitState as UserConsumer).accessToken),
+          bloc: context.read<CartCubit>()..loadCartItems(),
           builder: (context, state) {
             if (state is CartInitial) {
               return const Center(child: Text('Initial state'));
             } else if (state is CartLoading) {
               return const Center(child: CircularProgressIndicator());
             } else if (state is CartLoaded) {
-              return Column(
-                children: <Widget>[
-                  const SizedBox(
-                      height: 200,
-                      child: Center(
-                        child: Text(
-                          'Cart',
-                          style: TextStyle(fontSize: 30),
+              return state.productsWithCartQuantity.isEmpty
+                  ? const Center(
+                      child: Text(
+                        'Your Cart is clear',
+                        style: TextStyle(fontSize: 30),
+                      ),
+                    )
+                  : Column(
+                      children: <Widget>[
+                        const SizedBox(
+                            height: 50,
+                            child: Center(
+                              child: Text(
+                                'Cart',
+                                style: TextStyle(fontSize: 30),
+                              ),
+                            )),
+                        SizedBox(
+                          width: double.infinity,
+                          child: Align(
+                            alignment: Alignment.topRight,
+                            child: CommandButton(
+                              onPressedFunction: () {
+                                final oldContext = context;
+
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return CheckDialog(
+                                      onCommandFunction: () => oldContext
+                                          .read<CartCubit>()
+                                          .clearCart(),
+                                      title:
+                                          'do you really want to clear the cart?',
+                                      commandName: 'Clear',
+                                    );
+                                  },
+                                );
+                              },
+                              commandName: 'Clear Cart',
+                            ),
+                          ),
                         ),
-                      )),
-                  Expanded(
-                    child: ListView.builder(
-                        itemCount: state.productsWithCartQuantity.length,
-                        itemBuilder: (context, index) {
-                          return CartProductTile(
-                            productInfo: state.productsWithCartQuantity[index],
-                            onPlusTapFunction: () {
-                              context.read<CartCubit>().incrementCartProduct(
-                                  state.productsWithCartQuantity[index],
-                                  (userCubitState as UserConsumer).accessToken);
-                            },
-                            onMinusTapFunction: () {
-                              context.read<CartCubit>().decrementCartProduct(
-                                  state.productsWithCartQuantity[index],
-                                  (userCubitState as UserConsumer).accessToken);
-                            },
-                            onRemoveTapFunction: () {
+                        Expanded(
+                          child: ListView.builder(
+                              itemCount: state.productsWithCartQuantity.length,
+                              itemBuilder: (context, index) {
+                                return CartProductTile(
+                                  productInfo:
+                                      state.productsWithCartQuantity[index],
+                                  onPlusTapFunction: () {
+                                    context
+                                        .read<CartCubit>()
+                                        .incrementCartProduct(
+                                          state.productsWithCartQuantity[index],
+                                        );
+                                  },
+                                  onMinusTapFunction: () {
+                                    context
+                                        .read<CartCubit>()
+                                        .decrementCartProduct(
+                                          state.productsWithCartQuantity[index],
+                                        );
+                                  },
+                                  onRemoveTapFunction: () {
+                                    final oldContext =
+                                        context; // I wonder how can I pass bloc provider cotext to alert dialog
+
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return CheckDialog(
+                                            onCommandFunction: () => oldContext
+                                                .read<CartCubit>()
+                                                .deleteCartProduct(
+                                                  state.productsWithCartQuantity[
+                                                      index],
+                                                ),
+                                            title:
+                                                'do you really want to remove product from the cart?',
+                                            commandName: 'Remove',
+                                          );
+                                        });
+                                  },
+                                );
+                              }),
+                        ),
+                        const Divider(
+                          thickness: 1,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              const Expanded(
+                                child: Text(
+                                  'Total Price: ',
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                              ),
+                              Text(
+                                '${state.totalCartPrice} \$',
+                                style: const TextStyle(
+                                    color: Colors.blue, fontSize: 20),
+                              )
+                            ],
+                          ),
+                        ),
+                        CommandButton(
+                            commandName: 'Proceed To Checkout',
+                            width: 200,
+                            onPressedFunction: () {
+                              final oldContext = context;
+                              final userState = oldContext
+                                  .read<UserCubit>()
+                                  .state as UserConsumer;
+
                               showDialog(
                                   context: context,
-                                  builder: (context) => AlertDialog(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                        ),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            onPressed: () {
-                                              context
-                                                  .read<CartCubit>()
-                                                  .deleteCartProduct(
-                                                      state.productsWithCartQuantity[
-                                                          index],
-                                                      (userCubitState
-                                                              as UserConsumer)
-                                                          .accessToken);
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: const Text(
-                                              'Delete',
-                                              style:
-                                                  TextStyle(color: Colors.red),
-                                            ),
-                                          ),
-                                          TextButton(
-                                            onPressed: () =>
-                                                Navigator.of(context).pop(),
-                                            child: const Text(
-                                              'Cancel',
-                                              style: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 0, 0, 0),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ));
-                            },
-                          );
-                        }),
-                  )
-                ],
-              );
+                                  builder: (context) {
+                                    return PaymentDialog(
+                                        balance: userState.user.balance,
+                                        totalPrice: state.totalCartPrice,
+                                        commandName: 'Pay',
+                                        onCommandFunction: () async {
+                                          List paymentInfo = await oldContext
+                                              .read<CartCubit>()
+                                              .cartCheckout();
+                                          // is payment successful? --> List[0] = bool
+                                          // whats the reason of unsuccefful payment --> List[1] = String
+
+                                          if (paymentInfo[0] == true) {
+                                            Navigator.of(context).pop();
+                                          } else {
+                                            Navigator.of(context).pop();
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                                    content:
+                                                        Text(paymentInfo[1])));
+                                          }
+                                        });
+                                  });
+                            }),
+                      ],
+                    );
             } else {
               return Center(
                 child: Column(
                   children: [
                     const Text('some error occured'),
                     ElevatedButton(
-                        onPressed: () => context
-                            .read<CartCubit>()
-                            .loadCartItems(userCubitState.accessToken),
+                        onPressed: () =>
+                            context.read<CartCubit>().loadCartItems(),
                         child: const Text(
                           'refresh',
                           style: TextStyle(

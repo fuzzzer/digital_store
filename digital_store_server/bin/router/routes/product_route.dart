@@ -137,9 +137,10 @@ class ProductRoute {
       } on NotFoundException {
         return Response(404, body: "product not found");
       } on NotEnoughMoneyException {
-        return Response(403, body: "not enough money on balance");
+        return Response(403, body: "Not enough money! fill in the balance");
       } on ProductNotAvailableException {
-        return Response(403, body: "Check avalable product quantities");
+        return Response(403,
+            body: "Unsuccessful payment! Check avalable product quantities");
       }
 
       return Response(200, body: 'product successfuly purchased');

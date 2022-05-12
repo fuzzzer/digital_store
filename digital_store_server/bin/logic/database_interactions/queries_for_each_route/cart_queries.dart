@@ -98,19 +98,6 @@ void cartCheckout(final Database database, final String userId) {
 
   double totalCartPrice = 0;
 
-  final bool cartItemQuantityOverFlowCheck = database.select('''
-   SELECT cart_item.id
-   FROM cart_item
-   JOIN product
-   ON product.id = cart_item.product_id
-   WHERE cart_item.cart_id LIKE "$cartId"
-   AND product.quantity < cart_item.quantity;
-   ''').isNotEmpty;
-
-  if (cartItemQuantityOverFlowCheck) {
-    throw ProductNotAvailableException("too much quantity selected");
-  }
-
   final selectedTable = database.select(''' 
    SELECT IFNULL(SUM(cart_item.quantity *
    product.price), 0) as total_price
@@ -136,6 +123,19 @@ void cartCheckout(final Database database, final String userId) {
 
   if (totalCartPrice > balance) {
     throw NotEnoughMoneyException("not enough money on balance");
+  }
+
+  final bool cartItemQuantityOverFlowCheck = database.select('''
+   SELECT cart_item.id
+   FROM cart_item
+   JOIN product
+   ON product.id = cart_item.product_id
+   WHERE cart_item.cart_id LIKE "$cartId"
+   AND product.quantity < cart_item.quantity;
+   ''').isNotEmpty;
+
+  if (cartItemQuantityOverFlowCheck) {
+    throw ProductNotAvailableException("too much quantity selected");
   }
 
   balance -= totalCartPrice;

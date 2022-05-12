@@ -1,3 +1,7 @@
+import 'package:digital_store_flutter/data/repositories/products_repository.dart';
+import 'package:digital_store_flutter/data/repositories/user_repository.dart';
+import 'package:digital_store_flutter/logic/cubits/widget_cubits/user_page_cubit/user_page_cubit.dart';
+import 'package:digital_store_flutter/ui/screens/user_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -51,12 +55,11 @@ class HomePageAppBar extends StatelessWidget with PreferredSizeWidget {
               return IconButton(
                 onPressed: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => LoginPage(
-                                loginTitle:
-                                    'Log in or register to buy products',
-                              )));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LoginPage(),
+                    ),
+                  );
                 },
                 icon: const SizedBox(
                   width: 40,
@@ -70,10 +73,21 @@ class HomePageAppBar extends StatelessWidget with PreferredSizeWidget {
                 ),
                 iconSize: 40,
               );
-            } else {
+            } else if (state is UserConsumer) {
               return IconButton(
                 onPressed: () {
-                  //see user profile
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BlocProvider(
+                        create: (context) => UserPageCubit(
+                            userRepository: UserRepository(),
+                            productsRepository: ProductsRepository(),
+                            accessToken: state.accessToken),
+                        child: const UserPage(),
+                      ),
+                    ),
+                  );
                 },
                 icon: const SizedBox(
                   width: 40,
@@ -87,6 +101,8 @@ class HomePageAppBar extends StatelessWidget with PreferredSizeWidget {
                 ),
                 iconSize: 40,
               );
+            } else {
+              return const SizedBox.shrink();
             }
           },
         )

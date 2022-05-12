@@ -1,4 +1,3 @@
-import 'package:digital_store_flutter/data/models/custom_exceptions.dart';
 import 'package:digital_store_flutter/ui/screens/home_page.dart';
 import 'package:digital_store_flutter/ui/screens/sign_up_page.dart';
 import 'package:digital_store_flutter/ui/widgets/command_button.dart';
@@ -12,9 +11,9 @@ import '../../logic/cubits/data_cubits/user_cubit/user_cubit.dart';
 import '../widgets/credentials_input.dart';
 
 class LoginPage extends StatelessWidget {
-  LoginPage({Key? key, final this.loginTitle = ''}) : super(key: key);
-
-  final String loginTitle;
+  LoginPage({
+    Key? key,
+  }) : super(key: key);
 
   final TextEditingController usernameInputController = TextEditingController();
   final TextEditingController passwordInputController = TextEditingController();
@@ -27,12 +26,12 @@ class LoginPage extends StatelessWidget {
         padding: defaultPagePadding,
         child: Column(
           children: [
-            Align(
+            const Align(
               alignment: Alignment.topCenter,
               child: Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 10, 15, 35),
-                  child: Text(loginTitle,
-                      style: const TextStyle(
+                  padding: EdgeInsets.fromLTRB(15, 10, 15, 35),
+                  child: Text('Log in or register to buy products',
+                      style: TextStyle(
                           fontSize: 20, fontWeight: FontWeight.w400))),
             ),
             CredentialsInput(
@@ -61,7 +60,7 @@ class LoginPage extends StatelessWidget {
                     .showSnackBar(SnackBar(content: Text(loginInfo[1])));
               },
               backgroundColor: Colors.blueAccent,
-              cmd: 'LOGIN',
+              commandName: 'LOGIN',
               width: double.infinity,
             ),
             Padding(
@@ -69,8 +68,10 @@ class LoginPage extends StatelessWidget {
               child: SizedBox(
                 width: double.infinity,
                 child: TextButton(
-                    onPressed: () => Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const SignUpPage())),
+                    onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const SignUpPage())),
                     child: const Text('SIGN UP')),
               ),
             )

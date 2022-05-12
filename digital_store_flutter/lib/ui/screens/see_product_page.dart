@@ -1,10 +1,14 @@
 import 'dart:io';
 
+import 'package:digital_store_flutter/logic/cubits/data_cubits/user_cubit/user_cubit.dart';
+import 'package:digital_store_flutter/ui/widgets/check_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/constants.dart';
 import '../../logic/cubits/widget_cubits/see_product_page_cubit/see_product_page_cubit.dart';
+import '../widgets/payment_dialog.dart';
+import 'login_page.dart';
 
 class SeeProductPage extends StatelessWidget {
   const SeeProductPage({Key? key}) : super(key: key);
@@ -59,20 +63,120 @@ class SeeProductPage extends StatelessWidget {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(right: 15),
-                          child: ElevatedButton(
-                              onPressed: () => null, child: const Text('BUY')),
-                        ),
-                        IconButton(
-                          onPressed: () {
+                          child: BlocBuilder<UserCubit, UserState>(
+                            builder: (context, userState) {
+                              return ElevatedButton(
+                                  onPressed: () {
+                                    if (userState is UserConsumer) {
+                                      final oldContext = context;
 
-                            // context.read<CartCubit>().loadCartItems(accessToken)
-                          },
-                          icon: const Icon(
-                            Icons.shopping_cart,
-                            size: 50,
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) => PaymentDialog(
+                                          balance: userState.user.balance,
+                                          totalPrice: state.product.price,
+                                          commandName: 'Pay',
+                                          onCommandFunction: () async {
+                                            List paymentInfo = await oldContext
+                                                .read<SeeProductPageCubit>()
+                                                .buyProduct();
+                                            // is payment successful? --> List[0] = bool
+                                            // whats the reason of unsuccefful payment --> List[1] = String
+
+                                            if (paymentInfo[0] == true) {
+                                              Navigator.of(context).pop();
+                                            } else {
+                                              Navigator.of(context).pop();
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(SnackBar(
+                                                      content: Text(
+                                                          paymentInfo[1])));
+                                            }
+                                          },
+                                        ),
+                                      );
+                                    } else {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) => CheckDialog(
+                                                onCommandFunction: () =>
+                                                    Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          LoginPage()),
+                                                ),
+                                                title:
+                                                    'sign in to add product in the cart',
+                                                commandName: 'sign in',
+                                                commandButtonColor:
+                                                    Colors.green,
+                                              ));
+                                    }
+                                  },
+                                  child: const Text('BUY'));
+                            },
                           ),
-                          iconSize: 50,
                         ),
+                        BlocBuilder<UserCubit, UserState>(
+                          builder: (context, userCubitState) {
+                            if (userCubitState is UserConsumer) {
+                              return IconButton(
+                                onPressed: () {
+                                  final oldContext = context;
+                                  if (state.isInTheCard) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) => CheckDialog(
+                                        onCommandFunction: () => oldContext
+                                            .read<SeeProductPageCubit>()
+                                            .deleteCartProduct(
+                                                productId: state.product.id),
+                                        title:
+                                            'do you really want to remove product from the cart?',
+                                        commandName: 'Remove',
+                                      ),
+                                    );
+                                  } else {
+                                    context
+                                        .read<SeeProductPageCubit>()
+                                        .addProductToTheCart(
+                                            productId: state.product.id);
+                                  }
+                                },
+                                icon: Icon(Icons.shopping_cart,
+                                    size: 50,
+                                    color: state.isInTheCard
+                                        ? Colors.green
+                                        : Colors.black),
+                                iconSize: 50,
+                              );
+                            } else {
+                              return IconButton(
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) => CheckDialog(
+                                            onCommandFunction: () =>
+                                                Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      LoginPage()),
+                                            ),
+                                            title:
+                                                'sign in to add product in the cart',
+                                            commandName: 'sign in',
+                                            commandButtonColor: Colors.green,
+                                          ));
+                                },
+                                icon: const Icon(Icons.shopping_cart,
+                                    size: 50, color: Colors.black),
+                                iconSize: 50,
+                              );
+                            }
+                          },
+                        )
                       ],
                     ),
                     const Divider(

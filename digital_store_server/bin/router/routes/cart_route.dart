@@ -88,9 +88,12 @@ class CartRoute {
       try {
         cartCheckout(database, authorizationDetails.subject!);
       } on ProductNotAvailableException {
-        return Response(403, body: 'Check avalable product quantities');
+        print('Check avalable product quantities');
+        return Response(403,
+            body: 'Unsuccessful payment! Check avalable product quantities');
       } on NotEnoughMoneyException {
-        return Response(403, body: 'Not exnough money');
+        print('Not exnough money');
+        return Response(403, body: 'Not enough money! fill in the balance');
       }
 
       return Response(200, body: 'successful checkout');

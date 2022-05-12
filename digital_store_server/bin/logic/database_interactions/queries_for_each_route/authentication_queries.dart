@@ -5,7 +5,7 @@ import '../../utilities/generators.dart';
 import '../../utilities/hashing.dart';
 
 bool checkNewUserName(final User newUser) =>
-    newUser.userName != '' ? true : false;
+    newUser.username != '' ? true : false;
 
 bool checkNewPassword(final User newUser) =>
     newUser.password.length > 8 ? true : false;
@@ -36,7 +36,7 @@ void signUpNewUser(final Database database, final User newUser) {
                 modified_at,
                 cart_id) 
               VALUES ("$id",
-                "${newUser.userName}",
+                "${newUser.username}",
                 "$hashedPassword",
                 "$salt",
                 ${newUser.balance},

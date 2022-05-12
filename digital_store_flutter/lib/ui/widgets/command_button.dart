@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 
 class CommandButton extends StatelessWidget {
-  final String cmd;
+  final String commandName;
   final Function onPressedFunction;
   final Color backgroundColor;
   final Color textColor;
+  final FontWeight fontWeight;
   final double width;
 
   const CommandButton(
       {Key? key,
-      final this.cmd = '',
+      final this.commandName = '',
       required final this.onPressedFunction,
       final this.backgroundColor = Colors.white,
       final this.textColor = Colors.black,
+      final this.fontWeight = FontWeight.w800,
       final this.width = 100})
       : super(key: key);
 
@@ -26,8 +28,8 @@ class CommandButton extends StatelessWidget {
           style:
               ElevatedButton.styleFrom(elevation: 10, primary: backgroundColor),
           child: Text(
-            cmd,
-            style: TextStyle(color: textColor, fontWeight: FontWeight.w800),
+            commandName,
+            style: TextStyle(color: textColor, fontWeight: fontWeight),
           ),
           onPressed: () => onPressedFunction(),
         ),
