@@ -46,7 +46,7 @@ class LoginPage extends StatelessWidget {
             const RememberMe(),
             CommandButton(
               onPressedFunction: () async {
-                List loginInfo = await context.read<UserCubit>().userLogIn(
+                List loginInfo = await context.read<UserCubit>().userLogin(
                     usernameInputController.text, passwordInputController.text);
 
                 if (loginInfo[0] == true) {

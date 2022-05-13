@@ -3,14 +3,14 @@ class InvalidTokenException implements Exception {
   const InvalidTokenException(final this.reason);
 }
 
-class UnknownException implements Exception {
+class InvalidRefreshTokenException implements Exception {
   final String reason;
-  const UnknownException(final this.reason);
+  const InvalidRefreshTokenException(final this.reason);
 }
 
-class NotFoundException implements Exception {
+class InvalidTokenRecievedException implements Exception {
   final String reason;
-  const NotFoundException(final this.reason);
+  const InvalidTokenRecievedException(final this.reason);
 }
 
 class MessageException implements Exception {

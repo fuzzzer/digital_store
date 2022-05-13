@@ -26,7 +26,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final phoneNumberInputController = TextEditingController();
 
   DateTime selectedBirthDate = DateTime.now();
-  Gender? selectedGender;
+  Sex? selectedSex;
 
   Future<void> selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -39,12 +39,6 @@ class _SignUpPageState extends State<SignUpPage> {
         selectedBirthDate = picked;
       });
     }
-  }
-
-  void selectGender(Gender? value) {
-    setState(() {
-      selectedGender = value;
-    });
   }
 
   @override
@@ -138,7 +132,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 child: const Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    'Select Gender:',
+                    'Select sex:',
                     style: TextStyle(color: Color.fromARGB(255, 59, 59, 59)),
                   ),
                 ),
@@ -150,36 +144,36 @@ class _SignUpPageState extends State<SignUpPage> {
                   children: <Widget>[
                     Column(children: [
                       const Text('Men'),
-                      Radio<Gender>(
-                        value: Gender.men,
-                        groupValue: selectedGender,
-                        onChanged: (Gender? value) {
+                      Radio<Sex>(
+                        value: Sex.male,
+                        groupValue: selectedSex,
+                        onChanged: (Sex? value) {
                           setState(() {
-                            selectedGender = value;
+                            selectedSex = value;
                           });
                         },
                       ),
                     ]),
                     Column(children: [
                       const Text('Woman'),
-                      Radio<Gender>(
-                        value: Gender.woman,
-                        groupValue: selectedGender,
-                        onChanged: (Gender? value) {
+                      Radio<Sex>(
+                        value: Sex.female,
+                        groupValue: selectedSex,
+                        onChanged: (Sex? value) {
                           setState(() {
-                            selectedGender = value;
+                            selectedSex = value;
                           });
                         },
                       ),
                     ]),
                     Column(children: [
                       const Text('Other'),
-                      Radio<Gender>(
-                        value: Gender.other,
-                        groupValue: selectedGender,
-                        onChanged: (Gender? value) {
+                      Radio<Sex>(
+                        value: Sex.other,
+                        groupValue: selectedSex,
+                        onChanged: (Sex? value) {
                           setState(() {
-                            selectedGender = value;
+                            selectedSex = value;
                           });
                         },
                       ),
@@ -206,13 +200,14 @@ class _SignUpPageState extends State<SignUpPage> {
                               phoneNumber: phoneNumberInputController.text,
                               adress: adressInputController.text,
                               birthDate: selectedBirthDate.toString(),
-                              gender: selectedGender.toString());
+                              sex: (selectedSex.toString()).substring(4));
 
                       if (loginInfo[0] == true) {
-                        Navigator.push(
+                        Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => LoginPage()));
+                                builder: (BuildContext context) => LoginPage()),
+                            (Route<dynamic> route) => route.isFirst);
                       }
 
                       ScaffoldMessenger.of(context)

@@ -323,8 +323,8 @@ void purchaseProduct({
     throw NotEnoughMoneyException("not enough money on balance");
   }
 
-  balance -= balance - totalPrice;
-  availableQuantity -= availableQuantity - quantity;
+  balance -= totalPrice;
+  availableQuantity -= quantity;
 
   database.execute('''
    UPDATE user

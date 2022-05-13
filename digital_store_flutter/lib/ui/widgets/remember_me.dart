@@ -25,15 +25,15 @@ class _RememberMeState extends State<RememberMe> {
   @override
   Widget build(BuildContext context) {
     return Row(
-        children: [
-          Checkbox(
-              value: rememberMe,
-              onChanged: (_) {
-                changeRememberMe();
-                context.read<UserCubit>().setRemembered();
-              }),
-          const Text('Remember Me')
-        ],
+      children: [
+        Checkbox(
+            value: rememberMe,
+            onChanged: (_) {
+              changeRememberMe();
+              context.read<UserCubit>().setRememberMeValue();
+            }),
+        const Text('Remember Me')
+      ],
     );
   }
 }

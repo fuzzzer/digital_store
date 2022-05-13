@@ -111,8 +111,7 @@ Map<String, dynamic> getUserBalance(
 }
 
 void updateUserBalance(
-    final Database database, final String userId, final int amount) {
-      
+    final Database database, final String userId, final double amount) {
   if (!isUniqueValueInTable(
       database: database,
       table: 'user',
@@ -169,6 +168,7 @@ WHERE id LIKE "$userId";
 
 void updateUserProfile(final Database database, final String userId,
     final Map<String, dynamic> decodedJson) {
+  print('1');
   if (!isUniqueValueInTable(
       database: database,
       table: 'user',
@@ -176,14 +176,17 @@ void updateUserProfile(final Database database, final String userId,
       searchingColumn: 'id')) {
     throw NotFoundException("user not found");
   }
+  print('2');
 
   if (isUniqueValueInTable(
       database: database,
       table: 'user',
       value: decodedJson['email'],
-      searchingColumn: 'email')) {
+      searchingColumn: 'email',
+      additioanlAndWhereQuery: ' AND id NOT LIKE "$userId"')) {
     throw ExistentIdentifierException("email is not available");
   }
+  print('3');
 
   database.execute('''
    UPDATE user
@@ -191,8 +194,11 @@ void updateUserProfile(final Database database, final String userId,
    last_name = "${decodedJson['lastName']}",
    email = "${decodedJson['email']}",
    birth_date = "${decodedJson['birthDate']}",
-   phone_number = "${decodedJson['phone_number']}",
+   phone_number = "${decodedJson['phoneNumber']}",
+   adress = "${decodedJson['adress']}",
    sex = "${decodedJson['sex']}"
    WHERE id LIKE "$userId";
    ''');
+
+  print('kiiiiii');
 }

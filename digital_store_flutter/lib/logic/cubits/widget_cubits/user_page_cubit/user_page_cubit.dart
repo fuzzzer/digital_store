@@ -4,28 +4,32 @@ import 'package:digital_store_flutter/data/repositories/products_repository.dart
 import 'package:digital_store_flutter/data/repositories/user_repository.dart';
 import 'package:equatable/equatable.dart';
 
+import '../../../../core/global_variables.dart';
 import '../../../../data/models/product.dart';
+import '../../../../data/models/tokens.dart';
+import '../../../../data/repositories/authentication_repository.dart';
+import '../../../global_logics/refresh_authorization_season.dart';
 
 part 'user_page_state.dart';
 
 class UserPageCubit extends Cubit<UserPageState> {
   UserPageCubit(
-      {required this.accessToken,
-      required this.userRepository,
-      required this.productsRepository})
+      {required this.userRepository,
+      required this.productsRepository,
+      required this.authenticationRepository})
       : super(UserPageInitial());
 
-  String accessToken;
   UserRepository userRepository;
   ProductsRepository productsRepository;
+  AuthenticationRepository authenticationRepository;
 
   void changeWatchingOrdersState() async {
     if (state is UserPageWatchingOrders) {
       emit(UserPageInitial());
     } else {
       try {
-        List<Map<String, dynamic>> allOrdersDataData =
-            await userRepository.getAllUserOrders(accessToken);
+        List<Map<String, dynamic>> allOrdersDataData = await userRepository
+            .getAllUserOrders(getTokens.get<Tokens>().accessToken);
 
         List<Future<Product>> allFutureProductsWithoutCartQuantity = [];
         List<Map<String, dynamic>> productQuantitiesAndPrices = [];
@@ -54,6 +58,13 @@ class UserPageCubit extends Cubit<UserPageState> {
         }
 
         emit(UserPageWatchingOrders(orderedProducts: orderedProducts));
+      } on InvalidTokenException {
+        try {
+          refreshSeason(authenticationRepository);
+          changeWatchingOrdersState();
+        } on InvalidRefreshTokenException {
+          sessionExpired();
+        }
       } on MessageException catch (ex) {
         emit(UserPageError(title: ex.reason));
       }
@@ -64,9 +75,3 @@ class UserPageCubit extends Cubit<UserPageState> {
     emit(UserPageInitial());
   }
 }
-
-//  "id": row['product_id'],
-//       "quantity": row['quantity'],
-//       "price": row['price'],
-//       "totalPrice": row['quantity'] * row['price'],
-//       "createdAt": row['created_at']

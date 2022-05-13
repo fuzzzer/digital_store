@@ -3,19 +3,16 @@ import 'package:flutter/material.dart';
 class CredentialsInput extends StatefulWidget {
   final String hintText;
   final bool passwordType;
-  late bool isHidden;
   final int maxLines;
   final TextEditingController inputController;
 
-  CredentialsInput(
+  const CredentialsInput(
       {Key? key,
       final this.hintText = '',
       final this.passwordType = false,
       final this.maxLines = 1,
       required final this.inputController})
-      : super(key: key) {
-    isHidden = passwordType;
-  }
+      : super(key: key);
 
   @override
   State<CredentialsInput> createState() {
@@ -24,6 +21,14 @@ class CredentialsInput extends StatefulWidget {
 }
 
 class _TextInputState extends State<CredentialsInput> {
+  late bool isHidden;
+
+  @override
+  void initState() {
+    isHidden = widget.passwordType;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -42,7 +47,7 @@ class _TextInputState extends State<CredentialsInput> {
               alignment: Alignment.center,
               child: TextField(
                 controller: widget.inputController,
-                obscureText: widget.isHidden,
+                obscureText: isHidden,
                 textAlign: TextAlign.start,
                 maxLines: widget.maxLines,
                 style: const TextStyle(
@@ -66,13 +71,13 @@ class _TextInputState extends State<CredentialsInput> {
                     child: widget.passwordType
                         ? IconButton(
                             icon: Icon(
-                                widget.isHidden
+                                isHidden
                                     ? Icons.visibility
                                     : Icons.visibility_off,
                                 color: const Color.fromARGB(111, 0, 187, 212)),
                             onPressed: () {
                               setState(() {
-                                widget.isHidden = !widget.isHidden;
+                                isHidden = !isHidden;
                               });
                             },
                           )

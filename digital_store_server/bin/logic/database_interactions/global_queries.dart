@@ -1,13 +1,15 @@
 import 'package:sqlite3/sqlite3.dart';
 
 //this method return true is there is
-bool isUniqueValueInTable(
-    {required final Database database,
-    required final String table,
-    required final String value,
-    required final String searchingColumn}) {
+bool isUniqueValueInTable({
+  required final Database database,
+  required final String table,
+  required final String value,
+  required final String searchingColumn,
+  String additioanlAndWhereQuery = '', // 'AND condition
+}) {
   final bool check = database.select(
-      ''' SELECT * FROM "$table" WHERE "$searchingColumn" LIKE "$value";''').isNotEmpty;
+      ''' SELECT * FROM "$table" WHERE "$searchingColumn" LIKE "$value"$additioanlAndWhereQuery;''').isNotEmpty;
 
   if (check) {
     return true;

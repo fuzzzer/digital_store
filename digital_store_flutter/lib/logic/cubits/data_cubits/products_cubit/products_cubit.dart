@@ -11,7 +11,7 @@ class ProductsCubit extends Cubit<ProductsState> {
   ProductsCubit() : super(ProductsInitial());
 
   List<String> selectedCategories = [];
-  bool saveOldProducts =
+  bool saveOldFilteredProducts =
       false; // this variable becomes true when previus product selection is filtered, and becomes false when previous selection is not filtered
 
   void loadAllProducts() async {
@@ -19,7 +19,7 @@ class ProductsCubit extends Cubit<ProductsState> {
 
     final List<Product> products = await ProductsRepository().getAllProducts();
 
-    saveOldProducts = false;
+    saveOldFilteredProducts = false;
 
     try {
       emit(ProductsLoaded(products: products));
@@ -29,23 +29,23 @@ class ProductsCubit extends Cubit<ProductsState> {
   }
 
   void loadCategorizedProducts({required String categoryId}) async {
-    List<Product>? productsToSave;
+    List<Product>? oldFilteredProducts;
 
-    if (state is ProductsLoaded && saveOldProducts) {
-      productsToSave = (state as ProductsLoaded).products;
+    if (state is ProductsLoaded && saveOldFilteredProducts) {
+      oldFilteredProducts = (state as ProductsLoaded).products;
     }
 
     emit(ProductsLoading());
 
     selectedCategories.add(categoryId);
-    saveOldProducts = true;
+    saveOldFilteredProducts = true;
 
     late final List<Product> products;
 
-    if (productsToSave != null) {
+    if (oldFilteredProducts != null) {
       products = [
         ...await ProductsRepository().getProductsFilteredByCategory(categoryId),
-        ...productsToSave
+        ...oldFilteredProducts
       ];
     } else {
       products =
@@ -65,7 +65,7 @@ class ProductsCubit extends Cubit<ProductsState> {
     final List<Product> products =
         await ProductsRepository().getProductsFilteredBySearch(toSearch);
 
-    saveOldProducts = false;
+    saveOldFilteredProducts = false;
 
     try {
       emit(ProductsLoaded(products: products));
@@ -74,19 +74,19 @@ class ProductsCubit extends Cubit<ProductsState> {
     }
   }
 
-  void removeProducts({required String categoryId}) {
-    List<Product>? productsToModify;
+  void removeFromFilteredProducts({required String categoryId}) {
+    List<Product>? filteredProductsToModify;
 
     if (state is ProductsLoaded) {
-      productsToModify = (state as ProductsLoaded).products;
+      filteredProductsToModify = (state as ProductsLoaded).products;
     }
 
     emit(ProductsLoading());
 
-    if (productsToModify != null) {
+    if (filteredProductsToModify != null) {
       selectedCategories.remove(categoryId);
 
-      productsToModify.removeWhere((product) {
+      filteredProductsToModify.removeWhere((product) {
         return product.categories.contains(categoryId) &&
             !product.categories
                 .any((category) => selectedCategories.contains(category));
@@ -94,7 +94,7 @@ class ProductsCubit extends Cubit<ProductsState> {
     }
 
     try {
-      emit(ProductsLoaded(products: productsToModify!));
+      emit(ProductsLoaded(products: filteredProductsToModify!));
     } on MessageException catch (ex) {
       emit(ProductsError(title: ex.reason));
     }
