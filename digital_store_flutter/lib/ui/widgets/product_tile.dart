@@ -46,6 +46,8 @@ class ProductTile extends StatelessWidget {
                       errorBuilder: (context, error, stackTrace) =>
                           const Placeholder(),
                     ),
+                    // File(productInfo.imageLocation).readAsBytes()
+                    // Image.memory(productInfo.imageLocation)
                   ),
                   Expanded(
                     child: Column(

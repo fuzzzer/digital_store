@@ -11,7 +11,7 @@ class CartRepository {
 
   final String startingPath = 'http://$ipAdress:$port/cart/';
 
-  Future<Map<String, dynamic>> getAllCartItems(String accessToken) async {
+  Future<Map<String, dynamic>> getAllCartItems(final String accessToken) async {
     final response = await http.get(Uri.parse(startingPath),
         headers: <String, String>{
           'Content-Type': 'application/json',
@@ -35,7 +35,7 @@ class CartRepository {
     return result;
   }
 
-  Future<bool> postNewCartItem(String accessToken,
+  Future<bool> postNewCartItem(final String accessToken,
       final Map<String, dynamic> productIdAndQuantity) async {
     final response = await http.post(Uri.parse(startingPath),
         headers: <String, String>{
@@ -53,7 +53,7 @@ class CartRepository {
     }
   }
 
-  Future<bool> patchCartItem(String accessToken, final String productId,
+  Future<bool> patchCartItem(final String accessToken, final String productId,
       final Map<String, dynamic> productData) async {
     final response = await http.patch(Uri.parse('$startingPath$productId'),
         headers: <String, String>{
@@ -72,7 +72,7 @@ class CartRepository {
   }
 
   Future<bool> deleteCartItem(
-      String accessToken, final String productId) async {
+      final String accessToken, final String productId) async {
     final response = await http.delete(Uri.parse('$startingPath$productId'),
         headers: <String, String>{
           'Content-Type': 'application/json',
@@ -88,7 +88,7 @@ class CartRepository {
     }
   }
 
-  Future<bool> postCheckout(String accessToken) async {
+  Future<bool> postCheckout(final String accessToken) async {
     final response = await http.post(Uri.parse('${startingPath}checkout'),
         headers: <String, String>{
           'Content-Type': 'application/json',
@@ -104,7 +104,7 @@ class CartRepository {
     }
   }
 
-  Future<bool> deleteAllCartItems(String accessToken) async {
+  Future<bool> deleteAllCartItems(final String accessToken) async {
     final response = await http.delete(
         Uri.parse(
           '${startingPath}clear/all',
