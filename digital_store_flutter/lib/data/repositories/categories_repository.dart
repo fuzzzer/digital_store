@@ -38,6 +38,8 @@ class CategoriesRepository {
 
     if (response.statusCode == 200) {
       return true;
+    } else if (response.statusCode == 401) {
+      throw const InvalidTokenException('invaid or expired');
     } else {
       throw MessageException(response.body);
     }
@@ -57,6 +59,8 @@ class CategoriesRepository {
 
     if (response.statusCode == 200) {
       return true;
+    } else if (response.statusCode == 401) {
+      throw const InvalidTokenException('invaid or expired');
     } else {
       throw MessageException(response.body);
     }
@@ -74,6 +78,8 @@ class CategoriesRepository {
 
     if (response.statusCode == 200) {
       return true;
+    } else if (response.statusCode == 401) {
+      throw const InvalidTokenException('invaid or expired');
     } else {
       throw MessageException(response.body);
     }

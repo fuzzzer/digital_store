@@ -84,14 +84,17 @@ class SeeProductPage extends StatelessWidget {
                                             // whats the reason of unsuccefful payment --> List[1] = String
 
                                             if (paymentInfo[0] == true) {
+                                              context
+                                                  .read<UserCubit>()
+                                                  .refreshUserProfile();
                                               Navigator.of(context).pop();
                                             } else {
                                               Navigator.of(context).pop();
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(SnackBar(
-                                                      content: Text(
-                                                          paymentInfo[1])));
                                             }
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                                    content:
+                                                        Text(paymentInfo[1])));
                                           },
                                         ),
                                       );

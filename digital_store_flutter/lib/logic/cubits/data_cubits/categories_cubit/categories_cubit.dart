@@ -7,16 +7,13 @@ import '../../../../data/repositories/categories_repository.dart';
 part 'categories_state.dart';
 
 class CategoriesCubit extends Cubit<CategoriesState> {
-  CategoriesCubit() : super(CategoriesInitial());
+  CategoriesCubit({required this.categoriesRepository})
+      : super(CategoriesInitial());
 
-  // List<CategoryChooserCubit> categoriesChooser = [];
+  CategoriesRepository categoriesRepository;
 
   void loadCategories() async {
-    List<Category> categories = await CategoriesRepository().getAllCategories();
-
-    // for (final category in categories) {
-    //   categoriesChooser.add(CategoryChooserCubit(category.id));
-    // }
+    List<Category> categories = await categoriesRepository.getAllCategories();
 
     try {
       emit(CategoriesLoaded(categories: categories));

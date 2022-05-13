@@ -20,7 +20,7 @@ String generateJwt({
   required final String subject,
   required final String issuer,
   required final String secretKey,
-  Duration duration = const Duration(seconds: 100),
+  Duration duration = const Duration(seconds: 15),
 }) {
   final jwt = JWT(
     {'iat': DateTime.now().millisecondsSinceEpoch},

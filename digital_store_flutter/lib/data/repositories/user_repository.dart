@@ -17,6 +17,8 @@ class UserRepository {
         });
     if (response.statusCode == 200) {
       return true;
+    } else if (response.statusCode == 401) {
+      throw const InvalidTokenException('invaid or expired');
     } else {
       throw MessageException(response.body);
     }
@@ -38,6 +40,8 @@ class UserRepository {
       for (final order in decodedJson) {
         result.add(order as Map<String, dynamic>);
       }
+    } else if (response.statusCode == 401) {
+      throw const InvalidTokenException('invaid or expired');
     } else {
       throw const MessageException('server error');
     }
@@ -59,6 +63,8 @@ class UserRepository {
       final decodedJson = jsonDecode(response.body);
 
       result.addAll(decodedJson);
+    } else if (response.statusCode == 401) {
+      throw const InvalidTokenException('invaid or expired');
     } else {
       throw const MessageException('server error');
     }
@@ -79,6 +85,8 @@ class UserRepository {
       final decodedJson = jsonDecode(response.body);
 
       result.addAll(decodedJson);
+    } else if (response.statusCode == 401) {
+      throw const InvalidTokenException('invaid or expired');
     } else {
       throw const MessageException('server error');
     }
@@ -97,6 +105,8 @@ class UserRepository {
 
     if (response.statusCode == 200) {
       return true;
+    } else if (response.statusCode == 401) {
+      throw const InvalidTokenException('invaid or expired');
     } else {
       throw const MessageException('server error');
     }
@@ -113,6 +123,8 @@ class UserRepository {
       final decodedJson = jsonDecode(response.body);
 
       return User.fromJson(decodedJson);
+    } else if (response.statusCode == 401) {
+      throw const InvalidTokenException('invaid or expired');
     } else {
       throw const MessageException('server error');
     }
@@ -129,6 +141,8 @@ class UserRepository {
 
     if (response.statusCode == 200) {
       return true;
+    } else if (response.statusCode == 401) {
+      throw const InvalidTokenException('invaid or expired');
     } else {
       throw MessageException(response.body);
     }

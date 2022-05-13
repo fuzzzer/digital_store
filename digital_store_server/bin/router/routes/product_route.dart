@@ -121,10 +121,6 @@ class ProductRoute {
       final authorizationDetails =
           request.context['authorizationDetails'] as JWT;
 
-      if (authorizationDetails.subject == null) {
-        return Response(401, body: "access token is missing or invalid");
-      }
-
       final rawJson = await request.readAsString();
       final decodedJson = json.decode(rawJson);
 
@@ -154,10 +150,6 @@ class ProductRoute {
 
       final authorizationDetails =
           request.context['authorizationDetails'] as JWT;
-
-      if (authorizationDetails.subject == null) {
-        return Response(401, body: "access token is missing or invalid");
-      }
 
       final rawJson = await request.readAsString();
       final decodedJson = json.decode(rawJson);

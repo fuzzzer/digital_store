@@ -1,3 +1,5 @@
+import 'package:digital_store_flutter/ui/screens/home_page.dart';
+import 'package:digital_store_flutter/ui/screens/user_profile_info_page.dart';
 import 'package:digital_store_flutter/ui/widgets/command_button.dart';
 import 'package:digital_store_flutter/ui/widgets/deposit_dialog.dart';
 import 'package:digital_store_flutter/ui/widgets/orders_preview.dart';
@@ -64,8 +66,11 @@ class UserPage extends StatelessWidget {
                                       commandName: 'Pay',
                                       depositInputController:
                                           depositInputController,
-                                      onCommandFunction: () =>
-                                          null, // get amout and change balance
+                                      onCommandFunction: () => context
+                                          .read<UserCubit>()
+                                          .updateBalance(double.parse(
+                                              depositInputController.text)),
+                                      // get amout and change balance
                                     ),
                                   );
                                 }),
@@ -76,12 +81,23 @@ class UserPage extends StatelessWidget {
                           width: double.infinity,
                           backgroundColor: Colors.blue,
                           fontWeight: FontWeight.w600,
-                          commandName: 'user profile info',
-                          onPressedFunction: () => null),
+                          commandName: 'update user profile info',
+                          onPressedFunction: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => UserProfileInfoPage(
+                                        user: state.user,
+                                      )))),
                       const OrdersPreview(),
                       CommandButton(
                           commandName: 'sign out',
-                          onPressedFunction: () => null)
+                          onPressedFunction: () {
+                            context.read<UserCubit>().logout();
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) => const HomePage()),
+                                (Route<dynamic> route) => false);
+                          }),
                     ],
                   );
                 } else {

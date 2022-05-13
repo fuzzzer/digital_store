@@ -4,6 +4,7 @@ class TextInput extends StatelessWidget {
   //final String label;
   final double relativeHeight;
   final double relativeWidth;
+  final double topPadding;
   final TextInputType keyboardType;
   final int maxLines;
   final bool isHidden;
@@ -12,12 +13,13 @@ class TextInput extends StatelessWidget {
   final Color color;
   final String startingText;
   final TextEditingController inputController;
+  final Function? onChanged;
 
   const TextInput(
       {Key? key,
-      //this.label = '',
       this.relativeHeight = 1 / 15,
       this.relativeWidth = 0.9,
+      this.topPadding = 8,
       this.keyboardType = TextInputType.text,
       this.maxLines = 1,
       this.isHidden = false,
@@ -25,7 +27,8 @@ class TextInput extends StatelessWidget {
       this.fontSize = 20,
       this.color = Colors.black,
       this.startingText = '',
-      required this.inputController})
+      required this.inputController,
+      this.onChanged})
       : super(key: key);
 
   @override
@@ -34,7 +37,7 @@ class TextInput extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+      padding: EdgeInsets.fromLTRB(8, topPadding, 8, 10),
       child: SizedBox(
         width: width * relativeWidth,
         height: height * relativeHeight,
@@ -42,28 +45,23 @@ class TextInput extends StatelessWidget {
             maxLines: maxLines,
             keyboardType: keyboardType,
             controller: inputController,
+            onChanged: (_) {
+              if (onChanged != null) {
+                onChanged!();
+              } else {
+                null;
+              }
+            },
             obscureText: isHidden,
             style: TextStyle(color: color, fontSize: fontSize),
             decoration: InputDecoration(
-              //labelText: label,
               hintText: hintText,
               alignLabelWithHint: true,
-
               labelStyle: TextStyle(
                 color: const Color.fromARGB(177, 93, 86, 86),
                 fontSize: fontSize,
                 fontWeight: FontWeight.w400,
               ),
-              // enabledBorder: OutlineInputBorder(
-              //   borderSide: const BorderSide(
-              //       color: Color.fromARGB(210, 0, 0, 0), width: 1.2),
-              //   borderRadius: BorderRadius.circular(10),
-              // ),
-              // focusedBorder: OutlineInputBorder(
-              //   borderSide: const BorderSide(
-              //       color: Color.fromARGB(155, 69, 152, 229), width: 1.2),
-              //   borderRadius: BorderRadius.circular(10),
-              // ),
             )),
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:digital_store_flutter/data/repositories/authentication_repository.dart';
 import 'package:digital_store_flutter/data/repositories/products_repository.dart';
 import 'package:digital_store_flutter/data/repositories/user_repository.dart';
 import 'package:digital_store_flutter/logic/cubits/widget_cubits/user_page_cubit/user_page_cubit.dart';
@@ -83,7 +84,8 @@ class HomePageAppBar extends StatelessWidget with PreferredSizeWidget {
                         create: (context) => UserPageCubit(
                             userRepository: UserRepository(),
                             productsRepository: ProductsRepository(),
-                            accessToken: state.accessToken),
+                            authenticationRepository:
+                                AuthenticationRepository()),
                         child: const UserPage(),
                       ),
                     ),

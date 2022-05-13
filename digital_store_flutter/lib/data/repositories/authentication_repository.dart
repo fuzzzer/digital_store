@@ -16,24 +16,20 @@ class AuthenticationRepository {
         },
         body: jsonEncode({'refreshToken': refreshToken}));
 
-    final Map<String, dynamic> result = {};
-
     if (response.statusCode == 200) {
       final decodedJson = jsonDecode(response.body);
 
       if (checkTokens(decodedJson)) {
-        result.addAll(decodedJson);
+        return decodedJson as Map<String, dynamic>;
       } else {
-        throw const InvalidTokenException(
-            'token recieved was not sent from original server');
+        throw const InvalidTokenRecievedException(
+            'token was not sent from original server');
       }
-    } else
-    //  if (response.statusCode == 400)
-    {
+    } else if (response.statusCode == 400) {
+      throw const InvalidRefreshTokenException('season timeout');
+    } else {
       throw MessageException(response.body);
     }
-
-    return result;
   }
 
   Future<bool> postsignUp(final Map<String, dynamic> newUser) async {

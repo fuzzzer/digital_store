@@ -1,5 +1,5 @@
 import 'package:digital_store_flutter/core/constants.dart';
-import 'package:digital_store_flutter/data/models/user.dart';
+import 'package:digital_store_flutter/data/repositories/authentication_repository.dart';
 import 'package:digital_store_flutter/data/repositories/cart_repository.dart';
 import 'package:digital_store_flutter/logic/cubits/data_cubits/cart_cubit/cart_cubit.dart';
 import 'package:digital_store_flutter/ui/screens/cart_page.dart';
@@ -36,7 +36,9 @@ class HomePage extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) => BlocProvider(
                       create: (context) => CartCubit(
-                          cartRepository: CartRepository(state.accessToken)),
+                          cartRepository: CartRepository(),
+                          authenticationRepository: AuthenticationRepository(),
+                          productsRepository: ProductsRepository()),
                       child: const CartPage(),
                     ),
                   ),
@@ -89,22 +91,12 @@ class HomePage extends StatelessWidget {
                               MaterialPageRoute(
                                 builder: (context) => BlocProvider(
                                   create: (context) {
-                                    String? userAccessToken;
-
-                                    if (context.read<UserCubit>().state
-                                        is UserConsumer) {
-                                      final userState =
-                                          context.read<UserCubit>().state;
-                                      userAccessToken =
-                                          (userState as UserConsumer)
-                                              .accessToken;
-                                    }
-
                                     return SeeProductPageCubit(
-                                      productsRepository: ProductsRepository(),
-                                      productId: state.products[index].id,
-                                      userAccessToken: userAccessToken,
-                                    );
+                                        productsRepository:
+                                            ProductsRepository(),
+                                        productId: state.products[index].id,
+                                        authenticationRepository:
+                                            AuthenticationRepository());
                                   },
                                   child: const SeeProductPage(),
                                 ),
