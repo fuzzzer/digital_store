@@ -125,17 +125,24 @@ void cartCheckout(final Database database, final String userId) {
     throw NotEnoughMoneyException("not enough money on balance");
   }
 
-  final bool cartItemQuantityOverFlowCheck = database.select('''
-   SELECT cart_item.id
+  final cartItemQuantityOverFlowedItems = database.select('''
+   SELECT cart_item.id,
+          title
    FROM cart_item
    JOIN product
    ON product.id = cart_item.product_id
    WHERE cart_item.cart_id LIKE "$cartId"
    AND product.quantity < cart_item.quantity;
-   ''').isNotEmpty;
+   ''');
 
-  if (cartItemQuantityOverFlowCheck) {
-    throw ProductNotAvailableException("too much quantity selected");
+  if (cartItemQuantityOverFlowedItems.isNotEmpty) {
+    String items = '';
+    for (final row in cartItemQuantityOverFlowedItems) {
+      items += ' ' + row['title'];
+    }
+
+    throw ProductNotAvailableException(
+        "Unsuccessful payment! Check avalable product quantities for:$items");
   }
 
   balance -= totalCartPrice;
