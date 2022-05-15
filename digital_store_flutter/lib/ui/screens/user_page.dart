@@ -101,7 +101,7 @@ class UserPage extends StatelessWidget {
                     ],
                   );
                 } else {
-                  return const Center(child: Text('some problem'));
+                  return const Center(child: CircularProgressIndicator());
                 }
               },
             )));

@@ -73,7 +73,9 @@ class UserCubit extends Cubit<UserState> {
       } on Exception {
         emit(UserUnauthenticated());
       }
-    } else {}
+    } else {
+      emit(UserUnauthenticated());
+    }
   }
 
   Future<List> userSignUp({
