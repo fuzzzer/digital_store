@@ -3,6 +3,7 @@ import 'package:digital_store_flutter/ui/widgets/cart_product_tile.dart';
 import 'package:digital_store_flutter/ui/widgets/command_button.dart';
 import 'package:digital_store_flutter/ui/widgets/check_dialog.dart';
 import 'package:digital_store_flutter/ui/widgets/payment_dialog.dart';
+import 'package:digital_store_flutter/ui/widgets/user_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,7 +20,9 @@ class CartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: const [UserIconButton()],
+      ),
       body: Padding(
         padding: defaultPagePadding,
         child: BlocBuilder<CartCubit, CartState>(

@@ -1,4 +1,5 @@
 import 'package:digital_store_flutter/data/models/custom_exceptions.dart';
+import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 
 import '../../core/global_variables.dart';
 import '../../data/models/tokens.dart';
@@ -26,7 +27,18 @@ Future<bool> checkIfProductIsInTheCart({
   }
 }
 
-bool checkTokens(final Map<String, dynamic> token) {
+bool checkTokens(final Map<String, dynamic> tokens) {
   return true;
-  // I could check signiture here with original key and determine if tokens were sent from original server
+  // I could check signiture here with original key and determine if tokens were sent from original server,
+  // but i'm not doing that because hacker might extract sectret key from user end of the application
+
+  // try {
+  //   JWT.verify(tokens['accessToken'],
+  //       SecretKey(secretKey));
+  //   JWT.verify(tokens['refreshToken'],
+  //       SecretKey(secretKey));
+  //   return true;
+  // } catch (ex) {
+  //   return false;
+  // }
 }

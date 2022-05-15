@@ -186,13 +186,6 @@ class _UserProfileInfoPageState extends State<UserProfileInfoPage> {
                                 adress: widget.adressInputController.text,
                                 sex: selectedSex.toString().substring(4));
 
-                        // if (loginInfo[0] == true) {
-                        //   Navigator.push(
-                        //       context,
-                        //       MaterialPageRoute(
-                        //           builder: (context) => LoginPage()));
-                        // }
-
                         ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text(loginInfo[1])));
                       }),

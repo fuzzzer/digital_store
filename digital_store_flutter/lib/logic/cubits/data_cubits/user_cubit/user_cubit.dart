@@ -46,6 +46,8 @@ class UserCubit extends Cubit<UserState> {
 
       emit(UserConsumer(user: user));
       return [true, 'signed in'];
+    } on InvalidTokenRecievedException catch (ex) {
+      return [false, ex.reason];
     } on MessageException catch (ex) {
       return [false, ex.reason];
     }
