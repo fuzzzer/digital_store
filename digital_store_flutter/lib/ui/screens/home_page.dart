@@ -15,7 +15,6 @@ import '../../logic/cubits/data_cubits/products_cubit/products_cubit.dart';
 import '../../logic/cubits/data_cubits/user_cubit/user_cubit.dart';
 import '../../logic/cubits/widget_cubits/app_bar_cubit/app_bar_cubit.dart';
 import '../../logic/cubits/widget_cubits/see_product_page_cubit/see_product_page_cubit.dart';
-import '../widgets/actions_drawer.dart';
 import '../widgets/product_tile.dart';
 import 'see_product_page.dart';
 
@@ -25,7 +24,6 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const ActionsDrawer(),
       floatingActionButton: Builder(builder: (context) {
         return BlocBuilder<UserCubit, UserState>(
           builder: (context, state) {

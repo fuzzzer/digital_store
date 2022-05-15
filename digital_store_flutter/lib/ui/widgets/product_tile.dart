@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 import '../../data/models/product.dart';
@@ -25,7 +23,6 @@ class ProductTile extends StatelessWidget {
         onTap: () => onTapFunction(),
         splashFactory: InkSplash.splashFactory,
         radius: 10,
-        // highlightColor: const Color.fromARGB(142, 33, 29, 62),
         child: Padding(
           padding: const EdgeInsets.all(4),
           child: Card(
@@ -41,13 +38,7 @@ class ProductTile extends StatelessWidget {
                   SizedBox(
                     height: height / 4 * 3,
                     width: height / 4 * 3,
-                    child: Image.file(
-                      File(productInfo.imageLocation),
-                      errorBuilder: (context, error, stackTrace) =>
-                          const Placeholder(),
-                    ),
-                    // File(productInfo.imageLocation).readAsBytes()
-                    // Image.memory(productInfo.imageLocation)
+                    child: productInfo.image ?? const Placeholder(),
                   ),
                   Expanded(
                     child: Column(

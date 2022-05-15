@@ -111,7 +111,7 @@ List<Map<String, dynamic>> getProductsFilteredBySearch(
 }
 
 void createNewProduct(
-    final Database database, final Map<String, dynamic> info) {
+    final Database database, final Map<String, dynamic> info) async {
   if (info.values.any((element) => element == null)) {
     throw InvalidInputException("passed value is null");
   }

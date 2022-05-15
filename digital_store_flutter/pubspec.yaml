@@ -73,7 +73,7 @@ flutter:
   assets: 
       - assets/images/user_unauthenticated.png
       - assets/images/user_authenticated.png
-      - assets/images/arrow_down.png
+     
 
   # To add assets to your application, add an assets section, like this:
   # assets:

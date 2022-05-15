@@ -47,7 +47,7 @@ class CartCubit extends Cubit<CartState> {
 
       final List<Product> products = await Future.wait(productFutures);
 
-      List<Product> productsWithCartQuantity = [];
+      final List<Product> productsWithCartQuantity = [];
 
       double totalCartPrice = 0;
 
@@ -75,9 +75,9 @@ class CartCubit extends Cubit<CartState> {
     }
   }
 
-  void incrementCartProduct(Product product) {
+  void incrementCartProduct(final Product product) {
     try {
-      int newQuantity = product.quantityInTheCart! + 1;
+      final int newQuantity = product.quantityInTheCart! + 1;
       cartRepository.patchCartItem(getTokens.get<Tokens>().accessToken,
           product.id, {'quantity': newQuantity});
     } on InvalidTokenException {
@@ -92,9 +92,9 @@ class CartCubit extends Cubit<CartState> {
     loadCartItems();
   }
 
-  void decrementCartProduct(Product product) {
+  void decrementCartProduct(final Product product) {
     try {
-      int newQuantity = product.quantityInTheCart! - 1;
+      final int newQuantity = product.quantityInTheCart! - 1;
       cartRepository.patchCartItem(getTokens.get<Tokens>().accessToken,
           product.id, {'quantity': newQuantity});
     } on InvalidTokenException {
@@ -108,7 +108,7 @@ class CartCubit extends Cubit<CartState> {
     loadCartItems();
   }
 
-  void deleteCartProduct(Product product) {
+  void deleteCartProduct(final Product product) {
     try {
       cartRepository.deleteCartItem(
           getTokens.get<Tokens>().accessToken, product.id);

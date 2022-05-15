@@ -3,7 +3,7 @@ import '../../data/models/tokens.dart';
 import '../../data/repositories/authentication_repository.dart';
 
 Future<void> refreshSeason(
-    AuthenticationRepository authenticationRepository) async {
+    final AuthenticationRepository authenticationRepository) async {
   String refreshToken = getTokens
       .get<Tokens>()
       .refreshToken; // if cart is used then user is logged in and tokens are initialized

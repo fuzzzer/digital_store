@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 import '../../data/models/product.dart';
@@ -24,11 +22,7 @@ class OrdersTile extends StatelessWidget {
               child: SizedBox(
                 height: 80,
                 width: 80,
-                child: Image.file(
-                  File(productInfo.imageLocation),
-                  errorBuilder: (context, error, stackTrace) =>
-                      const Placeholder(),
-                ),
+                child: productInfo.image ?? const Placeholder(),
               ),
             ),
             Column(

@@ -10,7 +10,7 @@ part 'products_state.dart';
 class ProductsCubit extends Cubit<ProductsState> {
   ProductsCubit() : super(ProductsInitial());
 
-  List<String> selectedCategories = [];
+  final List<String> selectedCategories = [];
   bool saveOldFilteredProducts =
       false; // this variable becomes true when previus product selection is filtered, and becomes false when previous selection is not filtered
 
@@ -28,7 +28,7 @@ class ProductsCubit extends Cubit<ProductsState> {
     }
   }
 
-  void loadCategorizedProducts({required String categoryId}) async {
+  void loadCategorizedProducts({required final String categoryId}) async {
     List<Product>? oldFilteredProducts;
 
     if (state is ProductsLoaded && saveOldFilteredProducts) {
@@ -59,7 +59,7 @@ class ProductsCubit extends Cubit<ProductsState> {
     }
   }
 
-  void loadSearchedProducts(String toSearch) async {
+  void loadSearchedProducts(final String toSearch) async {
     emit(ProductsLoading());
 
     final List<Product> products =
@@ -74,7 +74,7 @@ class ProductsCubit extends Cubit<ProductsState> {
     }
   }
 
-  void removeFromFilteredProducts({required String categoryId}) {
+  void removeFromFilteredProducts({required final String categoryId}) {
     List<Product>? filteredProductsToModify;
 
     if (state is ProductsLoaded) {

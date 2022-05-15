@@ -8,7 +8,7 @@ import '../../../../data/models/custom_exceptions.dart';
 import '../../../../data/models/tokens.dart';
 import '../../../../data/models/user.dart';
 import '../../../global_logics/refresh_authorization_season.dart';
-import '../../../local_storing_logic.dart';
+import '../../../global_logics/local_storing_logic.dart';
 
 part 'user_state.dart';
 
@@ -106,7 +106,7 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
-  void updateBalance(double deposit) async {
+  void updateBalance(final double deposit) async {
     double newBalance = deposit + (state as UserConsumer).user.balance;
 
     try {

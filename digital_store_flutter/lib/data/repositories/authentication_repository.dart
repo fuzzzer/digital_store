@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import '../../core/config.dart';
-import '../../logic/checks.dart';
+import '../../logic/global_logics/checkers.dart';
 import '../models/custom_exceptions.dart';
 
 class AuthenticationRepository {

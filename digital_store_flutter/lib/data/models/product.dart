@@ -1,12 +1,14 @@
-
 import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+
+import 'package:digital_store_flutter/logic/global_logics/image_transformation.dart';
 
 class Product {
   final String id;
   final String title;
   final String description;
   final int quantity;
-  final String imageLocation;
+  final Image? image;
   final String size;
   final double rating;
   final List<String> categories;
@@ -21,7 +23,7 @@ class Product {
     required this.title,
     required this.description,
     required this.quantity,
-    required this.imageLocation,
+    required this.image,
     required this.size,
     required this.rating,
     required this.categories,
@@ -37,7 +39,7 @@ class Product {
     String? title,
     String? description,
     int? quantity,
-    String? imageLocation,
+    Image? image,
     String? size,
     double? rating,
     List<String>? categories,
@@ -52,7 +54,7 @@ class Product {
       title: title ?? this.title,
       description: description ?? this.description,
       quantity: quantity ?? this.quantity,
-      imageLocation: imageLocation ?? this.imageLocation,
+      image: image ?? this.image,
       size: size ?? this.size,
       rating: rating ?? this.rating,
       categories: categories ?? this.categories,
@@ -71,7 +73,7 @@ class Product {
     result.addAll({'title': title});
     result.addAll({'description': description});
     result.addAll({'quantity': quantity});
-    result.addAll({'imageLocation': imageLocation});
+    result.addAll({'image': ''});
     result.addAll({'size': size});
     result.addAll({'rating': rating});
     result.addAll({'categories': categories});
@@ -92,7 +94,7 @@ class Product {
       title: map['title'] ?? '',
       description: map['description'] ?? '',
       quantity: map['quantity']?.toInt() ?? 0,
-      imageLocation: map['imageLocation'] ?? '',
+      image: base64ToImage(map['image']),
       size: map['size'] ?? '',
       rating: map['rating']?.toDouble() ?? 0.0,
       categories: List<String>.from(map['categories']),
@@ -106,7 +108,7 @@ class Product {
 
   @override
   String toString() {
-    return 'Product(id: $id, title: $title, description: $description, quantity: $quantity, imageLocation: $imageLocation, size: $size, rating: $rating, categories: $categories, color: $color, price: $price, createdAt: $createdAt, modifiedAt: $modifiedAt, quantityInTheCart: $quantityInTheCart)';
+    return 'Product(id: $id, title: $title, description: $description, quantity: $quantity, image: $image, size: $size, rating: $rating, categories: $categories, color: $color, price: $price, createdAt: $createdAt, modifiedAt: $modifiedAt, quantityInTheCart: $quantityInTheCart)';
   }
 
   @override
@@ -118,7 +120,7 @@ class Product {
         other.title == title &&
         other.description == description &&
         other.quantity == quantity &&
-        other.imageLocation == imageLocation &&
+        other.image == image &&
         other.size == size &&
         other.rating == rating &&
         listEquals(other.categories, categories) &&
@@ -135,7 +137,7 @@ class Product {
         title.hashCode ^
         description.hashCode ^
         quantity.hashCode ^
-        imageLocation.hashCode ^
+        image.hashCode ^
         size.hashCode ^
         rating.hashCode ^
         categories.hashCode ^

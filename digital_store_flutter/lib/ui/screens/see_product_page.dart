@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:digital_store_flutter/logic/cubits/data_cubits/user_cubit/user_cubit.dart';
 import 'package:digital_store_flutter/ui/widgets/check_dialog.dart';
 import 'package:flutter/material.dart';
@@ -30,11 +28,7 @@ class SeeProductPage extends StatelessWidget {
               return SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
-                    Image.file(
-                      File(state.product.imageLocation),
-                      errorBuilder: (context, error, stackTrace) =>
-                          const Placeholder(),
-                    ),
+                    state.product.image ?? const Placeholder(),
                     Align(
                       alignment: Alignment.topLeft,
                       child: Padding(

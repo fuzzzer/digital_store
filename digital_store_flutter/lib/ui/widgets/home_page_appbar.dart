@@ -20,7 +20,10 @@ class HomePageAppBar extends StatelessWidget with PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       titleSpacing: 0,
-      title: const Text('digital store'),
+      leading: const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 8.0),
+          child: Icon(Icons.shopify, size: 40)),
+      title: const Text('Digital store'),
       actions: <Widget>[
         BlocBuilder<AppBarCubit, AppBarState>(
           builder: (context, state) {

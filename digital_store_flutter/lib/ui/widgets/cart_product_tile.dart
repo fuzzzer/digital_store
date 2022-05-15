@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 import '../../data/models/product.dart';
@@ -48,11 +46,7 @@ class CartProductTile extends StatelessWidget {
                   SizedBox(
                     height: height / 4 * 3,
                     width: height / 4 * 3,
-                    child: Image.file(
-                      File(productInfo.imageLocation),
-                      errorBuilder: (context, error, stackTrace) =>
-                          const Placeholder(),
-                    ),
+                    child: productInfo.image ?? const Placeholder(),
                   ),
                   Expanded(
                     child: Column(

@@ -26,7 +26,7 @@ class CategoryTileCubit extends Cubit<CategoryTileState> {
     }
   }
 
-  void setValueOfIsSelected(bool isSelectedValue) {
+  void setValueOfIsSelected(final bool isSelectedValue) {
     emit((state as CategoryTileInitial).copyWith(isSelected: isSelectedValue));
   }
 }

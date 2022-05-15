@@ -9,7 +9,7 @@ class AppBarCubit extends Cubit<AppBarState> {
   List<String> savedCategoriesAsSelected =
       []; // just storing data here and managing ui of selecting and unselectig categories by stateful widget
 
-  void isSelectedChanger(String categoryId) {
+  void isSelectedChanger(final String categoryId) {
     if (savedCategoriesAsSelected.contains(categoryId)) {
       savedCategoriesAsSelected.remove(categoryId);
     } else {
