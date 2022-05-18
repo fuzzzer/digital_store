@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/constants.dart';
+import '../../logic/cubits/data_cubits/cart_cubit/cart_cubit.dart';
 import '../../logic/cubits/widget_cubits/see_product_page_cubit/see_product_page_cubit.dart';
 import '../widgets/payment_dialog.dart';
 import 'login_page.dart';
@@ -106,8 +107,7 @@ class SeeProductPage extends StatelessWidget {
                                                       builder: (context) =>
                                                           LoginPage()),
                                                 ),
-                                                title:
-                                                    'sign in to add product in the cart',
+                                                title: 'sign in to buy product',
                                                 commandName: 'sign in',
                                                 commandButtonColor:
                                                     Colors.green,
@@ -128,20 +128,28 @@ class SeeProductPage extends StatelessWidget {
                                     showDialog(
                                       context: context,
                                       builder: (context) => CheckDialog(
-                                        onCommandFunction: () => oldContext
-                                            .read<SeeProductPageCubit>()
-                                            .deleteCartProduct(
-                                                productId: state.product.id),
+                                        onCommandFunction: () {
+                                          oldContext
+                                              .read<CartCubit>()
+                                              .deleteCartProduct(
+                                                  state.product.id);
+                                          oldContext
+                                              .read<SeeProductPageCubit>()
+                                              .loadProduct();
+                                        },
                                         title:
                                             'do you really want to remove product from the cart?',
                                         commandName: 'Remove',
                                       ),
                                     );
                                   } else {
-                                    context
+                                    oldContext.read<CartCubit>().addCartProduct(
+                                        productId: state.product.id,
+                                        quantity: 1);
+
+                                    oldContext
                                         .read<SeeProductPageCubit>()
-                                        .addProductToTheCart(
-                                            productId: state.product.id);
+                                        .loadProduct();
                                   }
                                 },
                                 icon: Icon(Icons.shopping_cart,
@@ -165,7 +173,7 @@ class SeeProductPage extends StatelessWidget {
                                                       LoginPage()),
                                             ),
                                             title:
-                                                'sign in to add product in the cart',
+                                                'sign in to add product to the cart',
                                             commandName: 'sign in',
                                             commandButtonColor: Colors.green,
                                           ));

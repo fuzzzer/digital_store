@@ -32,13 +32,7 @@ class HomePage extends StatelessWidget {
                 onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => BlocProvider(
-                      create: (context) => CartCubit(
-                          cartRepository: CartRepository(),
-                          authenticationRepository: AuthenticationRepository(),
-                          productsRepository: ProductsRepository()),
-                      child: const CartPage(),
-                    ),
+                    builder: (context) => const CartPage(),
                   ),
                 ),
                 child: const Icon(Icons.shopping_cart),
@@ -60,7 +54,9 @@ class HomePage extends StatelessWidget {
                 if (state is AppBarInitial) {
                   return Container();
                 } else if (state is AppBarSearching) {
-                  return Search(inputController: TextEditingController());
+                  return Search(
+                      inputController:
+                          context.read<AppBarCubit>().searchController);
                 } else {
                   return const CategoriesChooser();
                 }

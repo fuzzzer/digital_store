@@ -1,10 +1,13 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 part 'app_bar_state.dart';
 
 class AppBarCubit extends Cubit<AppBarState> {
   AppBarCubit() : super(AppBarInitial());
+
+  final TextEditingController searchController = TextEditingController();
 
   List<String> savedCategoriesAsSelected =
       []; // just storing data here and managing ui of selecting and unselectig categories by stateful widget

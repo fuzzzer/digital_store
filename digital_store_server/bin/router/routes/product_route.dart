@@ -137,6 +137,8 @@ class ProductRoute {
       } on ProductNotAvailableException {
         return Response(403,
             body: "Unsuccessful payment! Check avalable product quantities");
+      } on InvalidInputException catch (ex) {
+        return Response(405, body: ex.reason);
       }
 
       return Response(200, body: 'product successfuly purchased');

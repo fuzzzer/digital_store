@@ -43,6 +43,8 @@ class CartRoute {
         addToCart(database, decodedJson, authorizationDetails.subject!);
       } on ExistentIdentifierException {
         return Response(403, body: "product is already in the users cart");
+      } on InvalidInputException catch (ex) {
+        return Response(405, body: ex.reason);
       }
 
       return Response(200, body: 'new cart item added');
@@ -63,6 +65,8 @@ class CartRoute {
             userId: authorizationDetails.subject!);
       } on NotFoundException {
         return Response(404, body: "Cart item not found");
+      } on InvalidInputException catch (ex) {
+        return Response(405, body: ex.reason);
       }
 
       return Response(200, body: "cart item successfuly updated");

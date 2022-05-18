@@ -116,6 +116,10 @@ void createNewProduct(
     throw InvalidInputException("passed value is null");
   }
 
+  if (info['quantity'] < 0) {
+    throw InvalidInputException('quantity can not be less than 0');
+  }
+
   for (final categoryId in info['categories']) {
     if (!isUniqueValueInTable(
         database: database,
@@ -221,6 +225,10 @@ void updateProduct(final Database database, final String productId,
     throw NotFoundException('product not found');
   }
 
+  if (info['quantity'] < 0) {
+    throw InvalidInputException('quantity can not be less than 0');
+  }
+
   for (final categoryId in info['categories']) {
     if (!isUniqueValueInTable(
         database: database,
@@ -291,6 +299,10 @@ void purchaseProduct({
 
   if (!productExists) {
     throw NotFoundException('product not found');
+  }
+
+  if (quantity < 0) {
+    throw InvalidInputException('quantity can not be less than 0');
   }
 
   int availableQuantity = int.parse(returnUniqueValueFromTheTable(

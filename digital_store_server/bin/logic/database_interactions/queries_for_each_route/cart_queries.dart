@@ -26,6 +26,10 @@ void addToCart(final Database database, final Map<String, dynamic> product,
     throw ExistentIdentifierException('product already is in the users cart');
   }
 
+  if (product['quantity'] < 0) {
+    throw InvalidInputException('quantity can not be less than 0');
+  }
+
   final String cartItemId = generateNewID();
 
   database.execute('''
@@ -51,6 +55,10 @@ void updateCartItem(
    WHERE product_id LIKE "$productId"
    AND cart_id LIKE "$cartId"
    ''').isNotEmpty;
+
+  if (quantity < 0) {
+    throw InvalidInputException('quantity can not be less than 0');
+  }
 
   if (check) {
     database.execute('''UPDATE cart_item

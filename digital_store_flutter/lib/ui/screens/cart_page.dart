@@ -111,12 +111,17 @@ class CartPage extends StatelessWidget {
                                           state.productsWithCartQuantity[index],
                                         );
                                   },
-                                  onMinusTapFunction: () {
-                                    context
+                                  onMinusTapFunction: () async {
+                                    List requestResult = await context
                                         .read<CartCubit>()
                                         .decrementCartProduct(
                                           state.productsWithCartQuantity[index],
                                         );
+                                    if (!requestResult[0]) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                              content: Text(requestResult[1])));
+                                    }
                                   },
                                   onRemoveTapFunction: () {
                                     final oldContext =
@@ -129,8 +134,10 @@ class CartPage extends StatelessWidget {
                                             onCommandFunction: () => oldContext
                                                 .read<CartCubit>()
                                                 .deleteCartProduct(
-                                                  state.productsWithCartQuantity[
-                                                      index],
+                                                  state
+                                                      .productsWithCartQuantity[
+                                                          index]
+                                                      .id,
                                                 ),
                                             title:
                                                 'do you really want to remove product from the cart?',

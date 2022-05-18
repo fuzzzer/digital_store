@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'core/global_variables.dart';
+import 'data/repositories/cart_repository.dart';
+import 'data/repositories/products_repository.dart';
+import 'logic/cubits/data_cubits/cart_cubit/cart_cubit.dart';
 import 'logic/cubits/data_cubits/categories_cubit/categories_cubit.dart';
 import 'logic/cubits/data_cubits/products_cubit/products_cubit.dart';
 import 'logic/cubits/data_cubits/user_cubit/user_cubit.dart';
@@ -28,6 +31,12 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => ProductsCubit(),
+        ),
+        BlocProvider(
+          create: (context) => CartCubit(
+              cartRepository: CartRepository(),
+              authenticationRepository: AuthenticationRepository(),
+              productsRepository: ProductsRepository()),
         ),
         BlocProvider(
           create: (context) =>

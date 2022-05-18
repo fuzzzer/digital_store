@@ -92,10 +92,10 @@ class CartCubit extends Cubit<CartState> {
     loadCartItems();
   }
 
-  void decrementCartProduct(final Product product) {
+  Future<List> decrementCartProduct(final Product product) async {
     try {
       final int newQuantity = product.quantityInTheCart! - 1;
-      cartRepository.patchCartItem(getTokens.get<Tokens>().accessToken,
+      await cartRepository.patchCartItem(getTokens.get<Tokens>().accessToken,
           product.id, {'quantity': newQuantity});
     } on InvalidTokenException {
       try {
@@ -104,18 +104,21 @@ class CartCubit extends Cubit<CartState> {
       } on InvalidRefreshTokenException {
         sessionExpired();
       }
+    } on MessageException catch (ex) {
+      return [false, ex.reason];
     }
     loadCartItems();
+    return [true, ''];
   }
 
-  void deleteCartProduct(final Product product) {
+  void deleteCartProduct(final String productId) {
     try {
       cartRepository.deleteCartItem(
-          getTokens.get<Tokens>().accessToken, product.id);
+          getTokens.get<Tokens>().accessToken, productId);
     } on InvalidTokenException {
       try {
         refreshSeason(authenticationRepository);
-        deleteCartProduct(product);
+        deleteCartProduct(productId);
       } on InvalidRefreshTokenException {
         sessionExpired();
       }
@@ -138,15 +141,18 @@ class CartCubit extends Cubit<CartState> {
     loadCartItems();
   }
 
-  bool addCartProduct(Product product) {
+  bool addCartProduct({
+    required final String productId,
+    required final int quantity,
+  }) {
     try {
       cartRepository.postNewCartItem(getTokens.get<Tokens>().accessToken,
-          {'id': product.id, 'quantity': product.quantityInTheCart});
+          {'id': productId, 'quantity': quantity});
       return true;
     } on InvalidTokenException {
       try {
         refreshSeason(authenticationRepository);
-        return addCartProduct(product);
+        return addCartProduct(productId: productId, quantity: quantity);
       } on InvalidRefreshTokenException {
         sessionExpired();
         return false;
