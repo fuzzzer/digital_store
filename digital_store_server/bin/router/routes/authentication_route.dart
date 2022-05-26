@@ -61,7 +61,7 @@ class AuthenticationRoute {
       }
 
       if (!checkNewPassword(newUser)) {
-        return Response(403, body: "Password should be more than 8 letters");
+        return Response(403, body: "Minimum password length is 8 letters");
       }
 
       if (isUniqueValueInTable(

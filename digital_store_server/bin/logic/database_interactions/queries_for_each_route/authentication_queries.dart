@@ -8,7 +8,7 @@ bool checkNewUserName(final User newUser) =>
     newUser.username != '' ? true : false;
 
 bool checkNewPassword(final User newUser) =>
-    newUser.password.length > 8 ? true : false;
+    newUser.password.length >= 8 ? true : false;
 
 void signUpNewUser(final Database database, final User newUser) {
   final String id = generateNewID();
