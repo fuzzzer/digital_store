@@ -1,5 +1,8 @@
+import 'package:digital_store_flutter/logic/cubits/data_cubits/user_cubit/user_cubit.dart';
 import 'package:digital_store_flutter/logic/cubits/widget_cubits/user_page_cubit/user_page_cubit.dart';
+import 'package:digital_store_flutter/ui/widgets/command_button.dart';
 import 'package:digital_store_flutter/ui/widgets/orders_tile.dart';
+import 'package:digital_store_flutter/ui/widgets/session_timeout_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,7 +21,11 @@ class OrdersPreview extends StatelessWidget {
                   elevation: 10,
                   primary: const Color.fromARGB(232, 57, 56, 56)),
               onPressed: () {
-                context.read<UserPageCubit>().changeWatchingOrdersState();
+                if (context.read<UserCubit>().state is UserUnauthenticated) {
+                  sessionTimeoutNavigation(context);
+                } else {
+                  context.read<UserPageCubit>().changeWatchingOrdersState();
+                }
               },
               child: Row(
                 children: [
@@ -65,15 +72,32 @@ class OrdersPreview extends StatelessWidget {
                               )),
                     );
                   } else {
-                    return SizedBox(
-                      height: 300,
-                      child: Center(
-                        child: Text(
-                          (state as UserPageError).title,
-                        ),
-                      ),
-                    );
+                    if ((state as UserPageError).sessionEnded) {
+                      Future.delayed(
+                        Duration.zero,
+                        () async {
+                          context.read<UserCubit>().logout();
+
+                          sessionTimeoutNavigation(context);
+                        },
+                      );
+                      return const SizedBox.shrink();
+                    }
                   }
+
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(state.title),
+                        CommandButton(
+                          onPressedFunction: () =>
+                              context.read<UserPageCubit>().loadOrders(),
+                          commandName: 'reload page',
+                        ),
+                      ],
+                    ),
+                  );
                 },
               ),
             ),

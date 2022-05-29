@@ -1,10 +1,10 @@
-import 'package:digital_store_flutter/ui/widgets/category_tile.dart';
+import 'package:digital_store_flutter/ui/screens/home_page/componenets/category_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../logic/cubits/data_cubits/categories_cubit/categories_cubit.dart';
-import '../../logic/cubits/widget_cubits/app_bar_cubit/app_bar_cubit.dart';
-import '../../logic/cubits/widget_cubits/category_tile_cubit/category_tile_cubit.dart';
+import '../../../../logic/cubits/data_cubits/categories_cubit/categories_cubit.dart';
+import '../../../../logic/cubits/widget_cubits/app_bar_cubit/app_bar_cubit.dart';
+import '../../../../logic/cubits/widget_cubits/category_tile_cubit/category_tile_cubit.dart';
 
 class CategoriesChooser extends StatefulWidget {
   const CategoriesChooser({Key? key}) : super(key: key);
@@ -48,12 +48,14 @@ class _CategoriesChooserState extends State<CategoriesChooser> {
                           int index,
                         ) {
                           return BlocProvider(
-                              create: (context) =>
-                                  CategoryTileCubit(state.categories[index].id)
-                                    ..setValueOfIsSelected(context
-                                        .read<AppBarCubit>()
-                                        .savedCategoriesAsSelected
-                                        .contains(state.categories[index].id)),
+                              create: (context) {
+                                return CategoryTileCubit(
+                                    state.categories[index].id)
+                                  ..setValueOfIsSelected(context
+                                      .read<AppBarCubit>()
+                                      .savedCategoriesAsSelected
+                                      .contains(state.categories[index].id));
+                              },
                               child: CategoryTile(
                                 category: state.categories[index],
                               ));

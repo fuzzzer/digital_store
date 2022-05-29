@@ -9,7 +9,6 @@ import '../../../../data/models/product.dart';
 import '../../../../data/models/tokens.dart';
 import '../../../../data/repositories/authentication_repository.dart';
 import '../../../global_logics/checkers.dart';
-import '../../../global_logics/refresh_authorization_season.dart';
 
 part 'see_product_page_state.dart';
 
@@ -19,7 +18,7 @@ class SeeProductPageCubit extends Cubit<SeeProductPageState> {
       required this.productsRepository,
       required this.authenticationRepository})
       : super(SeeProductPageInitial()) {
-    if (getTokens.get<Tokens>().accessToken != '') {
+    if (getIt.get<Tokens>().accessToken != '') {
       cartRepository = CartRepository();
     }
   }
@@ -44,13 +43,8 @@ class SeeProductPageCubit extends Cubit<SeeProductPageState> {
 
       emit(SeeProductPageLoaded(product: product, isInTheCard: isInTheCart));
     } on InvalidTokenException {
-      try {
-        refreshSeason(authenticationRepository);
-
-        loadProduct();
-      } on InvalidRefreshTokenException {
-        sessionExpired();
-      }
+      emit(const SeeProductPageError(
+          title: 'please relogin', sessionEnded: true));
     } on MessageException catch (ex) {
       emit(SeeProductPageError(title: ex.reason));
     }
@@ -60,15 +54,12 @@ class SeeProductPageCubit extends Cubit<SeeProductPageState> {
     emit(SeeProductPageLoading());
     if (cartRepository != null) {
       try {
-        cartRepository!.postNewCartItem(getTokens.get<Tokens>().accessToken,
-            {'id': productId, 'quantity': 1});
+        await cartRepository!.postNewCartItem({'id': productId, 'quantity': 1});
       } on InvalidTokenException {
-        try {
-          refreshSeason(authenticationRepository);
-          addProductToTheCart(productId: productId);
-        } on InvalidRefreshTokenException {
-          sessionExpired();
-        }
+        emit(const SeeProductPageError(
+            title: 'please relogin', sessionEnded: true));
+      } on MessageException catch (ex) {
+        emit(SeeProductPageError(title: ex.reason));
       }
     }
     loadProduct();
@@ -78,15 +69,12 @@ class SeeProductPageCubit extends Cubit<SeeProductPageState> {
     emit(SeeProductPageLoading());
     if (cartRepository != null) {
       try {
-        cartRepository!
-            .deleteCartItem(getTokens.get<Tokens>().accessToken, productId);
+        await cartRepository!.deleteCartItem(productId);
       } on InvalidTokenException {
-        try {
-          refreshSeason(authenticationRepository);
-          deleteCartProduct(productId: productId);
-        } on InvalidRefreshTokenException {
-          sessionExpired();
-        }
+        emit(const SeeProductPageError(
+            title: 'please relogin', sessionEnded: true));
+      } on MessageException catch (ex) {
+        emit(SeeProductPageError(title: ex.reason));
       }
     }
     loadProduct();
@@ -94,18 +82,13 @@ class SeeProductPageCubit extends Cubit<SeeProductPageState> {
 
   Future<List> buyProduct() async {
     try {
-      await productsRepository.putProductPurchase(
-          getTokens.get<Tokens>().accessToken, productId, {'quantity': 1});
+      await productsRepository.putProductPurchase(productId, {'quantity': 1});
       loadProduct();
       return [true, 'Successful payment'];
     } on InvalidTokenException {
-      try {
-        refreshSeason(authenticationRepository);
-        return buyProduct();
-      } on InvalidRefreshTokenException {
-        sessionExpired();
-        return [false, ''];
-      }
+      emit(const SeeProductPageError(
+          title: 'please relogin', sessionEnded: true));
+      return [false, ''];
     } on MessageException catch (ex) {
       return [false, ex.reason];
     }

@@ -20,6 +20,10 @@ class AppBarCubit extends Cubit<AppBarState> {
     }
   }
 
+  void clearSavedCategories() {
+    savedCategoriesAsSelected.clear();
+  }
+
   changeSearchingState() {
     if (state is! AppBarSearching) {
       emit(AppBarSearching());

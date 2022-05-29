@@ -2,7 +2,7 @@ import 'package:digital_store_flutter/ui/widgets/user_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../logic/cubits/widget_cubits/app_bar_cubit/app_bar_cubit.dart';
+import '../../../../logic/cubits/widget_cubits/app_bar_cubit/app_bar_cubit.dart';
 
 class HomePageAppBar extends StatelessWidget with PreferredSizeWidget {
   const HomePageAppBar({Key? key}) : super(key: key);
@@ -47,6 +47,20 @@ class HomePageAppBar extends StatelessWidget with PreferredSizeWidget {
                       ));
           },
         ),
+        // Todo add admin options, something like this:
+        // if (state.isAdmin)
+        //           CommandButton(
+        //             width: double.infinity,
+        //             backgroundColor: const Color.fromARGB(255, 95, 205, 198),
+        //             fontWeight: FontWeight.w600,
+        //             commandName: 'Admin Panel',
+        //             onPressedFunction: () => Navigator.push(
+        //               context,
+        //               MaterialPageRoute(
+        //                 builder: (context) => const AdministratorPage(),
+        //               ),
+        //             ),
+        //           ),
         const UserIconButton()
       ],
     );

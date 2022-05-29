@@ -24,8 +24,9 @@ class UserPageWatchingOrders extends UserPageState {
 
 class UserPageError extends UserPageState {
   final String title;
-  const UserPageError({this.title = ''});
+  final bool sessionEnded;
+  const UserPageError({final this.title = '', final this.sessionEnded = false});
 
   @override
-  List<Object> get props => [title];
+  List<Object> get props => [title, sessionEnded];
 }

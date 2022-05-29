@@ -2,12 +2,13 @@ import 'package:digital_store_flutter/data/repositories/authentication_repositor
 import 'package:digital_store_flutter/data/repositories/products_repository.dart';
 import 'package:digital_store_flutter/data/repositories/user_repository.dart';
 import 'package:digital_store_flutter/logic/cubits/widget_cubits/user_page_cubit/user_page_cubit.dart';
-import 'package:digital_store_flutter/ui/screens/user_page.dart';
+import 'package:digital_store_flutter/ui/screens/login_page/login_page.dart';
+
+import 'package:digital_store_flutter/ui/screens/user_page/user_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../logic/cubits/data_cubits/user_cubit/user_cubit.dart';
-import '../screens/login_page.dart';
 
 class UserIconButton extends StatelessWidget {
   const UserIconButton({Key? key}) : super(key: key);
@@ -37,7 +38,7 @@ class UserIconButton extends StatelessWidget {
           ),
           iconSize: 40,
         );
-      } else if (state is UserConsumer) {
+      } else if (state is UserAuthenticated) {
         return IconButton(
           onPressed: () {
             Navigator.push(

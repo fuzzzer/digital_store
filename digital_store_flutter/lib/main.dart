@@ -12,7 +12,7 @@ import 'logic/cubits/data_cubits/categories_cubit/categories_cubit.dart';
 import 'logic/cubits/data_cubits/products_cubit/products_cubit.dart';
 import 'logic/cubits/data_cubits/user_cubit/user_cubit.dart';
 import 'logic/cubits/widget_cubits/app_bar_cubit/app_bar_cubit.dart';
-import 'ui/screens/home_page.dart';
+import 'ui/screens/home_page/home_page.dart';
 
 void main() async {
   setup();
@@ -34,9 +34,10 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => CartCubit(
-              cartRepository: CartRepository(),
-              authenticationRepository: AuthenticationRepository(),
-              productsRepository: ProductsRepository()),
+            cartRepository: CartRepository(),
+            authenticationRepository: getIt.get<AuthenticationRepository>(),
+            productsRepository: ProductsRepository(),
+          ),
         ),
         BlocProvider(
           create: (context) =>
@@ -48,7 +49,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => UserCubit(
-            authenticationRepository: AuthenticationRepository(),
+            authenticationRepository: getIt.get<AuthenticationRepository>(),
             userRepository: UserRepository(),
           )..resumeLoginSeason(),
         ),

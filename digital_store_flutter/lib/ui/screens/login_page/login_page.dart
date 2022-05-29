@@ -1,19 +1,17 @@
-import 'package:digital_store_flutter/ui/screens/home_page.dart';
+import 'package:digital_store_flutter/core/constants.dart';
+import 'package:digital_store_flutter/logic/cubits/data_cubits/user_cubit/user_cubit.dart';
+import 'package:digital_store_flutter/ui/screens/home_page/home_page.dart';
 import 'package:digital_store_flutter/ui/screens/sign_up_page.dart';
 import 'package:digital_store_flutter/ui/widgets/command_button.dart';
 import 'package:digital_store_flutter/ui/widgets/remember_me.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../core/constants.dart';
-
-import '../../logic/cubits/data_cubits/user_cubit/user_cubit.dart';
-import '../widgets/credentials_input.dart';
+import 'components/credentials_input.dart';
 
 class LoginPage extends StatelessWidget {
-  LoginPage({
-    Key? key,
-  }) : super(key: key);
+  final Function? goBackFunction;
+  LoginPage({final Key? key, final this.goBackFunction}) : super(key: key);
 
   final TextEditingController usernameInputController = TextEditingController();
   final TextEditingController passwordInputController = TextEditingController();
@@ -21,7 +19,14 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: goBackFunction != null
+          ? AppBar(
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () => goBackFunction!(),
+              ),
+            )
+          : AppBar(),
       body: Padding(
         padding: defaultPagePadding,
         child: Column(
@@ -51,9 +56,11 @@ class LoginPage extends StatelessWidget {
 
                 if (loginInfo[0] == true) {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const HomePage()));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const HomePage(),
+                    ),
+                  );
                 }
 
                 ScaffoldMessenger.of(context)

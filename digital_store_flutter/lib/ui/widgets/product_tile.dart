@@ -7,7 +7,7 @@ class ProductTile extends StatelessWidget {
   final double height;
   final Function onTapFunction;
 
-  const ProductTile({
+  const   ProductTile({
     Key? key,
     required final this.productInfo,
     final this.height = 150,

@@ -1,5 +1,6 @@
 import 'package:digital_store_flutter/core/constants.dart';
 import 'package:digital_store_flutter/ui/widgets/command_button.dart';
+import 'package:digital_store_flutter/ui/widgets/session_timeout_navigation.dart';
 import 'package:digital_store_flutter/ui/widgets/text_input.dart';
 
 import 'package:flutter/material.dart';
@@ -185,6 +186,11 @@ class _UserProfileInfoPageState extends State<UserProfileInfoPage> {
                                     widget.phoneNumberInputController.text,
                                 adress: widget.adressInputController.text,
                                 sex: selectedSex.toString().substring(4));
+
+                        if (context.read<UserCubit>().state
+                            is UserUnauthenticated) {
+                          sessionTimeoutNavigation(context);
+                        }
 
                         ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text(loginInfo[1])));

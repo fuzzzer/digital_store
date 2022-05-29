@@ -4,8 +4,8 @@ import 'package:digital_store_flutter/logic/cubits/widget_cubits/app_bar_cubit/a
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../data/models/category.dart';
-import '../../logic/cubits/widget_cubits/category_tile_cubit/category_tile_cubit.dart';
+import '../../../../data/models/category.dart';
+import '../../../../logic/cubits/widget_cubits/category_tile_cubit/category_tile_cubit.dart';
 
 class CategoryTile extends StatelessWidget {
   final Category category;
@@ -53,6 +53,17 @@ class CategoryTile extends StatelessWidget {
                           return Checkbox(
                               value: true,
                               onChanged: (_) {
+                                if (context
+                                        .read<AppBarCubit>()
+                                        .searchController
+                                        .text !=
+                                    '') {
+                                  context
+                                      .read<AppBarCubit>()
+                                      .searchController
+                                      .text = '';
+                                }
+
                                 // I think its possible to think of better way of managing checkbox state and function
                                 context.read<AppBarCubit>().isSelectedChanger(
                                     category
@@ -81,6 +92,17 @@ class CategoryTile extends StatelessWidget {
                           return Checkbox(
                               value: false,
                               onChanged: (_) {
+                                if (context
+                                        .read<AppBarCubit>()
+                                        .searchController
+                                        .text !=
+                                    '') {
+                                  context
+                                      .read<AppBarCubit>()
+                                      .searchController
+                                      .text = '';
+                                }
+
                                 context
                                     .read<AppBarCubit>()
                                     .isSelectedChanger(category.id);

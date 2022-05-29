@@ -16,7 +16,8 @@ class CartLoaded extends CartState {
   final double totalCartPrice;
 
   const CartLoaded(
-      {required this.productsWithCartQuantity, required this.totalCartPrice});
+      {required final this.productsWithCartQuantity,
+      required final this.totalCartPrice});
 
   @override
   List<Object> get props => [productsWithCartQuantity, totalCartPrice];
@@ -24,7 +25,8 @@ class CartLoaded extends CartState {
 
 class CartError extends CartState {
   final String title;
-  const CartError({this.title = ''});
+  final bool sessionEnded;
+  const CartError({final this.title = '', final this.sessionEnded = false});
 
   @override
   List<Object> get props => [title];

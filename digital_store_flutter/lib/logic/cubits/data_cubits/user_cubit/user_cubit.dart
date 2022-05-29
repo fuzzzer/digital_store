@@ -7,7 +7,6 @@ import '../../../../core/global_variables.dart';
 import '../../../../data/models/custom_exceptions.dart';
 import '../../../../data/models/tokens.dart';
 import '../../../../data/models/user.dart';
-import '../../../global_logics/refresh_authorization_season.dart';
 import '../../../global_logics/local_storing_logic.dart';
 
 part 'user_state.dart';
@@ -15,17 +14,16 @@ part 'user_state.dart';
 class UserCubit extends Cubit<UserState> {
   UserCubit(
       {required this.authenticationRepository, required this.userRepository})
-      : super(UserUnauthenticated());
+      : super(const UserUnauthenticated());
 
-  bool shouldBeRemembered = false;
   AuthenticationRepository authenticationRepository;
   UserRepository userRepository;
 
   void setRememberMeValue() {
-    if (shouldBeRemembered == false) {
-      shouldBeRemembered = true;
+    if (getIt.get<Map>()['userShouldBeRemembered'] == false) {
+      getIt.get<Map>()['userShouldBeRemembered'] = true;
     } else {
-      shouldBeRemembered = false;
+      getIt.get<Map>()['userShouldBeRemembered'] = false;
     }
   }
 
@@ -34,17 +32,25 @@ class UserCubit extends Cubit<UserState> {
       Map<String, dynamic> tokens = await authenticationRepository
           .postSignIn({'username': username, 'password': password});
 
-      getTokens.get<Tokens>().accessToken = tokens['accessToken'];
-      getTokens.get<Tokens>().refreshToken = tokens['refreshToken'];
+      getIt.get<Tokens>().accessToken = tokens['accessToken'];
+      getIt.get<Tokens>().refreshToken = tokens['refreshToken'];
 
-      final user = await userRepository
-          .getUserProfile(getTokens.get<Tokens>().accessToken);
+      final user = await userRepository.getUserProfile();
 
-      if (shouldBeRemembered) {
-        storeCredentials(getTokens.get<Tokens>().refreshToken);
+      if (getIt.get<Map>()['userShouldBeRemembered']) {
+        storeCredentials(getIt.get<Tokens>().refreshToken);
       }
 
-      emit(UserConsumer(user: user));
+      final bool isAdmin;
+
+      if (username == 'me1') {
+        isAdmin = true;
+      } else {
+        isAdmin = true;
+      }
+
+      emit(UserAuthenticated(user: user, isAdmin: isAdmin));
+
       return [true, 'signed in'];
     } on InvalidTokenRecievedException catch (ex) {
       return [false, ex.reason];
@@ -56,27 +62,34 @@ class UserCubit extends Cubit<UserState> {
   Future<void> resumeLoginSeason() async {
     String? refreshToken = await readSavedRefreshTokenFromHive();
 
-    if (refreshToken != null) {
+    if (refreshToken != null && refreshToken != '') {
       try {
         Map<String, dynamic> tokens =
             await authenticationRepository.postRefresh(refreshToken);
 
-        getTokens.get<Tokens>().accessToken = tokens['accessToken'];
-        getTokens.get<Tokens>().refreshToken = tokens['refreshToken'];
+        getIt.get<Tokens>().accessToken = tokens['accessToken'];
+        getIt.get<Tokens>().refreshToken = tokens['refreshToken'];
 
-        final user = await userRepository
-            .getUserProfile(getTokens.get<Tokens>().accessToken);
+        final user = await userRepository.getUserProfile();
 
-        if (shouldBeRemembered) {
-          storeCredentials(getTokens.get<Tokens>().refreshToken);
+        getIt.get<Map>()['userShouldBeRemembered'] = true;
+        storeCredentials(getIt.get<Tokens>().refreshToken);
+
+        final bool isAdmin;
+
+        if (user.username == 'me1') {
+          isAdmin = true;
+        } else {
+          isAdmin = true;
         }
 
-        emit(UserConsumer(user: user));
+        emit(UserAuthenticated(user: user, isAdmin: isAdmin));
       } on Exception {
-        emit(UserUnauthenticated());
+        removeOldRefreshTokenFromHive();
+        emit(const UserUnauthenticated());
       }
     } else {
-      emit(UserUnauthenticated());
+      emit(const UserUnauthenticated());
     }
   }
 
@@ -111,36 +124,27 @@ class UserCubit extends Cubit<UserState> {
   }
 
   void updateBalance(final double deposit) async {
-    double newBalance = deposit + (state as UserConsumer).user.balance;
+    double newBalance = deposit + (state as UserAuthenticated).user.balance;
 
     try {
-      await userRepository.patchUserBalance(
-          getTokens.get<Tokens>().accessToken, {'amount': newBalance});
-      final user = await userRepository
-          .getUserProfile(getTokens.get<Tokens>().accessToken);
-      emit((state as UserConsumer).copyWith(user: user));
+      await userRepository.patchUserBalance({'amount': newBalance});
+      final user = await userRepository.getUserProfile();
+      emit((state as UserAuthenticated).copyWith(user: user));
     } on InvalidTokenException {
-      try {
-        refreshSeason(authenticationRepository);
-        updateBalance(deposit);
-      } on InvalidRefreshTokenException {
-        sessionExpired();
-      }
+      emit(const UserUnauthenticated(
+          unAuthenticationReason: 'session expired', sessionEnded: true));
     }
   }
 
   void refreshUserProfile() async {
     try {
-      final user = await userRepository
-          .getUserProfile(getTokens.get<Tokens>().accessToken);
-      emit((state as UserConsumer).copyWith(user: user));
+      final user = await userRepository.getUserProfile();
+      emit((state as UserAuthenticated).copyWith(user: user));
     } on InvalidTokenException {
-      try {
-        refreshSeason(authenticationRepository);
-        refreshUserProfile();
-      } on InvalidRefreshTokenException {
-        sessionExpired();
-      }
+      emit(const UserUnauthenticated(
+          unAuthenticationReason: 'session expired', sessionEnded: true));
+    } on MessageException catch (ex) {
+      emit(UserUnauthenticated(unAuthenticationReason: ex.reason));
     }
   }
 
@@ -153,8 +157,7 @@ class UserCubit extends Cubit<UserState> {
     required final String sex,
   }) async {
     try {
-      await userRepository
-          .patchUserProfile(getTokens.get<Tokens>().accessToken, {
+      await userRepository.patchUserProfile({
         'firstName': firstName,
         'lastName': lastName,
         'email': email,
@@ -163,35 +166,24 @@ class UserCubit extends Cubit<UserState> {
         'sex': sex
       });
 
-      final user = await userRepository
-          .getUserProfile(getTokens.get<Tokens>().accessToken);
+      final user = await userRepository.getUserProfile();
 
-      emit((state as UserConsumer).copyWith(user: user));
+      emit((state as UserAuthenticated).copyWith(user: user));
 
       return [true, 'profile updated'];
     } on InvalidTokenException {
-      try {
-        refreshSeason(authenticationRepository);
-        return updateProfile(
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            phoneNumber: phoneNumber,
-            adress: adress,
-            sex: sex);
-      } on InvalidRefreshTokenException {
-        sessionExpired();
-        return [false, ''];
-      }
+      emit(const UserUnauthenticated(
+          unAuthenticationReason: 'session expired', sessionEnded: true));
+      return [false, 'session expired'];
     } on MessageException catch (ex) {
       return [false, ex.reason];
     }
   }
 
   void logout() {
-    getTokens.get<Tokens>().accessToken == '';
-    getTokens.get<Tokens>().refreshToken == '';
+    getIt.get<Tokens>().accessToken == '';
+    getIt.get<Tokens>().refreshToken == '';
     removeOldRefreshTokenFromHive();
-    emit(UserUnauthenticated());
+    emit(const UserUnauthenticated());
   }
 }

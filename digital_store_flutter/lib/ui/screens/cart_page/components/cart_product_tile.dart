@@ -1,6 +1,5 @@
+import 'package:digital_store_flutter/data/models/product.dart';
 import 'package:flutter/material.dart';
-
-import '../../data/models/product.dart';
 
 class CartProductTile extends StatelessWidget {
   final Product productInfo;

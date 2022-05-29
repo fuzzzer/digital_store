@@ -1,5 +1,8 @@
 import 'package:digital_store_flutter/logic/cubits/data_cubits/user_cubit/user_cubit.dart';
+import 'package:digital_store_flutter/ui/screens/login_page/login_page.dart';
 import 'package:digital_store_flutter/ui/widgets/check_dialog.dart';
+import 'package:digital_store_flutter/ui/widgets/command_button.dart';
+import 'package:digital_store_flutter/ui/widgets/session_timeout_navigation.dart';
 import 'package:digital_store_flutter/ui/widgets/user_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,7 +11,6 @@ import '../../core/constants.dart';
 import '../../logic/cubits/data_cubits/cart_cubit/cart_cubit.dart';
 import '../../logic/cubits/widget_cubits/see_product_page_cubit/see_product_page_cubit.dart';
 import '../widgets/payment_dialog.dart';
-import 'login_page.dart';
 
 class SeeProductPage extends StatelessWidget {
   const SeeProductPage({Key? key}) : super(key: key);
@@ -65,7 +67,7 @@ class SeeProductPage extends StatelessWidget {
                             builder: (context, userState) {
                               return ElevatedButton(
                                   onPressed: () {
-                                    if (userState is UserConsumer) {
+                                    if (userState is UserAuthenticated) {
                                       final oldContext = context;
 
                                       showDialog(
@@ -120,19 +122,20 @@ class SeeProductPage extends StatelessWidget {
                         ),
                         BlocBuilder<UserCubit, UserState>(
                           builder: (context, userCubitState) {
-                            if (userCubitState is UserConsumer) {
+                            if (userCubitState is UserAuthenticated) {
                               return IconButton(
-                                onPressed: () {
+                                onPressed: () async {
                                   final oldContext = context;
                                   if (state.isInTheCard) {
                                     showDialog(
                                       context: context,
                                       builder: (context) => CheckDialog(
-                                        onCommandFunction: () {
-                                          oldContext
+                                        onCommandFunction: () async {
+                                          await oldContext
                                               .read<CartCubit>()
                                               .deleteCartProduct(
                                                   state.product.id);
+
                                           oldContext
                                               .read<SeeProductPageCubit>()
                                               .loadProduct();
@@ -143,9 +146,11 @@ class SeeProductPage extends StatelessWidget {
                                       ),
                                     );
                                   } else {
-                                    oldContext.read<CartCubit>().addCartProduct(
-                                        productId: state.product.id,
-                                        quantity: 1);
+                                    await oldContext
+                                        .read<CartCubit>()
+                                        .addCartProduct(
+                                            productId: state.product.id,
+                                            quantity: 1);
 
                                     oldContext
                                         .read<SeeProductPageCubit>()
@@ -252,8 +257,32 @@ class SeeProductPage extends StatelessWidget {
                 ),
               );
             } else {
-              return Center(child: Text((state as SeeProductPageError).title));
+              if ((state as SeeProductPageError).sessionEnded) {
+                Future.delayed(
+                  Duration.zero,
+                  () async {
+                    context.read<UserCubit>().logout();
+
+                    sessionTimeoutNavigation(context);
+                  },
+                );
+                return SizedBox.fromSize();
+              }
             }
+
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(state.title),
+                  CommandButton(
+                    onPressedFunction: () =>
+                        context.read<SeeProductPageCubit>().loadProduct(),
+                    commandName: 'reload page',
+                  ),
+                ],
+              ),
+            );
           },
         ),
       ),

@@ -1,8 +1,5 @@
 import 'package:digital_store_flutter/data/models/custom_exceptions.dart';
-import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 
-import '../../core/global_variables.dart';
-import '../../data/models/tokens.dart';
 import '../../data/repositories/cart_repository.dart';
 
 Future<bool> checkIfProductIsInTheCart({
@@ -10,10 +7,8 @@ Future<bool> checkIfProductIsInTheCart({
   required final CartRepository cartRepository,
 }) async {
   try {
-    Map<String, dynamic> productsMap = await cartRepository.getAllCartItems(
-        getTokens
-            .get<Tokens>()
-            .accessToken); // {products: [{'id': id, 'quantity': quantity}]}
+    Map<String, dynamic> productsMap = await cartRepository
+        .getAllCartItems(); // {products: [{'id': id, 'quantity': quantity}]}
     final List allCartItemProductIds = productsMap['products'];
 
     if (allCartItemProductIds.any(
@@ -30,7 +25,7 @@ Future<bool> checkIfProductIsInTheCart({
 bool checkTokens(final Map<String, dynamic> tokens) {
   return true;
   // I could check signiture here with original key and determine if tokens were sent from original server,
-  // but i'm not doing that because hacker might extract sectret key from user end of the application
+  // but i'm not doing that because hacker might extract secret key from user end of the application
 
   // try {
   //   JWT.verify(tokens['accessToken'],

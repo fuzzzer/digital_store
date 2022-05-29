@@ -7,38 +7,47 @@ abstract class UserState extends Equatable {
   List<Object> get props => [];
 }
 
-class UserUnauthenticated extends UserState {}
+class UserUnauthenticated extends UserState {
+  final String unAuthenticationReason;
+  final bool sessionEnded;
 
-class UserConsumer extends UserState {
+  const UserUnauthenticated(
+      {this.unAuthenticationReason = '', final this.sessionEnded = false});
+
+  @override
+  List<Object> get props => [sessionEnded];
+}
+
+class UserAuthenticated extends UserState {
   final User user;
+  final bool isAdmin;
 
-  const UserConsumer({
+  const UserAuthenticated({
     required final this.user,
+    required final this.isAdmin,
   });
 
   @override
-  List<Object> get props => [user];
+  List<Object> get props => [user, isAdmin];
 
-  UserConsumer copyWith({
+  UserAuthenticated copyWith({
     User? user,
+    bool? isAdmin,
   }) {
-    return UserConsumer(
+    return UserAuthenticated(
       user: user ?? this.user,
+      isAdmin: isAdmin ?? this.isAdmin,
     );
   }
 }
 
 class UserAdministrator extends UserState {
   final User user;
-  final String accessToken;
-  final String refreshToken;
 
   const UserAdministrator({
     required final this.user,
-    required final this.accessToken,
-    required final this.refreshToken,
   });
 
   @override
-  List<Object> get props => [user, accessToken, refreshToken];
+  List<Object> get props => [user];
 }

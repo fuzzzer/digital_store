@@ -1,6 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:digital_store_flutter/core/global_variables.dart';
-import 'package:digital_store_flutter/data/models/tokens.dart';
 import 'package:digital_store_flutter/data/repositories/authentication_repository.dart';
 import 'package:digital_store_flutter/data/repositories/products_repository.dart';
 import 'package:equatable/equatable.dart';
@@ -8,7 +6,6 @@ import 'package:equatable/equatable.dart';
 import '../../../../data/models/custom_exceptions.dart';
 import '../../../../data/models/product.dart';
 import '../../../../data/repositories/cart_repository.dart';
-import '../../../global_logics/refresh_authorization_season.dart';
 
 part 'cart_state.dart';
 
@@ -28,8 +25,8 @@ class CartCubit extends Cubit<CartState> {
     emit(CartLoading());
 
     try {
-      Map<String, dynamic> allCartItemProductIds = await cartRepository
-          .getAllCartItems(getTokens.get<Tokens>().accessToken);
+      Map<String, dynamic> allCartItemProductIds =
+          await cartRepository.getAllCartItems();
 
       final List<Map<String, dynamic>> productIds =
           allCartItemProductIds['products'] as List<Map<String, dynamic>>;
@@ -63,47 +60,18 @@ class CartCubit extends Cubit<CartState> {
           productsWithCartQuantity: productsWithCartQuantity,
           totalCartPrice: totalCartPrice));
     } on InvalidTokenException {
-      try {
-        refreshSeason(authenticationRepository);
-
-        loadCartItems();
-      } on InvalidRefreshTokenException {
-        sessionExpired();
-      }
+      emit(const CartError(title: 'please relogin', sessionEnded: true));
     } on MessageException catch (ex) {
       emit(CartError(title: ex.reason));
     }
   }
 
-  void incrementCartProduct(final Product product) {
+  Future<List> incrementCartProduct(final Product product) async {
     try {
       final int newQuantity = product.quantityInTheCart! + 1;
-      cartRepository.patchCartItem(getTokens.get<Tokens>().accessToken,
-          product.id, {'quantity': newQuantity});
+      await cartRepository.patchCartItem(product.id, {'quantity': newQuantity});
     } on InvalidTokenException {
-      try {
-        refreshSeason(authenticationRepository);
-
-        incrementCartProduct(product);
-      } on InvalidRefreshTokenException {
-        sessionExpired();
-      }
-    }
-    loadCartItems();
-  }
-
-  Future<List> decrementCartProduct(final Product product) async {
-    try {
-      final int newQuantity = product.quantityInTheCart! - 1;
-      await cartRepository.patchCartItem(getTokens.get<Tokens>().accessToken,
-          product.id, {'quantity': newQuantity});
-    } on InvalidTokenException {
-      try {
-        refreshSeason(authenticationRepository);
-        decrementCartProduct(product);
-      } on InvalidRefreshTokenException {
-        sessionExpired();
-      }
+      emit(const CartError(title: 'please relogin', sessionEnded: true));
     } on MessageException catch (ex) {
       return [false, ex.reason];
     }
@@ -111,70 +79,67 @@ class CartCubit extends Cubit<CartState> {
     return [true, ''];
   }
 
-  void deleteCartProduct(final String productId) {
+  Future<List> decrementCartProduct(final Product product) async {
     try {
-      cartRepository.deleteCartItem(
-          getTokens.get<Tokens>().accessToken, productId);
+      final int newQuantity = product.quantityInTheCart! - 1;
+      await cartRepository.patchCartItem(product.id, {'quantity': newQuantity});
     } on InvalidTokenException {
-      try {
-        refreshSeason(authenticationRepository);
-        deleteCartProduct(productId);
-      } on InvalidRefreshTokenException {
-        sessionExpired();
-      }
+      emit(const CartError(title: 'please relogin', sessionEnded: true));
+    } on MessageException catch (ex) {
+      return [false, ex.reason];
+    }
+    loadCartItems();
+    return [true, ''];
+  }
+
+  Future<void> deleteCartProduct(final String productId) async {
+    try {
+      await cartRepository.deleteCartItem(productId);
+    } on InvalidTokenException {
+      emit(const CartError(title: 'please relogin', sessionEnded: true));
+    } on MessageException catch (ex) {
+      emit(CartError(title: ex.reason));
     }
     loadCartItems();
   }
 
-  void clearCart() {
+  void clearCart() async {
     try {
-      cartRepository.deleteAllCartItems(getTokens.get<Tokens>().accessToken);
+      await cartRepository.deleteAllCartItems();
+      loadCartItems();
     } on InvalidTokenException {
-      try {
-        refreshSeason(authenticationRepository);
-
-        clearCart();
-      } on InvalidRefreshTokenException {
-        sessionExpired();
-      }
+      emit(const CartError(title: 'please relogin', sessionEnded: true));
+    } on MessageException catch (ex) {
+      emit(CartError(title: ex.reason));
     }
     loadCartItems();
   }
 
-  bool addCartProduct({
+  Future<bool> addCartProduct({
     required final String productId,
     required final int quantity,
-  }) {
+  }) async {
     try {
-      cartRepository.postNewCartItem(getTokens.get<Tokens>().accessToken,
-          {'id': productId, 'quantity': quantity});
+      await cartRepository
+          .postNewCartItem({'id': productId, 'quantity': quantity});
       return true;
     } on InvalidTokenException {
-      try {
-        refreshSeason(authenticationRepository);
-        return addCartProduct(productId: productId, quantity: quantity);
-      } on InvalidRefreshTokenException {
-        sessionExpired();
-        return false;
-      }
-    } on MessageException {
+      emit(const CartError(title: 'please relogin', sessionEnded: true));
+      return false;
+    } on MessageException catch (ex) {
+      emit(CartError(title: ex.reason));
       return false;
     }
   }
 
   Future<List> cartCheckout() async {
     try {
-      await cartRepository.postCheckout(getTokens.get<Tokens>().accessToken);
+      await cartRepository.postCheckout();
       loadCartItems();
       return [true, 'Successful payment'];
     } on InvalidTokenException {
-      try {
-        refreshSeason(authenticationRepository);
-        return cartCheckout();
-      } on InvalidRefreshTokenException catch (ex) {
-        sessionExpired();
-        return [false, ex.reason];
-      }
+      emit(const CartError(title: 'please relogin', sessionEnded: true));
+      return [false, ''];
     } on MessageException catch (ex) {
       return [false, ex.reason];
     }

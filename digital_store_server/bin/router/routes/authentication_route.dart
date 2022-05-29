@@ -30,20 +30,21 @@ class AuthenticationRoute {
       final JWT? maybeJWT = verifyJwt(refreshToken, secretKey);
 
       if (maybeJWT == null) {
-        return Response(400, body: "not authorized for this action");
+        return Response(400, body: "refresh token is invalid");
       }
 
       final newAccessToken = generateJwt(
         subject: maybeJWT.subject!,
         issuer: 'http://${Env.ipAdress}',
         secretKey: secretKey,
+        duration: Duration(seconds: 15),
       );
 
       final newRefreshToken = generateJwt(
         subject: maybeJWT.subject!,
         issuer: 'http://${Env.ipAdress}',
         secretKey: secretKey,
-        duration: Duration(seconds: 1000),
+        duration: Duration(seconds: 30),
       );
 
       return Response(200,
@@ -115,13 +116,14 @@ class AuthenticationRoute {
         subject: userId,
         issuer: 'http://${Env.ipAdress}',
         secretKey: secretKey,
+        duration: Duration(seconds: 15),
       );
 
       final refreshToken = generateJwt(
         subject: userId,
         issuer: 'http://${Env.ipAdress}',
         secretKey: secretKey,
-        duration: Duration(seconds: 1000),
+        duration: Duration(seconds: 30),
       );
 
       return Response(200,

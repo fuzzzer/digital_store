@@ -24,8 +24,10 @@ class SeeProductPageLoaded extends SeeProductPageState {
 
 class SeeProductPageError extends SeeProductPageState {
   final String title;
-  const SeeProductPageError({final this.title = ''});
+  final bool sessionEnded;
+  const SeeProductPageError(
+      {final this.title = '', final this.sessionEnded = false});
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [title, sessionEnded];
 }

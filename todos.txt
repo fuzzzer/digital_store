@@ -1,0 +1,19 @@
+it will be good to use cart cubit in the see product page to manage adding and removing from the cart
+
+
+first priority:
+on refresh token timeout when InvalidTokenException occurs every page should have error state when user gets unAuthenticated, dialog comes up and informs user that session is expired and he/she can log in or continue as guest +
+add filter to hide not in stock products
+search in categories
+
+second priority:
+go to ordered product page
+admin page implementation (add products, cateories with separate tabs. add amin panel to home page appbar instead of user page, when admin is logged in products should have edit and delete option. also categories should have edit or delete option. when signing in access token payload should contain isAdmin boolean and front endshould check it to determine if user is admin)
+add reviews
+
+later:
+page for differrent resolution
+show product preview on product tile long press
+change password implemntation
+add product description on taptap
+

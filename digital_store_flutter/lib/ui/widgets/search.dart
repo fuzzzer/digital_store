@@ -1,4 +1,5 @@
 import 'package:digital_store_flutter/logic/cubits/data_cubits/products_cubit/products_cubit.dart';
+import 'package:digital_store_flutter/logic/cubits/widget_cubits/app_bar_cubit/app_bar_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,6 +14,8 @@ class Search extends StatelessWidget {
       height: 50,
       child: TextField(
         onChanged: (_) {
+          context.read<AppBarCubit>().clearSavedCategories();
+
           if (inputController.text == '') {
             context.read<ProductsCubit>().loadAllProducts();
           } else {

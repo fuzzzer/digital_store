@@ -1,5 +1,5 @@
 import 'package:digital_store_flutter/core/constants.dart';
-import 'package:digital_store_flutter/ui/screens/login_page.dart';
+import 'package:digital_store_flutter/ui/screens/login_page/login_page.dart';
 import 'package:digital_store_flutter/ui/widgets/command_button.dart';
 import 'package:digital_store_flutter/ui/widgets/text_input.dart';
 
