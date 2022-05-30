@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:digital_store_flutter/core/services/update_singletons.dart';
 import 'package:digital_store_flutter/data/repositories/authentication_repository.dart';
 import 'package:digital_store_flutter/data/repositories/user_repository.dart';
 import 'package:equatable/equatable.dart';
@@ -32,8 +33,7 @@ class UserCubit extends Cubit<UserState> {
       Map<String, dynamic> tokens = await authenticationRepository
           .postSignIn({'username': username, 'password': password});
 
-      getIt.get<Tokens>().accessToken = tokens['accessToken'];
-      getIt.get<Tokens>().refreshToken = tokens['refreshToken'];
+      updateTokens(tokens);
 
       final user = await userRepository.getUserProfile();
 
@@ -67,8 +67,7 @@ class UserCubit extends Cubit<UserState> {
         Map<String, dynamic> tokens =
             await authenticationRepository.postRefresh(refreshToken);
 
-        getIt.get<Tokens>().accessToken = tokens['accessToken'];
-        getIt.get<Tokens>().refreshToken = tokens['refreshToken'];
+        updateTokens(tokens);
 
         final user = await userRepository.getUserProfile();
 
@@ -181,8 +180,8 @@ class UserCubit extends Cubit<UserState> {
   }
 
   void logout() {
-    getIt.get<Tokens>().accessToken == '';
-    getIt.get<Tokens>().refreshToken == '';
+    Map<String, dynamic> tokens = {'accessToken': '', 'refreshToken': ''};
+    updateTokens(tokens);
     removeOldRefreshTokenFromHive();
     emit(const UserUnauthenticated());
   }

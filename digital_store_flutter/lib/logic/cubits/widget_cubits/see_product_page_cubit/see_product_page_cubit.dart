@@ -50,7 +50,7 @@ class SeeProductPageCubit extends Cubit<SeeProductPageState> {
     }
   }
 
-  void addProductToTheCart({required final String productId}) async {
+  Future<void> addCartProduct({required final String productId}) async {
     emit(SeeProductPageLoading());
     if (cartRepository != null) {
       try {
@@ -65,7 +65,7 @@ class SeeProductPageCubit extends Cubit<SeeProductPageState> {
     loadProduct();
   }
 
-  void deleteCartProduct({required final String productId}) async {
+  Future<void> deleteCartProduct({required final String productId}) async {
     emit(SeeProductPageLoading());
     if (cartRepository != null) {
       try {

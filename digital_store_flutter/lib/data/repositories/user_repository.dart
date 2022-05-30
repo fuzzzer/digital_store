@@ -3,14 +3,14 @@ import 'dart:convert';
 import 'package:digital_store_flutter/core/global_variables.dart';
 import 'package:digital_store_flutter/core/services/refresh_authorization_season.dart';
 import 'package:digital_store_flutter/data/models/tokens.dart';
-import 'package:http/retry.dart';
+import 'package:http/http.dart';
 
 import '../../core/config.dart';
 import '../models/custom_exceptions.dart';
 import '../models/user.dart';
 
 class UserRepository {
-  final client = getIt.get<RetryClient>();
+  final client = getIt.get<Client>();
   final String startingPath = 'http://$ipAdress:$port/user/';
 
   Future<bool> deleteUser() async {

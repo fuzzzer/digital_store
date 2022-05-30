@@ -3,14 +3,14 @@ import 'dart:convert';
 import 'package:digital_store_flutter/core/global_variables.dart';
 import 'package:digital_store_flutter/data/models/tokens.dart';
 import 'package:digital_store_flutter/core/services/refresh_authorization_season.dart';
-import 'package:http/retry.dart';
+import 'package:http/http.dart';
 
 import '../../core/config.dart';
 import '../models/custom_exceptions.dart';
 
 // be careful! if you create one instance of this repository and then decide to use that instance everywhere you have to update accessToken when needed
 class CartRepository {
-  final client = getIt.get<RetryClient>();
+  final client = getIt.get<Client>();
   late final Map<String, String> header;
 
   final String startingPath = 'http://$ipAdress:$port/cart/';

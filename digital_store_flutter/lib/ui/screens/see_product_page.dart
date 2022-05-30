@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/constants.dart';
-import '../../logic/cubits/data_cubits/cart_cubit/cart_cubit.dart';
 import '../../logic/cubits/widget_cubits/see_product_page_cubit/see_product_page_cubit.dart';
 import '../widgets/payment_dialog.dart';
 
@@ -132,13 +131,9 @@ class SeeProductPage extends StatelessWidget {
                                       builder: (context) => CheckDialog(
                                         onCommandFunction: () async {
                                           await oldContext
-                                              .read<CartCubit>()
-                                              .deleteCartProduct(
-                                                  state.product.id);
-
-                                          oldContext
                                               .read<SeeProductPageCubit>()
-                                              .loadProduct();
+                                              .deleteCartProduct(
+                                                  productId: state.product.id);
                                         },
                                         title:
                                             'do you really want to remove product from the cart?',
@@ -147,14 +142,10 @@ class SeeProductPage extends StatelessWidget {
                                     );
                                   } else {
                                     await oldContext
-                                        .read<CartCubit>()
-                                        .addCartProduct(
-                                            productId: state.product.id,
-                                            quantity: 1);
-
-                                    oldContext
                                         .read<SeeProductPageCubit>()
-                                        .loadProduct();
+                                        .addCartProduct(
+                                          productId: state.product.id,
+                                        );
                                   }
                                 },
                                 icon: Icon(Icons.shopping_cart,

@@ -1,14 +1,13 @@
 import 'dart:convert';
 
 import 'package:digital_store_flutter/core/global_variables.dart';
-import 'package:digital_store_flutter/data/models/tokens.dart';
-import 'package:http/retry.dart';
+import 'package:http/http.dart';
 import '../../core/config.dart';
 import '../../logic/global_logics/checkers.dart';
 import '../models/custom_exceptions.dart';
 
 class AuthenticationRepository {
-  final client = getIt.get<RetryClient>();
+  final client = getIt.get<Client>();
   final String startingPath = 'http://$ipAdress:$port/authentication/';
 
   Future<Map<String, dynamic>> postRefresh(final String refreshToken) async {
@@ -59,7 +58,6 @@ class AuthenticationRepository {
 
       if (checkTokens(decodedJson)) {
         final result = decodedJson as Map<String, dynamic>;
-        getIt.get<Tokens>().refreshToken = result['refreshToken'];
 
         return result;
       } else {
