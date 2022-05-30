@@ -21,7 +21,8 @@ class UserRepository {
     });
     if (response.statusCode == 200) {
       return true;
-    } else if (response.statusCode == 401) {
+    } else if (response.statusCode == 401 &&
+        response.body == 'access token is missing or invalid') {
       try {
         await refreshSeason();
         return deleteUser();
@@ -48,7 +49,8 @@ class UserRepository {
       for (final order in decodedJson) {
         result.add(order as Map<String, dynamic>);
       }
-    } else if (response.statusCode == 401) {
+    } else if (response.statusCode == 401 &&
+        response.body == 'access token is missing or invalid') {
       try {
         await refreshSeason();
         return getAllUserOrders();
@@ -76,7 +78,8 @@ class UserRepository {
       final decodedJson = jsonDecode(response.body);
 
       result.addAll(decodedJson);
-    } else if (response.statusCode == 401) {
+    } else if (response.statusCode == 401 &&
+        response.body == 'access token is missing or invalid') {
       try {
         await refreshSeason();
         return getUserOrder(orderId);
@@ -103,7 +106,8 @@ class UserRepository {
       final decodedJson = jsonDecode(response.body);
 
       result.addAll(decodedJson);
-    } else if (response.statusCode == 401) {
+    } else if (response.statusCode == 401 &&
+        response.body == 'access token is missing or invalid') {
       try {
         await refreshSeason();
         return getUserBalance();
@@ -127,7 +131,8 @@ class UserRepository {
 
     if (response.statusCode == 200) {
       return true;
-    } else if (response.statusCode == 401) {
+    } else if (response.statusCode == 401 &&
+        response.body == 'access token is missing or invalid') {
       try {
         await refreshSeason();
         return patchUserBalance(balanceData);
@@ -150,7 +155,8 @@ class UserRepository {
       final decodedJson = jsonDecode(response.body);
 
       return User.fromJson(decodedJson);
-    } else if (response.statusCode == 401) {
+    } else if (response.statusCode == 401 &&
+        response.body == 'access token is missing or invalid') {
       try {
         await refreshSeason();
         return getUserProfile();
@@ -172,7 +178,8 @@ class UserRepository {
 
     if (response.statusCode == 200) {
       return true;
-    } else if (response.statusCode == 401) {
+    } else if (response.statusCode == 401 &&
+        response.body == 'access token is missing or invalid') {
       try {
         await refreshSeason();
         return patchUserProfile(userData);

@@ -41,7 +41,8 @@ class CategoriesRepository {
 
     if (response.statusCode == 200) {
       return true;
-    } else if (response.statusCode == 401) {
+    } else if (response.statusCode == 401 &&
+        response.body == 'access token is missing or invalid') {
       try {
         await refreshSeason();
         return postNewCategory(category);
@@ -66,7 +67,8 @@ class CategoriesRepository {
 
     if (response.statusCode == 200) {
       return true;
-    } else if (response.statusCode == 401) {
+    } else if (response.statusCode == 401 &&
+        response.body == 'access token is missing or invalid') {
       try {
         await refreshSeason();
         return patchCategory(categoryId, categoryData);
@@ -91,7 +93,8 @@ class CategoriesRepository {
 
     if (response.statusCode == 200) {
       return true;
-    } else if (response.statusCode == 401) {
+    } else if (response.statusCode == 401 &&
+        response.body == 'access token is missing or invalid') {
       try {
         await refreshSeason();
         return deleteCategory(categoryId);

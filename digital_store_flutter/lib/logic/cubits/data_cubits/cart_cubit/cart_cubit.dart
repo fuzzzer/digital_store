@@ -115,23 +115,6 @@ class CartCubit extends Cubit<CartState> {
     loadCartItems();
   }
 
-  Future<bool> addCartProduct({
-    required final String productId,
-    required final int quantity,
-  }) async {
-    try {
-      await cartRepository
-          .postNewCartItem({'id': productId, 'quantity': quantity});
-      return true;
-    } on InvalidTokenException {
-      emit(const CartError(title: 'please relogin', sessionEnded: true));
-      return false;
-    } on MessageException catch (ex) {
-      emit(CartError(title: ex.reason));
-      return false;
-    }
-  }
-
   Future<List> cartCheckout() async {
     try {
       await cartRepository.postCheckout();

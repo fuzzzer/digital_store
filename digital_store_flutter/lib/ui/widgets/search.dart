@@ -15,6 +15,7 @@ class Search extends StatelessWidget {
       child: TextField(
         onChanged: (_) {
           context.read<AppBarCubit>().clearSavedCategories();
+          context.read<AppBarCubit>().clearSavedCategories();
 
           if (inputController.text == '') {
             context.read<ProductsCubit>().loadAllProducts();

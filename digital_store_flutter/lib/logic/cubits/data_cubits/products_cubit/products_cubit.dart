@@ -65,6 +65,8 @@ class ProductsCubit extends Cubit<ProductsState> {
     final List<Product> products =
         await ProductsRepository().getProductsFilteredBySearch(toSearch);
 
+    selectedCategories.clear();
+
     saveOldFilteredProducts = false;
 
     try {
@@ -86,11 +88,17 @@ class ProductsCubit extends Cubit<ProductsState> {
     if (filteredProductsToModify != null) {
       selectedCategories.remove(categoryId);
 
-      filteredProductsToModify.removeWhere((product) {
-        return product.categories.contains(categoryId) &&
-            !product.categories
-                .any((category) => selectedCategories.contains(category));
-      });
+      final int start = filteredProductsToModify.length;
+
+      filteredProductsToModify.removeWhere(
+        (product) =>
+            product.categories.contains(categoryId) &&
+            !product.categories.any(
+              (category) => selectedCategories.contains(category),
+            ),
+      );
+
+      print('print start: $start end: ${filteredProductsToModify.length}');
     }
 
     try {

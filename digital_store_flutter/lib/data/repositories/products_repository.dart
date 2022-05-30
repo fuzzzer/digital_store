@@ -79,7 +79,8 @@ class ProductsRepository {
 
     if (response.statusCode == 200) {
       return true;
-    } else if (response.statusCode == 401) {
+    } else if (response.statusCode == 401 &&
+        response.body == 'access token is missing or invalid') {
       try {
         await refreshSeason();
         return postNewProduct(product);
@@ -116,7 +117,8 @@ class ProductsRepository {
 
     if (response.statusCode == 200) {
       return true;
-    } else if (response.statusCode == 401) {
+    } else if (response.statusCode == 401 &&
+        response.body == 'access token is missing or invalid') {
       try {
         await refreshSeason();
         return patchProduct(productId, productData);
@@ -137,7 +139,8 @@ class ProductsRepository {
 
     if (response.statusCode == 200) {
       return true;
-    } else if (response.statusCode == 401) {
+    } else if (response.statusCode == 401 &&
+        response.body == 'access token is missing or invalid') {
       try {
         await refreshSeason();
         return deleteProduct(productId);
@@ -161,7 +164,8 @@ class ProductsRepository {
 
     if (response.statusCode == 200) {
       return true;
-    } else if (response.statusCode == 401) {
+    } else if (response.statusCode == 401 &&
+        response.body == 'access token is missing or invalid') {
       try {
         await refreshSeason();
         return putProductPurchase(productId, purchaseData);
@@ -185,7 +189,8 @@ class ProductsRepository {
 
     if (response.statusCode == 200) {
       return true;
-    } else if (response.statusCode == 401) {
+    } else if (response.statusCode == 401 &&
+        response.body == 'access token is missing or invalid') {
       try {
         await refreshSeason();
         return putProductReview(productId, reviewData);
@@ -204,7 +209,8 @@ class ProductsRepository {
 
     if (response.statusCode == 200) {
       return true;
-    } else if (response.statusCode == 401) {
+    } else if (response.statusCode == 401 &&
+        response.body == 'access token is missing or invalid') {
       try {
         await refreshSeason();
         return getAllProductReviews(productId);

@@ -30,7 +30,8 @@ class CartRepository {
       for (var item in (decodedJson['products'] as List)) {
         result['products']!.add((item as Map<String, dynamic>));
       }
-    } else if (response.statusCode == 401) {
+    } else if (response.statusCode == 401 &&
+        response.body == 'access token is missing or invalid') {
       try {
         await refreshSeason();
         getAllCartItems();
@@ -55,7 +56,8 @@ class CartRepository {
 
     if (response.statusCode == 200) {
       return true;
-    } else if (response.statusCode == 401) {
+    } else if (response.statusCode == 401 &&
+        response.body == 'access token is missing or invalid') {
       try {
         await refreshSeason();
         return postNewCartItem(productIdAndQuantity);
@@ -78,7 +80,8 @@ class CartRepository {
 
     if (response.statusCode == 200) {
       return true;
-    } else if (response.statusCode == 401) {
+    } else if (response.statusCode == 401 &&
+        response.body == 'access token is missing or invalid') {
       try {
         await refreshSeason();
         return patchCartItem(productId, productData);
@@ -99,7 +102,8 @@ class CartRepository {
 
     if (response.statusCode == 200) {
       return true;
-    } else if (response.statusCode == 401) {
+    } else if (response.statusCode == 401 &&
+        response.body == 'access token is missing or invalid') {
       try {
         await refreshSeason();
         return deleteCartItem(productId);
@@ -120,7 +124,8 @@ class CartRepository {
 
     if (response.statusCode == 200) {
       return true;
-    } else if (response.statusCode == 401) {
+    } else if (response.statusCode == 401 &&
+        response.body == 'access token is missing or invalid') {
       try {
         await refreshSeason();
         return postCheckout();
@@ -144,7 +149,8 @@ class CartRepository {
 
     if (response.statusCode == 200) {
       return true;
-    } else if (response.statusCode == 401) {
+    } else if (response.statusCode == 401 &&
+        response.body == 'access token is missing or invalid') {
       try {
         await refreshSeason();
         return deleteAllCartItems();
