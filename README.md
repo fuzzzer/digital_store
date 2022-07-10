@@ -10,12 +10,12 @@ DATABASE_LOCATION='project location'/digital store/digital_store_server/database
 IP_ADRESS="localhost"
 
 after you set up .env you can go ahead and run: 
-$ dart pub get
-$ dart pub run build_runner build
+ dart pub get
+ dart pub run build_runner build
 
 after this you can start the server:
 run from digital_store_server project directory:
-$ dart run bin/server.dart
+ dart run bin/server.dart
 
 after you start the server 
 you can manualy send requests given in the server readme file.
