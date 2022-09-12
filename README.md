@@ -14,7 +14,7 @@ and run from digital_store_server project directory: \
  `dart pub get` \
  `dart pub run build_runner build` 
 
-after this you can start the server run: \
+after this you can start the server by runing: \
  `dart run bin/server.dart `
 
 after you start the server \
