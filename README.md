@@ -27,6 +27,7 @@ So only available option is Android or ios emulator.
 To run digital_store_flutter user end application from emulator, \
 select target device from your editor and \
 run this command from digital_store_flutter project directory: \
+'flutter pub get'
 `flutter run lib/main.dart `
 
 
