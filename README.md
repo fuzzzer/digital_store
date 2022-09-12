@@ -9,12 +9,12 @@ set it up and run it on localhos. \
 `DATABASE_LOCATION='project location'/digital store/digital_store_server/databases/digital_store_database.db` \
 `IP_ADRESS="localhost" `
 
-after you set up .env you can go ahead and run: \
+after you set up .env you can go ahead 
+and run from digital_store_server project directory: \
  `dart pub get` \
  `dart pub run build_runner build` 
 
-after this you can start the server: \
-run from digital_store_server project directory: \
+after this you can start the server run: \
  `dart run bin/server.dart `
 
 after you start the server \
