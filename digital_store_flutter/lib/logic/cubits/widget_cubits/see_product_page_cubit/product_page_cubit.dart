@@ -11,10 +11,10 @@ import '../../../../data/repositories/authentication_repository.dart';
 import '../../../global_logics/checkers.dart';
 import '../../../global_logics/refresh_authorization_season.dart';
 
-part 'see_product_page_state.dart';
+part 'product_page_state.dart';
 
-class SeeProductPageCubit extends Cubit<SeeProductPageState> {
-  SeeProductPageCubit(
+class ProductPageCubit extends Cubit<SeeProductPageState> {
+  ProductPageCubit(
       {required this.productId,
       required this.productsRepository,
       required this.authenticationRepository})

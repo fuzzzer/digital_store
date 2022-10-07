@@ -6,12 +6,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/constants.dart';
 import '../../logic/cubits/data_cubits/cart_cubit/cart_cubit.dart';
-import '../../logic/cubits/widget_cubits/see_product_page_cubit/see_product_page_cubit.dart';
+import '../../logic/cubits/widget_cubits/see_product_page_cubit/product_page_cubit.dart';
 import '../widgets/payment_dialog.dart';
 import 'login_page.dart';
 
-class SeeProductPage extends StatelessWidget {
-  const SeeProductPage({Key? key}) : super(key: key);
+class ProductPage extends StatelessWidget {
+  const ProductPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +21,8 @@ class SeeProductPage extends StatelessWidget {
       ),
       body: Padding(
         padding: defaultPagePadding,
-        child: BlocBuilder<SeeProductPageCubit, SeeProductPageState>(
-          bloc: context.read<SeeProductPageCubit>()..loadProduct(),
+        child: BlocBuilder<ProductPageCubit, SeeProductPageState>(
+          bloc: context.read<ProductPageCubit>()..loadProduct(),
           builder: (context, state) {
             if (state is SeeProductPageInitial) {
               return const Center(child: Text('Initial state'));
@@ -76,7 +76,7 @@ class SeeProductPage extends StatelessWidget {
                                           commandName: 'Pay',
                                           onCommandFunction: () async {
                                             List paymentInfo = await oldContext
-                                                .read<SeeProductPageCubit>()
+                                                .read<ProductPageCubit>()
                                                 .buyProduct();
                                             // is payment successful? --> List[0] = bool
                                             // whats the reason of unsuccefful payment --> List[1] = String
@@ -134,7 +134,7 @@ class SeeProductPage extends StatelessWidget {
                                               .deleteCartProduct(
                                                   state.product.id);
                                           oldContext
-                                              .read<SeeProductPageCubit>()
+                                              .read<ProductPageCubit>()
                                               .loadProduct();
                                         },
                                         title:
@@ -148,7 +148,7 @@ class SeeProductPage extends StatelessWidget {
                                         quantity: 1);
 
                                     oldContext
-                                        .read<SeeProductPageCubit>()
+                                        .read<ProductPageCubit>()
                                         .loadProduct();
                                   }
                                 },

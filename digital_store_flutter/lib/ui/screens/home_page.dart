@@ -12,9 +12,9 @@ import '../../data/repositories/products_repository.dart';
 import '../../logic/cubits/data_cubits/products_cubit/products_cubit.dart';
 import '../../logic/cubits/data_cubits/user_cubit/user_cubit.dart';
 import '../../logic/cubits/widget_cubits/app_bar_cubit/app_bar_cubit.dart';
-import '../../logic/cubits/widget_cubits/see_product_page_cubit/see_product_page_cubit.dart';
+import '../../logic/cubits/widget_cubits/see_product_page_cubit/product_page_cubit.dart';
 import '../widgets/product_tile.dart';
-import 'see_product_page.dart';
+import 'product_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -83,14 +83,14 @@ class HomePage extends StatelessWidget {
                               MaterialPageRoute(
                                 builder: (context) => BlocProvider(
                                   create: (context) {
-                                    return SeeProductPageCubit(
+                                    return ProductPageCubit(
                                       productsRepository: ProductsRepository(),
                                       productId: state.products[index].id,
                                       authenticationRepository:
                                           AuthenticationRepository(),
                                     );
                                   },
-                                  child: const SeeProductPage(),
+                                  child: const ProductPage(),
                                 ),
                               ),
                             );

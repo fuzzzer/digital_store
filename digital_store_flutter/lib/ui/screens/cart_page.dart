@@ -11,8 +11,8 @@ import '../../data/repositories/authentication_repository.dart';
 import '../../data/repositories/products_repository.dart';
 import '../../logic/cubits/data_cubits/cart_cubit/cart_cubit.dart';
 import '../../logic/cubits/data_cubits/user_cubit/user_cubit.dart';
-import '../../logic/cubits/widget_cubits/see_product_page_cubit/see_product_page_cubit.dart';
-import 'see_product_page.dart';
+import '../../logic/cubits/widget_cubits/see_product_page_cubit/product_page_cubit.dart';
+import 'product_page.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({Key? key}) : super(key: key);
@@ -87,7 +87,7 @@ class CartPage extends StatelessWidget {
                                       MaterialPageRoute(
                                         builder: (context) => BlocProvider(
                                           create: (context) {
-                                            return SeeProductPageCubit(
+                                            return ProductPageCubit(
                                                 productsRepository:
                                                     ProductsRepository(),
                                                 productId: state
@@ -97,7 +97,7 @@ class CartPage extends StatelessWidget {
                                                 authenticationRepository:
                                                     AuthenticationRepository());
                                           },
-                                          child: const SeeProductPage(),
+                                          child: const ProductPage(),
                                         ),
                                       ),
                                     );
