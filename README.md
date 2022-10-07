@@ -20,7 +20,7 @@ run from digital_store_server project directory: \
 after you start the server \
 you can manualy send requests given in the server readme file. \
 or run the flutter app from emulator. \
-unless server is hosted and you are not run it on local ip, \
+unless server is hosted and you dont not run it on local ip, \
 you can't run the app on the real mobile phone. \
 So only available option is Android or ios emulator. 
 

@@ -14,9 +14,9 @@ part 'cart_state.dart';
 
 class CartCubit extends Cubit<CartState> {
   CartCubit(
-      {required final this.cartRepository,
-      required final this.productsRepository,
-      required final this.authenticationRepository})
+      {required this.cartRepository,
+      required this.productsRepository,
+      required this.authenticationRepository})
       : super(CartInitial());
 
   final CartRepository cartRepository;

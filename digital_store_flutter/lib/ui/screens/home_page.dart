@@ -1,7 +1,5 @@
 import 'package:digital_store_flutter/core/constants.dart';
 import 'package:digital_store_flutter/data/repositories/authentication_repository.dart';
-import 'package:digital_store_flutter/data/repositories/cart_repository.dart';
-import 'package:digital_store_flutter/logic/cubits/data_cubits/cart_cubit/cart_cubit.dart';
 import 'package:digital_store_flutter/ui/screens/cart_page.dart';
 import 'package:digital_store_flutter/ui/widgets/categories_chooser.dart';
 
@@ -86,11 +84,11 @@ class HomePage extends StatelessWidget {
                                 builder: (context) => BlocProvider(
                                   create: (context) {
                                     return SeeProductPageCubit(
-                                        productsRepository:
-                                            ProductsRepository(),
-                                        productId: state.products[index].id,
-                                        authenticationRepository:
-                                            AuthenticationRepository());
+                                      productsRepository: ProductsRepository(),
+                                      productId: state.products[index].id,
+                                      authenticationRepository:
+                                          AuthenticationRepository(),
+                                    );
                                   },
                                   child: const SeeProductPage(),
                                 ),
@@ -106,14 +104,15 @@ class HomePage extends StatelessWidget {
                         children: [
                           const Text('some error occured'),
                           ElevatedButton(
-                              onPressed: () => context.read<ProductsCubit>()
-                                ..loadAllProducts(),
-                              child: const Text(
-                                'refresh',
-                                style: TextStyle(
-                                    color: Color.fromARGB(255, 0, 0, 0),
-                                    fontWeight: FontWeight.w800),
-                              ))
+                            onPressed: () => context.read<ProductsCubit>()
+                              ..loadAllProducts(),
+                            child: const Text(
+                              'refresh',
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 0, 0, 0),
+                                  fontWeight: FontWeight.w800),
+                            ),
+                          )
                         ],
                       ),
                     );

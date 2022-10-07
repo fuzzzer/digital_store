@@ -9,7 +9,7 @@ import '../../logic/database_interactions/queries_for_each_route/categories_quer
 
 class CategoriesRoute {
   final Database database;
-  CategoriesRoute({required final this.database});
+  CategoriesRoute({required this.database});
   Router get router {
     final router = Router();
 

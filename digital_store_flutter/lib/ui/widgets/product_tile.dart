@@ -9,9 +9,9 @@ class ProductTile extends StatelessWidget {
 
   const ProductTile({
     Key? key,
-    required final this.productInfo,
-    final this.height = 150,
-    required final this.onTapFunction,
+    required this.productInfo,
+    this.height = 150,
+    required this.onTapFunction,
   }) : super(key: key);
 
   @override

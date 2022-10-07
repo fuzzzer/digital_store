@@ -8,10 +8,10 @@ class CredentialsInput extends StatefulWidget {
 
   const CredentialsInput(
       {Key? key,
-      final this.hintText = '',
-      final this.passwordType = false,
-      final this.maxLines = 1,
-      required final this.inputController})
+      this.hintText = '',
+      this.passwordType = false,
+      this.maxLines = 1,
+      required this.inputController})
       : super(key: key);
 
   @override

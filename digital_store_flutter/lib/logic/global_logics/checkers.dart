@@ -1,5 +1,4 @@
 import 'package:digital_store_flutter/data/models/custom_exceptions.dart';
-import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 
 import '../../core/global_variables.dart';
 import '../../data/models/tokens.dart';

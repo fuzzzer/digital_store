@@ -13,7 +13,7 @@ class DigitalStoreRouter {
   final Database database;
   final String secretKey;
   DigitalStoreRouter(
-      {required final this.database, required final this.secretKey});
+      {required this.database, required this.secretKey});
 
   Handler get handler {
     final Router router = Router()

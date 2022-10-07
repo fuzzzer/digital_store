@@ -7,12 +7,12 @@ class ProductReview {
   final String modifiedAt;
 
   const ProductReview({
-    required final this.userId,
-    required final this.productId,
-    required final this.rating,
-    required final this.review,
-    required final this.createdAt,
-    required final this.modifiedAt,
+    required this.userId,
+    required this.productId,
+    required this.rating,
+    required this.review,
+    required this.createdAt,
+    required this.modifiedAt,
   });
 
   ProductReview copyWith({

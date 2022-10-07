@@ -12,12 +12,12 @@ class CartProductTile extends StatelessWidget {
 
   const CartProductTile({
     Key? key,
-    required final this.productInfo,
-    final this.height = 150,
-    required final this.onPlusTapFunction,
-    required final this.onMinusTapFunction,
-    required final this.onRemoveTapFunction,
-    final this.onLongPressFunction,
+    required this.productInfo,
+    this.height = 150,
+    required this.onPlusTapFunction,
+    required this.onMinusTapFunction,
+    required this.onRemoveTapFunction,
+    this.onLongPressFunction,
   }) : super(key: key);
 
   @override

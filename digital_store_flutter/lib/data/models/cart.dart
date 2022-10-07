@@ -6,7 +6,7 @@ class Cart {
   final Map<Product, int> productsInTheCart;
 
   const Cart({
-    required final this.productsInTheCart,
+    required this.productsInTheCart,
   });
 
   Cart copyWith({

@@ -87,6 +87,8 @@ List<Map<String, dynamic>> getProductsFilteredByCategories(
   return result.values.toList();
 }
 
+//TODO fix search and filter interaction fro  from end side
+
 List<Map<String, dynamic>> getProductsFilteredBySearch(
     final Database database, String toSearch) {
   final Map<String, Map<String, dynamic>> result = {};

@@ -1,19 +1,19 @@
 class InvalidTokenException implements Exception {
   final String reason;
-  const InvalidTokenException(final this.reason);
+  const InvalidTokenException(this.reason);
 }
 
 class InvalidRefreshTokenException implements Exception {
   final String reason;
-  const InvalidRefreshTokenException(final this.reason);
+  const InvalidRefreshTokenException(this.reason);
 }
 
 class InvalidTokenRecievedException implements Exception {
   final String reason;
-  const InvalidTokenRecievedException(final this.reason);
+  const InvalidTokenRecievedException(this.reason);
 }
 
 class MessageException implements Exception {
   final String reason;
-  const MessageException(final this.reason);
+  const MessageException(this.reason);
 }

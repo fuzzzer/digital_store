@@ -13,7 +13,7 @@ class UserConsumer extends UserState {
   final User user;
 
   const UserConsumer({
-    required final this.user,
+    required this.user,
   });
 
   @override
@@ -34,9 +34,9 @@ class UserAdministrator extends UserState {
   final String refreshToken;
 
   const UserAdministrator({
-    required final this.user,
-    required final this.accessToken,
-    required final this.refreshToken,
+    required this.user,
+    required this.accessToken,
+    required this.refreshToken,
   });
 
   @override

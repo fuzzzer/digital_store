@@ -15,7 +15,7 @@ part 'see_product_page_state.dart';
 
 class SeeProductPageCubit extends Cubit<SeeProductPageState> {
   SeeProductPageCubit(
-      {required final this.productId,
+      {required this.productId,
       required this.productsRepository,
       required this.authenticationRepository})
       : super(SeeProductPageInitial()) {

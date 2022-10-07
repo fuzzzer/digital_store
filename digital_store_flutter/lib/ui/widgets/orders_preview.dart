@@ -15,8 +15,7 @@ class OrdersPreview extends StatelessWidget {
           children: [
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  elevation: 10,
-                  primary: const Color.fromARGB(232, 57, 56, 56)),
+                  elevation: 10, backgroundColor: const Color.fromARGB(232, 57, 56, 56)),
               onPressed: () {
                 context.read<UserPageCubit>().changeWatchingOrdersState();
               },

@@ -9,7 +9,9 @@ Map<String, List> getAllCartItemFromDatabase(
   final Map<String, List> result = {"products": []};
   final ResultSet resultSet = database.select(
       'SELECT product_id as id, quantity FROM cart_item WHERE cart_id LIKE (SELECT cart_id FROM user WHERE id LIKE  "$userId")');
-  resultSet.forEach((element) => result['products']!.add(element));
+  for (var element in resultSet) {
+    result['products']!.add(element);
+  }
   return result;
 }
 

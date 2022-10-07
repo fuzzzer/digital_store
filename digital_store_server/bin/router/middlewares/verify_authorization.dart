@@ -15,6 +15,7 @@ Middleware handleAuthorization(final String secretKey) {
           final token = authorizationHeader.substring(7);
           jwt = verifyJwt(token, secretKey); // this will be null or jwt payload
         }
+        // ignore: empty_catches
       } catch (e) {}
 
       final updatedRequest = request.change(context: {

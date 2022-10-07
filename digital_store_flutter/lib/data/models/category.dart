@@ -4,9 +4,9 @@ class Category {
   final String description;
 
   const Category({
-    required final this.id,
-    required final this.title,
-    required final this.description,
+    required this.id,
+    required this.title,
+    required this.description,
   });
 
   Category copyWith({

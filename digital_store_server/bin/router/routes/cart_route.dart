@@ -11,7 +11,7 @@ import '../middlewares/verify_authorization.dart';
 
 class CartRoute {
   final Database database;
-  CartRoute({required final this.database});
+  CartRoute({required this.database});
 
   Handler get router {
     final router = Router();

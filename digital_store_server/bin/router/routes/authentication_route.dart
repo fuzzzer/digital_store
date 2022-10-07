@@ -16,7 +16,7 @@ class AuthenticationRoute {
   final String secretKey;
 
   AuthenticationRoute(
-      {required final this.database, required final this.secretKey});
+      {required this.database, required this.secretKey});
 
   Router get router {
     final router = Router();

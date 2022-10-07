@@ -10,12 +10,12 @@ class CommandButton extends StatelessWidget {
 
   const CommandButton(
       {Key? key,
-      final this.commandName = '',
-      required final this.onPressedFunction,
-      final this.backgroundColor = Colors.white,
-      final this.textColor = Colors.black,
-      final this.fontWeight = FontWeight.w800,
-      final this.width = 100})
+      this.commandName = '',
+      required this.onPressedFunction,
+      this.backgroundColor = Colors.white,
+      this.textColor = Colors.black,
+      this.fontWeight = FontWeight.w800,
+      this.width = 100})
       : super(key: key);
 
   @override
@@ -26,7 +26,7 @@ class CommandButton extends StatelessWidget {
         width: width,
         child: ElevatedButton(
           style:
-              ElevatedButton.styleFrom(elevation: 10, primary: backgroundColor),
+              ElevatedButton.styleFrom(elevation: 10, backgroundColor: backgroundColor),
           child: Text(
             commandName,
             style: TextStyle(color: textColor, fontWeight: fontWeight),

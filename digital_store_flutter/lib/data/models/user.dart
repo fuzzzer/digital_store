@@ -14,19 +14,19 @@ class User {
   String? modifiedAt;
 
   User({
-    required final this.id,
-    required final this.username,
-    required final this.password,
-    required final this.balance,
-    required final this.firstName,
-    required final this.lastName,
-    required final this.email,
-    required final this.birthDate,
-    required final this.phoneNumber,
-    required final this.adress,
-    required final this.sex,
-    final this.createdAt,
-    final this.modifiedAt,
+    required this.id,
+    required this.username,
+    required this.password,
+    required this.balance,
+    required this.firstName,
+    required this.lastName,
+    required this.email,
+    required this.birthDate,
+    required this.phoneNumber,
+    required this.adress,
+    required this.sex,
+    this.createdAt,
+    this.modifiedAt,
   });
 
   User copyWith({

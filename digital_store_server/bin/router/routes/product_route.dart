@@ -11,7 +11,7 @@ import '../../logic/database_interactions/queries_for_each_route/product_queries
 
 class ProductRoute {
   final Database database;
-  ProductRoute({required final this.database});
+  ProductRoute({required this.database});
 
   Router get router {
     final router = Router();
