@@ -1,4 +1,4 @@
-part of 'see_product_page_cubit.dart';
+part of 'product_page_cubit.dart';
 
 abstract class SeeProductPageState extends Equatable {
   const SeeProductPageState();
