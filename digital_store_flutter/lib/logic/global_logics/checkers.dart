@@ -10,7 +10,7 @@ Future<bool> checkIfProductIsInTheCart({
 }) async {
   try {
     Map<String, dynamic> productsMap = await cartRepository.getAllCartItems(
-        getTokens
+        serviceLocator
             .get<Tokens>()
             .accessToken); // {products: [{'id': id, 'quantity': quantity}]}
     final List allCartItemProductIds = productsMap['products'];

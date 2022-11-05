@@ -3,13 +3,13 @@ import 'package:get_it/get_it.dart';
 
 import '../data/models/tokens.dart';
 
-GetIt getTokens = GetIt.instance;
+GetIt serviceLocator = GetIt.instance;
 
 void setup() {
-  getTokens.registerSingleton<Tokens>(
+  serviceLocator.registerSingleton<Tokens>(
     Tokens(accessToken: '', refreshToken: ''),
   );
 
-  getTokens
+  serviceLocator
       .registerSingleton<AuthenticationRepository>(AuthenticationRepository());
 }

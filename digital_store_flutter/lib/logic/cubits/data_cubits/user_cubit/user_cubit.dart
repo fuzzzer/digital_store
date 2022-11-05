@@ -34,14 +34,14 @@ class UserCubit extends Cubit<UserState> {
       Map<String, dynamic> tokens = await authenticationRepository
           .postSignIn({'username': username, 'password': password});
 
-      getTokens.get<Tokens>().accessToken = tokens['accessToken'];
-      getTokens.get<Tokens>().refreshToken = tokens['refreshToken'];
+      serviceLocator.get<Tokens>().accessToken = tokens['accessToken'];
+      serviceLocator.get<Tokens>().refreshToken = tokens['refreshToken'];
 
       final user = await userRepository
-          .getUserProfile(getTokens.get<Tokens>().accessToken);
+          .getUserProfile(serviceLocator.get<Tokens>().accessToken);
 
       if (shouldBeRemembered) {
-        storeCredentials(getTokens.get<Tokens>().refreshToken);
+        storeCredentials(serviceLocator.get<Tokens>().refreshToken);
       }
 
       emit(UserConsumer(user: user));
@@ -61,14 +61,14 @@ class UserCubit extends Cubit<UserState> {
         Map<String, dynamic> tokens =
             await authenticationRepository.postRefresh(refreshToken);
 
-        getTokens.get<Tokens>().accessToken = tokens['accessToken'];
-        getTokens.get<Tokens>().refreshToken = tokens['refreshToken'];
+        serviceLocator.get<Tokens>().accessToken = tokens['accessToken'];
+        serviceLocator.get<Tokens>().refreshToken = tokens['refreshToken'];
 
         final user = await userRepository
-            .getUserProfile(getTokens.get<Tokens>().accessToken);
+            .getUserProfile(serviceLocator.get<Tokens>().accessToken);
 
         if (shouldBeRemembered) {
-          storeCredentials(getTokens.get<Tokens>().refreshToken);
+          storeCredentials(serviceLocator.get<Tokens>().refreshToken);
         }
 
         emit(UserConsumer(user: user));
@@ -115,9 +115,9 @@ class UserCubit extends Cubit<UserState> {
 
     try {
       await userRepository.patchUserBalance(
-          getTokens.get<Tokens>().accessToken, {'amount': newBalance});
+          serviceLocator.get<Tokens>().accessToken, {'amount': newBalance});
       final user = await userRepository
-          .getUserProfile(getTokens.get<Tokens>().accessToken);
+          .getUserProfile(serviceLocator.get<Tokens>().accessToken);
       emit((state as UserConsumer).copyWith(user: user));
     } on InvalidTokenException {
       try {
@@ -132,7 +132,7 @@ class UserCubit extends Cubit<UserState> {
   void refreshUserProfile() async {
     try {
       final user = await userRepository
-          .getUserProfile(getTokens.get<Tokens>().accessToken);
+          .getUserProfile(serviceLocator.get<Tokens>().accessToken);
       emit((state as UserConsumer).copyWith(user: user));
     } on InvalidTokenException {
       try {
@@ -154,7 +154,7 @@ class UserCubit extends Cubit<UserState> {
   }) async {
     try {
       await userRepository
-          .patchUserProfile(getTokens.get<Tokens>().accessToken, {
+          .patchUserProfile(serviceLocator.get<Tokens>().accessToken, {
         'firstName': firstName,
         'lastName': lastName,
         'email': email,
@@ -164,7 +164,7 @@ class UserCubit extends Cubit<UserState> {
       });
 
       final user = await userRepository
-          .getUserProfile(getTokens.get<Tokens>().accessToken);
+          .getUserProfile(serviceLocator.get<Tokens>().accessToken);
 
       emit((state as UserConsumer).copyWith(user: user));
 
@@ -189,8 +189,8 @@ class UserCubit extends Cubit<UserState> {
   }
 
   void logout() {
-    getTokens.get<Tokens>().accessToken == '';
-    getTokens.get<Tokens>().refreshToken == '';
+    serviceLocator.get<Tokens>().accessToken == '';
+    serviceLocator.get<Tokens>().refreshToken == '';
     removeOldRefreshTokenFromHive();
     emit(UserUnauthenticated());
   }

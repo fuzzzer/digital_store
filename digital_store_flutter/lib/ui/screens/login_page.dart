@@ -40,7 +40,7 @@ class LoginPage extends StatelessWidget {
             ),
             CredentialsInput(
               hintText: 'password',
-              passwordType: true,
+              obscure: true,
               inputController: passwordInputController,
             ),
             const RememberMe(),

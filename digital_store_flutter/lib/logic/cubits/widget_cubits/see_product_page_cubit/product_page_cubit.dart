@@ -19,7 +19,7 @@ class ProductPageCubit extends Cubit<SeeProductPageState> {
       required this.productsRepository,
       required this.authenticationRepository})
       : super(SeeProductPageInitial()) {
-    if (getTokens.get<Tokens>().accessToken != '') {
+    if (serviceLocator.get<Tokens>().accessToken != '') {
       cartRepository = CartRepository();
     }
   }
@@ -60,7 +60,8 @@ class ProductPageCubit extends Cubit<SeeProductPageState> {
     emit(SeeProductPageLoading());
     if (cartRepository != null) {
       try {
-        cartRepository!.postNewCartItem(getTokens.get<Tokens>().accessToken,
+        cartRepository!.postNewCartItem(
+            serviceLocator.get<Tokens>().accessToken,
             {'id': productId, 'quantity': 1});
       } on InvalidTokenException {
         try {
@@ -78,8 +79,8 @@ class ProductPageCubit extends Cubit<SeeProductPageState> {
     emit(SeeProductPageLoading());
     if (cartRepository != null) {
       try {
-        cartRepository!
-            .deleteCartItem(getTokens.get<Tokens>().accessToken, productId);
+        cartRepository!.deleteCartItem(
+            serviceLocator.get<Tokens>().accessToken, productId);
       } on InvalidTokenException {
         try {
           refreshSeason(authenticationRepository);
@@ -95,7 +96,7 @@ class ProductPageCubit extends Cubit<SeeProductPageState> {
   Future<List> buyProduct() async {
     try {
       await productsRepository.putProductPurchase(
-          getTokens.get<Tokens>().accessToken, productId, {'quantity': 1});
+          serviceLocator.get<Tokens>().accessToken, productId, {'quantity': 1});
       loadProduct();
       return [true, 'Successful payment'];
     } on InvalidTokenException {

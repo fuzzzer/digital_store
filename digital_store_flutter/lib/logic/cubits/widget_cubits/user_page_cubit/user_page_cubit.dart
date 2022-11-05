@@ -29,7 +29,7 @@ class UserPageCubit extends Cubit<UserPageState> {
     } else {
       try {
         List<Map<String, dynamic>> allOrdersDataData = await userRepository
-            .getAllUserOrders(getTokens.get<Tokens>().accessToken);
+            .getAllUserOrders(serviceLocator.get<Tokens>().accessToken);
 
         List<Future<Product>> allFutureProductsWithoutCartQuantity = [];
         List<Map<String, dynamic>> productQuantitiesAndPrices = [];

@@ -29,7 +29,7 @@ class CartCubit extends Cubit<CartState> {
 
     try {
       Map<String, dynamic> allCartItemProductIds = await cartRepository
-          .getAllCartItems(getTokens.get<Tokens>().accessToken);
+          .getAllCartItems(serviceLocator.get<Tokens>().accessToken);
 
       final List<Map<String, dynamic>> productIds =
           allCartItemProductIds['products'] as List<Map<String, dynamic>>;
@@ -78,7 +78,7 @@ class CartCubit extends Cubit<CartState> {
   void incrementCartProduct(final Product product) {
     try {
       final int newQuantity = product.quantityInTheCart! + 1;
-      cartRepository.patchCartItem(getTokens.get<Tokens>().accessToken,
+      cartRepository.patchCartItem(serviceLocator.get<Tokens>().accessToken,
           product.id, {'quantity': newQuantity});
     } on InvalidTokenException {
       try {
@@ -95,8 +95,10 @@ class CartCubit extends Cubit<CartState> {
   Future<List> decrementCartProduct(final Product product) async {
     try {
       final int newQuantity = product.quantityInTheCart! - 1;
-      await cartRepository.patchCartItem(getTokens.get<Tokens>().accessToken,
-          product.id, {'quantity': newQuantity});
+      await cartRepository.patchCartItem(
+          serviceLocator.get<Tokens>().accessToken,
+          product.id,
+          {'quantity': newQuantity});
     } on InvalidTokenException {
       try {
         refreshSeason(authenticationRepository);
@@ -114,7 +116,7 @@ class CartCubit extends Cubit<CartState> {
   void deleteCartProduct(final String productId) {
     try {
       cartRepository.deleteCartItem(
-          getTokens.get<Tokens>().accessToken, productId);
+          serviceLocator.get<Tokens>().accessToken, productId);
     } on InvalidTokenException {
       try {
         refreshSeason(authenticationRepository);
@@ -128,7 +130,8 @@ class CartCubit extends Cubit<CartState> {
 
   void clearCart() {
     try {
-      cartRepository.deleteAllCartItems(getTokens.get<Tokens>().accessToken);
+      cartRepository
+          .deleteAllCartItems(serviceLocator.get<Tokens>().accessToken);
     } on InvalidTokenException {
       try {
         refreshSeason(authenticationRepository);
@@ -146,7 +149,7 @@ class CartCubit extends Cubit<CartState> {
     required final int quantity,
   }) {
     try {
-      cartRepository.postNewCartItem(getTokens.get<Tokens>().accessToken,
+      cartRepository.postNewCartItem(serviceLocator.get<Tokens>().accessToken,
           {'id': productId, 'quantity': quantity});
       return true;
     } on InvalidTokenException {
@@ -164,7 +167,8 @@ class CartCubit extends Cubit<CartState> {
 
   Future<List> cartCheckout() async {
     try {
-      await cartRepository.postCheckout(getTokens.get<Tokens>().accessToken);
+      await cartRepository
+          .postCheckout(serviceLocator.get<Tokens>().accessToken);
       loadCartItems();
       return [true, 'Successful payment'];
     } on InvalidTokenException {
