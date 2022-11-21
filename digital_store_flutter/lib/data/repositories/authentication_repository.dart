@@ -32,7 +32,7 @@ class AuthenticationRepository {
     }
   }
 
-  Future<bool> postsignUp(final Map<String, dynamic> newUser) async {
+  Future<bool> postSignUp(final Map<String, dynamic> newUser) async {
     final response = await http.post(Uri.parse('${startingPath}sign-up'),
         headers: <String, String>{
           'Content-Type': 'application/json',

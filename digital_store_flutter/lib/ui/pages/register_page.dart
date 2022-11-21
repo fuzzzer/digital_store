@@ -1,9 +1,12 @@
 import 'package:digital_store_flutter/core/constants.dart';
+import 'package:digital_store_flutter/data/models/exception_to_widget_data.dart';
+import 'package:digital_store_flutter/logic/cubits/data_cubits/user_cubit/user_cubit.dart';
 import 'package:digital_store_flutter/ui/pages/login_page.dart';
 import 'package:digital_store_flutter/ui/pages/widgets/widgets.dart';
 import 'package:digital_store_flutter/ui/widgets/command_button.dart';
 import 'package:digital_store_flutter/ui/widgets/credentials_input.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class RegisterPage extends StatelessWidget {
@@ -148,34 +151,31 @@ class RegisterButton extends StatelessWidget {
     return CommandButton(
       width: double.infinity,
       onPressedFunction: () async {
-        //TODO modify registration form in the back end
-        //if (passwordInputController.text !=
-        //     repeatedPasswordInputController.text) {
-        //   ScaffoldMessenger.of(context).showSnackBar(
-        //       const SnackBar(content: Text('passwords do not match')));
-        // } else {
-        //   List loginInfo = await context.read<UserCubit>().userSignUp(
-        //       username: usernameInputController.text,
-        //       password: passwordInputController.text,
-        //       firstName: firstNameInputController.text,
-        //       lastName: lastNameInputController.text,
-        //       email: emailInputController.text,
-        //       phoneNumber: phoneNumberInputController.text,
-        //       address: addressInputController.text,
-        //       birthDate: selectedBirthDate.toString(),
-        //       sex: (selectedSex.toString()).substring(4));
+        if (passwordController.text != confirmedPasswordController.text) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('passwords do not match'),
+            ),
+          );
+        } else {
+          FallibleMethodResponse loginInfo =
+              await context.read<UserCubit>().userSignUp(
+                    username: usernameController.text,
+                    password: passwordController.text,
+                    email: emailController.text,
+                  );
 
-        //   if (loginInfo[0] == true) {
-        //     Navigator.pushAndRemoveUntil(
-        //         context,
-        //         MaterialPageRoute(
-        //             builder: (BuildContext context) => LoginPage()),
-        //         (Route<dynamic> route) => route.isFirst);
-        //   }
+          if (loginInfo.isSuccessful == true) {
+            context.go('/loginPage');
+          }
+          print('print ${loginInfo.isSuccessful}');
 
-        //   ScaffoldMessenger.of(context)
-        //       .showSnackBar(SnackBar(content: Text(loginInfo[1])));
-        // }
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(loginInfo.notificationMessage),
+            ),
+          );
+        }
       },
       commandName: 'Register',
     );

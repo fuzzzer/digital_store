@@ -6,10 +6,10 @@ class User {
   String firstName;
   String lastName;
   String email;
-  String birthDate;
-  String phoneNumber;
-  String address;
-  String sex;
+  String? birthDate;
+  String? phoneNumber;
+  String? address;
+  String? sex;
   String? createdAt;
   String? modifiedAt;
 
@@ -21,10 +21,10 @@ class User {
     required this.firstName,
     required this.lastName,
     required this.email,
-    required this.birthDate,
-    required this.phoneNumber,
-    required this.address,
-    required this.sex,
+    this.birthDate,
+    this.phoneNumber,
+    this.address,
+    this.sex,
     this.createdAt,
     this.modifiedAt,
   });

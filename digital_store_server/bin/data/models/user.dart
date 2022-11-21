@@ -2,25 +2,25 @@ class User {
   String username;
   String password;
   double balance;
-  String firstName;
-  String lastName;
+  String? firstName;
+  String? lastName;
   String email;
-  String birthDate;
-  String phoneNumber;
-  String address;
-  String sex;
+  String? birthDate;
+  String? phoneNumber;
+  String? address;
+  String? sex;
 
   User({
     required this.username,
     required this.password,
     required this.balance,
-    required this.firstName,
-    required this.lastName,
+    this.firstName,
+    this.lastName,
     required this.email,
-    required this.birthDate,
-    required this.phoneNumber,
-    required this.address,
-    required this.sex,
+    this.birthDate,
+    this.phoneNumber,
+    this.address,
+    this.sex,
   });
 
   User copyWith({

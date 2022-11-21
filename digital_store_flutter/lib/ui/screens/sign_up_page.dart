@@ -1,4 +1,5 @@
 import 'package:digital_store_flutter/core/constants.dart';
+import 'package:digital_store_flutter/data/models/exception_to_widget_data.dart';
 import 'package:digital_store_flutter/ui/screens/login_page.dart';
 import 'package:digital_store_flutter/ui/widgets/command_button.dart';
 import 'package:digital_store_flutter/ui/widgets/text_input.dart';
@@ -111,12 +112,14 @@ class _SignUpPageState extends State<SignUpPage> {
                         children: <TextSpan>[
                           const TextSpan(text: 'Select birth date: '),
                           TextSpan(
-                              text:
-                                  '${selectedBirthDate.day}/${selectedBirthDate.month}/${selectedBirthDate.year}',
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 18,
-                                  color: Colors.black)),
+                            text:
+                                '${selectedBirthDate.day}/${selectedBirthDate.month}/${selectedBirthDate.year}',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 18,
+                              color: Colors.black,
+                            ),
+                          ),
                         ],
                       ),
                     )),
@@ -133,7 +136,9 @@ class _SignUpPageState extends State<SignUpPage> {
                   alignment: Alignment.topLeft,
                   child: Text(
                     'Select sex:',
-                    style: TextStyle(color: Color.fromARGB(255, 59, 59, 59)),
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 59, 59, 59),
+                    ),
                   ),
                 ),
               ),
@@ -186,32 +191,39 @@ class _SignUpPageState extends State<SignUpPage> {
                   onPressedFunction: () async {
                     if (passwordInputController.text !=
                         repeatedPasswordInputController.text) {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text('passwords do not match')));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('passwords do not match'),
+                        ),
+                      );
                     } else {
-                      List loginInfo = await context
-                          .read<UserCubit>()
-                          .userSignUp(
-                              username: usernameInputController.text,
-                              password: passwordInputController.text,
-                              firstName: firstNameInputController.text,
-                              lastName: lastNameInputController.text,
-                              email: emailInputController.text,
-                              phoneNumber: phoneNumberInputController.text,
-                              address: addressInputController.text,
-                              birthDate: selectedBirthDate.toString(),
-                              sex: (selectedSex.toString()).substring(4));
+                      FallibleMethodResponse loginInfo =
+                          await context.read<UserCubit>().userSignUp(
+                                username: usernameInputController.text,
+                                password: passwordInputController.text,
+                                firstName: firstNameInputController.text,
+                                lastName: lastNameInputController.text,
+                                email: emailInputController.text,
+                                phoneNumber: phoneNumberInputController.text,
+                                address: addressInputController.text,
+                                birthDate: selectedBirthDate.toString(),
+                                sex: (selectedSex.toString()).substring(4),
+                              );
 
-                      if (loginInfo[0] == true) {
+                      if (loginInfo.isSuccessful == true) {
                         Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
-                                builder: (BuildContext context) => LoginPage()),
+                              builder: (BuildContext context) => LoginPage(),
+                            ),
                             (Route<dynamic> route) => route.isFirst);
                       }
 
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(SnackBar(content: Text(loginInfo[1])));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(loginInfo.notificationMessage),
+                        ),
+                      );
                     }
                   })
             ],

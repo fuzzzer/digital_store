@@ -17,6 +17,8 @@ class LoginPage extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+  final String pathName = 'loginPage';
+
   final TextEditingController emailInputController = TextEditingController();
   final TextEditingController passwordInputController = TextEditingController();
 
@@ -198,7 +200,6 @@ class LoginButton extends StatelessWidget {
     return CommandButton(
       width: double.infinity,
       onPressedFunction: () async {
-        //TODO refactor code and use email instead of username
         List loginInfo = await context.read<UserCubit>().userLogin(
               emailInputController.text,
               passwordInputController.text,

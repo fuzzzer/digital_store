@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:digital_store_flutter/data/models/exception_to_widget_data.dart';
 import 'package:digital_store_flutter/data/repositories/authentication_repository.dart';
 import 'package:digital_store_flutter/data/repositories/user_repository.dart';
 import 'package:equatable/equatable.dart';
@@ -80,19 +81,19 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
-  Future<List> userSignUp({
+  Future<FallibleMethodResponse> userSignUp({
     required final String username,
     required final String password,
-    required final String firstName,
-    required final String lastName,
+    final String? firstName,
+    final String? lastName,
     required final String email,
-    required final String phoneNumber,
-    required final String address,
-    required final String birthDate,
-    required final String sex,
+    final String? phoneNumber,
+    final String? address,
+    final String? birthDate,
+    final String? sex,
   }) async {
     try {
-      await authenticationRepository.postsignUp({
+      await authenticationRepository.postSignUp({
         'username': username,
         'password': password,
         'firstName': firstName,
@@ -101,12 +102,18 @@ class UserCubit extends Cubit<UserState> {
         'phoneNumber': phoneNumber,
         'address': address,
         'birthDate': birthDate,
-        'sex': sex
+        'sex': sex,
       });
 
-      return [true, 'signed up'];
+      return FallibleMethodResponse(
+        isSuccessful: true,
+        notificationMessage: 'signed up',
+      );
     } on MessageException catch (ex) {
-      return [false, ex.reason];
+      return FallibleMethodResponse(
+        isSuccessful: false,
+        notificationMessage: ex.reason,
+      );
     }
   }
 
