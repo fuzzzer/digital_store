@@ -7,7 +7,7 @@ import '../../logic/global_logics/checkers.dart';
 import '../models/custom_exceptions.dart';
 
 class AuthenticationRepository {
-  final String startingPath = 'http://$ipAdress:$port/authentication/';
+  final String startingPath = 'http://$ipAddress:$port/authentication/';
 
   Future<Map<String, dynamic>> postRefresh(final String refreshToken) async {
     final response = await http.post(Uri.parse('${startingPath}refresh'),

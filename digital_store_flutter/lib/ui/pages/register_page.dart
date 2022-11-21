@@ -161,7 +161,7 @@ class RegisterButton extends StatelessWidget {
         //       lastName: lastNameInputController.text,
         //       email: emailInputController.text,
         //       phoneNumber: phoneNumberInputController.text,
-        //       adress: adressInputController.text,
+        //       address: addressInputController.text,
         //       birthDate: selectedBirthDate.toString(),
         //       sex: (selectedSex.toString()).substring(4));
 

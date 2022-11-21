@@ -56,7 +56,7 @@ void main(List<String> args) async {
 //     email        text not null,
 //     birth_date   text not null,
 //     phone_number text not null,
-// adress       text not null,
+// address       text not null,
 //     sex          text not null,
 //     created_at   text not null,
 //     modified_at  text not null,

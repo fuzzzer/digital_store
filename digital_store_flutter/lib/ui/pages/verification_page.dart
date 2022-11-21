@@ -1,3 +1,4 @@
+import 'package:digital_store_flutter/ui/pages/pages.dart';
 import 'package:digital_store_flutter/ui/pages/widgets/widgets.dart';
 import 'package:digital_store_flutter/ui/widgets/command_button.dart';
 
@@ -44,13 +45,18 @@ class VerificationPage extends StatelessWidget {
                 const Text(
                   'Enter the verification code we just sent on your email address',
                   style: TextStyle(
-                      fontSize: 16,
-                      height: 1.5,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xFF8391A1)),
+                    fontSize: 16,
+                    height: 1.5,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xFF8391A1),
+                  ),
                 ),
                 const SizedBox(height: 32),
-                const Text('Tiles'),
+                GPinInput(
+                  onCompleted: (value) =>
+                      print('print congrats code is: $value'),
+                  onChanged: (value) => print('print $value'),
+                ),
                 const SizedBox(height: 38),
                 const VerificationButton(
                   verificationCode: '123456',

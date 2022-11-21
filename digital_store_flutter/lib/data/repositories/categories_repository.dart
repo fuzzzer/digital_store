@@ -7,7 +7,7 @@ import '../models/category.dart';
 import '../models/custom_exceptions.dart';
 
 class CategoriesRepository {
-  String startingPath = 'http://$ipAdress:$port/categories/';
+  String startingPath = 'http://$ipAddress:$port/categories/';
 
   Future<List<Category>> getAllCategories() async {
     final response = await http.get(Uri.parse(startingPath));

@@ -13,14 +13,14 @@ class UserProfileInfoPage extends StatefulWidget {
   late final TextEditingController firstNameInputController;
   late final TextEditingController lastNameInputController;
   late final TextEditingController emailInputController;
-  late final TextEditingController adressInputController;
+  late final TextEditingController addressInputController;
   late final TextEditingController phoneNumberInputController;
 
   UserProfileInfoPage({Key? key, required this.user}) : super(key: key) {
     firstNameInputController = TextEditingController(text: user.firstName);
     lastNameInputController = TextEditingController(text: user.lastName);
     emailInputController = TextEditingController(text: user.email);
-    adressInputController = TextEditingController(text: user.adress);
+    addressInputController = TextEditingController(text: user.address);
     phoneNumberInputController = TextEditingController(text: user.phoneNumber);
   }
 
@@ -87,7 +87,7 @@ class _UserProfileInfoPageState extends State<UserProfileInfoPage> {
               ),
               const Padding(
                 padding: EdgeInsets.only(left: 8.0),
-                child: Text('Email adress:'),
+                child: Text('Email address:'),
               ),
               TextInput(
                 topPadding: 0,
@@ -104,12 +104,12 @@ class _UserProfileInfoPageState extends State<UserProfileInfoPage> {
               ),
               const Padding(
                 padding: EdgeInsets.only(left: 8.0),
-                child: Text('Adress:'),
+                child: Text('Address:'),
               ),
               TextInput(
                 topPadding: 0,
                 maxLines: 4,
-                inputController: widget.adressInputController,
+                inputController: widget.addressInputController,
               ),
               SizedBox(
                 width: width * 0.9,
@@ -183,7 +183,7 @@ class _UserProfileInfoPageState extends State<UserProfileInfoPage> {
                                 email: widget.emailInputController.text,
                                 phoneNumber:
                                     widget.phoneNumberInputController.text,
-                                adress: widget.adressInputController.text,
+                                address: widget.addressInputController.text,
                                 sex: selectedSex.toString().substring(4));
 
                         ScaffoldMessenger.of(context).showSnackBar(

@@ -141,7 +141,7 @@ Map<String, dynamic> getUserProfile(
   }
 
   final selectedTable = database.select('''
-   SELECT id, username, balance, first_name, last_name, email, birth_date, phone_number, adress, sex, created_at, modified_at
+   SELECT id, username, balance, first_name, last_name, email, birth_date, phone_number, address, sex, created_at, modified_at
     FROM user
 WHERE id LIKE "$userId";
    ''');
@@ -156,7 +156,7 @@ WHERE id LIKE "$userId";
       "email": row['email'],
       "birthDate": row['birth_date'],
       "phoneNumber": row['phone_number'],
-      "adress": row['adress'],
+      "address": row['address'],
       "sex": row['sex'],
       "createdAt": row['created_at'],
       "modifiedAt": row['modified_at']
@@ -176,7 +176,6 @@ void updateUserProfile(final Database database, final String userId,
       searchingColumn: 'id')) {
     throw NotFoundException("user not found");
   }
-  print('2');
 
   if (isUniqueValueInTable(
       database: database,
@@ -186,19 +185,15 @@ void updateUserProfile(final Database database, final String userId,
       additioanlAndWhereQuery: ' AND id NOT LIKE "$userId"')) {
     throw ExistentIdentifierException("email is not available");
   }
-  print('3');
 
   database.execute('''
    UPDATE user
    SET first_name = "${decodedJson['firstName']}",
    last_name = "${decodedJson['lastName']}",
-   email = "${decodedJson['email']}",
    birth_date = "${decodedJson['birthDate']}",
    phone_number = "${decodedJson['phoneNumber']}",
-   adress = "${decodedJson['adress']}",
+   address = "${decodedJson['address']}",
    sex = "${decodedJson['sex']}"
    WHERE id LIKE "$userId";
    ''');
-
-  print('kiiiiii');
 }

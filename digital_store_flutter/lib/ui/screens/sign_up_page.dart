@@ -22,7 +22,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final passwordInputController = TextEditingController();
   final repeatedPasswordInputController = TextEditingController();
   final emailInputController = TextEditingController();
-  final adressInputController = TextEditingController();
+  final addressInputController = TextEditingController();
   final phoneNumberInputController = TextEditingController();
 
   DateTime selectedBirthDate = DateTime.now();
@@ -92,9 +92,9 @@ class _SignUpPageState extends State<SignUpPage> {
                 keyboardType: TextInputType.number,
               ),
               TextInput(
-                hintText: 'Adress',
+                hintText: 'Address',
                 maxLines: 4,
-                inputController: adressInputController,
+                inputController: addressInputController,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
@@ -198,7 +198,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               lastName: lastNameInputController.text,
                               email: emailInputController.text,
                               phoneNumber: phoneNumberInputController.text,
-                              adress: adressInputController.text,
+                              address: addressInputController.text,
                               birthDate: selectedBirthDate.toString(),
                               sex: (selectedSex.toString()).substring(4));
 

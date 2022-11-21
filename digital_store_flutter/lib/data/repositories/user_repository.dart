@@ -7,7 +7,7 @@ import '../models/custom_exceptions.dart';
 import '../models/user.dart';
 
 class UserRepository {
-  final String startingPath = 'http://$ipAdress:$port/user/';
+  final String startingPath = 'http://$ipAddress:$port/user/';
 
   Future<bool> deleteUser(final String accessToken) async {
     final response = await http.delete(Uri.parse(startingPath),

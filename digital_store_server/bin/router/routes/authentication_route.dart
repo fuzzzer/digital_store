@@ -15,8 +15,7 @@ class AuthenticationRoute {
   final Database database;
   final String secretKey;
 
-  AuthenticationRoute(
-      {required this.database, required this.secretKey});
+  AuthenticationRoute({required this.database, required this.secretKey});
 
   Router get router {
     final router = Router();
@@ -35,13 +34,13 @@ class AuthenticationRoute {
 
       final newAccessToken = generateJwt(
         subject: maybeJWT.subject!,
-        issuer: 'http://${Env.ipAdress}',
+        issuer: 'http://${Env.ipAddress}',
         secretKey: secretKey,
       );
 
       final newRefreshToken = generateJwt(
         subject: maybeJWT.subject!,
-        issuer: 'http://${Env.ipAdress}',
+        issuer: 'http://${Env.ipAddress}',
         secretKey: secretKey,
         duration: Duration(seconds: 1000),
       );
@@ -90,15 +89,22 @@ class AuthenticationRoute {
       final userCredentials = jsonDecode(rawJson);
 
       final idExists = isUniqueValueInTable(
-          database: database,
-          table: "user",
-          value: userCredentials["username"],
-          searchingColumn: "username");
+        database: database,
+        table: "user",
+        value: userCredentials["email"],
+        searchingColumn: "email",
+      );
+
+      print('email ${userCredentials["email"]}');
+
+      print('id: $idExists');
 
       final passwordIsCorrect = checkPasswordValidity(
           database: database,
-          username: userCredentials["username"],
+          email: userCredentials["email"],
           password: userCredentials["password"]);
+
+      print('password: $passwordIsCorrect');
 
       if (!idExists || !passwordIsCorrect) {
         return Response(404, body: 'Invalid username/password supplied');
@@ -107,19 +113,19 @@ class AuthenticationRoute {
       String userId = returnUniqueValueFromTheTable(
           database: database,
           table: "user",
-          inputValue: userCredentials["username"],
+          inputValue: userCredentials["email"],
           returnValue: "id",
-          searchingColumn: "username");
+          searchingColumn: "email");
 
       final accessToken = generateJwt(
         subject: userId,
-        issuer: 'http://${Env.ipAdress}',
+        issuer: 'http://${Env.ipAddress}',
         secretKey: secretKey,
       );
 
       final refreshToken = generateJwt(
         subject: userId,
-        issuer: 'http://${Env.ipAdress}',
+        issuer: 'http://${Env.ipAddress}',
         secretKey: secretKey,
         duration: Duration(seconds: 1000),
       );
@@ -141,6 +147,7 @@ class AuthenticationRoute {
     router.post('/sign-up', _signUpHandler);
     router.post('/sign-in', _signInHandler);
     router.get('/sign-out', _signOutHandler);
+    router.post('/sign-out', _signOutHandler);
 
     return router;
   }

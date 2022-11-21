@@ -29,10 +29,10 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
-  Future<List> userLogin(final String username, final String password) async {
+  Future<List> userLogin(final String email, final String password) async {
     try {
       Map<String, dynamic> tokens = await authenticationRepository
-          .postSignIn({'username': username, 'password': password});
+          .postSignIn({'email': email, 'password': password});
 
       serviceLocator.get<Tokens>().accessToken = tokens['accessToken'];
       serviceLocator.get<Tokens>().refreshToken = tokens['refreshToken'];
@@ -87,7 +87,7 @@ class UserCubit extends Cubit<UserState> {
     required final String lastName,
     required final String email,
     required final String phoneNumber,
-    required final String adress,
+    required final String address,
     required final String birthDate,
     required final String sex,
   }) async {
@@ -99,7 +99,7 @@ class UserCubit extends Cubit<UserState> {
         'lastName': lastName,
         'email': email,
         'phoneNumber': phoneNumber,
-        'adress': adress,
+        'address': address,
         'birthDate': birthDate,
         'sex': sex
       });
@@ -149,7 +149,7 @@ class UserCubit extends Cubit<UserState> {
     required final String lastName,
     required final String email,
     required final String phoneNumber,
-    required final String adress,
+    required final String address,
     required final String sex,
   }) async {
     try {
@@ -159,7 +159,7 @@ class UserCubit extends Cubit<UserState> {
         'lastName': lastName,
         'email': email,
         'phoneNumber': phoneNumber,
-        'adress': adress,
+        'address': address,
         'sex': sex
       });
 
@@ -177,7 +177,7 @@ class UserCubit extends Cubit<UserState> {
             lastName: lastName,
             email: email,
             phoneNumber: phoneNumber,
-            adress: adress,
+            address: address,
             sex: sex);
       } on InvalidRefreshTokenException {
         sessionExpired();

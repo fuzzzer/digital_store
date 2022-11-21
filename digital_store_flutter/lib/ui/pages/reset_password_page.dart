@@ -98,7 +98,6 @@ class ResetPasswordButton extends StatelessWidget {
       width: double.infinity,
       onPressedFunction: () async {
         context.push('/changedPasswordPage');
-
         //TODO Send new passwords to back end
       },
       commandName: 'Send Code',

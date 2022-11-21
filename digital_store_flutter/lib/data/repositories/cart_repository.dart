@@ -9,7 +9,7 @@ import '../models/custom_exceptions.dart';
 class CartRepository {
   late final Map<String, String> header;
 
-  final String startingPath = 'http://$ipAdress:$port/cart/';
+  final String startingPath = 'http://$ipAddress:$port/cart/';
 
   Future<Map<String, dynamic>> getAllCartItems(final String accessToken) async {
     final response = await http.get(Uri.parse(startingPath),

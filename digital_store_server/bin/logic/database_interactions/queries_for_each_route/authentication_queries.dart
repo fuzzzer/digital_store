@@ -30,7 +30,7 @@ void signUpNewUser(final Database database, final User newUser) {
                 email,
                 birth_date,
                 phone_number,
-                adress,
+                address,
                 sex ,
                 created_at,
                 modified_at,
@@ -46,7 +46,7 @@ void signUpNewUser(final Database database, final User newUser) {
                 "${newUser.email}",
                 "${newUser.birthDate}",
                 "${newUser.phoneNumber}",
-                "${newUser.adress}",
+                "${newUser.address}",
                 "${newUser.sex}",
                 date('now'),
                 date('now'),
@@ -58,13 +58,14 @@ void signUpNewUser(final Database database, final User newUser) {
       '''INSERT INTO cart (id, modified_at) VALUES ("$cartId", date('now'))''');
 }
 
-bool checkPasswordValidity(
-    {required final Database database,
-    required final String username,
-    required final String password}) {
+bool checkPasswordValidity({
+  required final Database database,
+  required final String email,
+  required final String password,
+}) {
   String? realHashedPassword;
   final ResultSet selectedRowForHashedPassword = database
-      .select(''' SELECT password FROM user WHERE username LIKE "$username"''');
+      .select(''' SELECT password FROM user WHERE email LIKE "$email"''');
 
   for (final row in selectedRowForHashedPassword) {
     // selectedRowForHashedPassword is iterable with only one value because username is unique
@@ -72,8 +73,8 @@ bool checkPasswordValidity(
   }
 
   String? salt;
-  ResultSet selectedRowForSalt = database
-      .select(''' SELECT salt FROM user WHERE username LIKE "$username"''');
+  ResultSet selectedRowForSalt =
+      database.select(''' SELECT salt FROM user WHERE email LIKE "$email"''');
 
   for (final row in selectedRowForSalt) {
     // selectedRowForSalt is iterable with only one value because username is unique

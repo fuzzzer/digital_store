@@ -25,6 +25,7 @@ dependencies:
   dart_jsonwebtoken: ^2.4.1
   flutter_svg: ^1.1.6
   go_router: ^5.1.5
+  pin_code_fields: ^7.4.0
 
 dev_dependencies:
   flutter_test:

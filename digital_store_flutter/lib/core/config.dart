@@ -2,7 +2,7 @@
 
 import 'dart:io' show Platform;
 
-final String ipAdress = Platform.isAndroid ? '10.0.2.2' : '0.0.0.0';
+final String ipAddress = Platform.isAndroid ? '10.0.2.2' : '0.0.0.0';
 const String port = '8086';
 
 
@@ -11,5 +11,5 @@ const String port = '8086';
 
 // @Envify()
 // abstract class Env {
-//   static const ipAdress = _Env.ipAdress;
+//   static const ipAddress = _Env.ipAddress;
 // }

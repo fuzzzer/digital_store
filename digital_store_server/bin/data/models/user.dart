@@ -1,4 +1,3 @@
-
 class User {
   String username;
   String password;
@@ -8,7 +7,7 @@ class User {
   String email;
   String birthDate;
   String phoneNumber;
-  String adress;
+  String address;
   String sex;
 
   User({
@@ -20,7 +19,7 @@ class User {
     required this.email,
     required this.birthDate,
     required this.phoneNumber,
-    required this.adress,
+    required this.address,
     required this.sex,
   });
 
@@ -33,7 +32,7 @@ class User {
     String? email,
     String? birthDate,
     String? phoneNumber,
-    String? adress,
+    String? address,
     String? sex,
   }) {
     return User(
@@ -45,7 +44,7 @@ class User {
       email: email ?? this.email,
       birthDate: birthDate ?? this.birthDate,
       phoneNumber: phoneNumber ?? this.phoneNumber,
-      adress: adress ?? this.adress,
+      address: address ?? this.address,
       sex: sex ?? this.sex,
     );
   }
@@ -61,7 +60,7 @@ class User {
     result.addAll({'email': email});
     result.addAll({'birthDate': birthDate});
     result.addAll({'phoneNumber': phoneNumber});
-    result.addAll({'adress': adress});
+    result.addAll({'address': address});
     result.addAll({'sex': sex});
 
     return result;
@@ -77,14 +76,14 @@ class User {
       email: map['email'] ?? '',
       birthDate: map['birthDate'] ?? '',
       phoneNumber: map['phoneNumber'] ?? '',
-      adress: map['adress'] ?? '',
+      address: map['address'] ?? '',
       sex: map['sex'] ?? '',
     );
   }
 
   @override
   String toString() {
-    return 'User(username: $username, password: $password, balance: $balance, firstName: $firstName, lastName: $lastName, email: $email, birthDate: $birthDate, phoneNumber: $phoneNumber, adress: $adress, sex: $sex)';
+    return 'User(username: $username, password: $password, balance: $balance, firstName: $firstName, lastName: $lastName, email: $email, birthDate: $birthDate, phoneNumber: $phoneNumber, address: $address, sex: $sex)';
   }
 
   @override
@@ -100,7 +99,7 @@ class User {
         other.email == email &&
         other.birthDate == birthDate &&
         other.phoneNumber == phoneNumber &&
-        other.adress == adress &&
+        other.address == address &&
         other.sex == sex;
   }
 
@@ -114,7 +113,7 @@ class User {
         email.hashCode ^
         birthDate.hashCode ^
         phoneNumber.hashCode ^
-        adress.hashCode ^
+        address.hashCode ^
         sex.hashCode;
   }
 }

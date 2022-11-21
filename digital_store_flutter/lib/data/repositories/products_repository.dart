@@ -7,7 +7,7 @@ import '../models/custom_exceptions.dart';
 import '../models/product.dart';
 
 class ProductsRepository {
-  final String startingPath = 'http://$ipAdress:$port/products/';
+  final String startingPath = 'http://$ipAddress:$port/products/';
 
   Future<List<Product>> getAllProducts() async {
     final response = await http.get(Uri.parse(startingPath));
