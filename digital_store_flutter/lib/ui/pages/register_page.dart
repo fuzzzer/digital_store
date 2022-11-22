@@ -46,7 +46,7 @@ class RegisterPage extends StatelessWidget {
             child: Column(
               children: [
                 GBackButton(
-                  onPressed: () => context.go('/loginPage'),
+                  onPressed: () => context.pop(),
                 ),
                 const SizedBox(height: 28),
                 const Text(

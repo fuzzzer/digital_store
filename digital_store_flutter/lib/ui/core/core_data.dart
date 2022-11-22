@@ -19,9 +19,13 @@ class CoreData {
       ),
       GoRoute(
         path: '/loginPage',
-        builder: (BuildContext context, GoRouterState state) => LoginPage(
-          key: state.pageKey,
-        ),
+        builder: (BuildContext context, GoRouterState state) {
+          //TODO cty to add correct previous path
+          return LoginPage(
+            key: state.pageKey,
+            previousRoute: state.location,
+          );
+        },
       ),
       GoRoute(
         path: '/forgotPasswordPage',

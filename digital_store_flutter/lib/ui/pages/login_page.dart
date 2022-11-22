@@ -15,8 +15,9 @@ import '../widgets/credentials_input.dart';
 class LoginPage extends StatelessWidget {
   LoginPage({
     Key? key,
+    required this.previousRoute,
   }) : super(key: key);
-
+  final String previousRoute;
   final String pathName = 'loginPage';
 
   final TextEditingController emailInputController = TextEditingController();
@@ -24,6 +25,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('print $previousRoute');
     final platformerWidth = (MediaQuery.of(context).size.width -
             defaultPagePadding.left -
             defaultPagePadding.right -
@@ -51,9 +53,11 @@ class LoginPage extends StatelessWidget {
                   onPressed: () => context.go('/'),
                 ),
                 const SizedBox(height: 28),
-                const Text(
-                  'Welcome back! Glad to see you, Again!',
-                  style: TextStyle(
+                Text(
+                  previousRoute != '/registerPage'
+                      ? 'Welcome back! Glad to see you, Again!'
+                      : 'Now you can Log in',
+                  style: const TextStyle(
                     fontSize: 30,
                     height: 1.3,
                     fontWeight: FontWeight.w700,
