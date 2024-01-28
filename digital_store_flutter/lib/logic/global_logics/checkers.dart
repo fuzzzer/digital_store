@@ -29,16 +29,4 @@ Future<bool> checkIfProductIsInTheCart({
 
 bool checkTokens(final Map<String, dynamic> tokens) {
   return true;
-  // I could check signiture here with original key and determine if tokens were sent from original server,
-  // but i'm not doing that because hacker might extract sectret key from user end of the application
-
-  // try {
-  //   JWT.verify(tokens['accessToken'],
-  //       SecretKey(secretKey));
-  //   JWT.verify(tokens['refreshToken'],
-  //       SecretKey(secretKey));
-  //   return true;
-  // } catch (ex) {
-  //   return false;
-  // }
 }
